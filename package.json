@@ -1,0 +1,20 @@
+{
+  "name": "react-nest-router",
+  "version": "0.0.0",
+  "description": "Declarative routing for React.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nuintun/react-nest-router.git"
+  },
+  "keywords": [
+    "react",
+    "router",
+    "history"
+  ],
+  "author": "nuintun",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/nuintun/react-nest-router/issues"
+  },
+  "homepage": "https://github.com/nuintun/react-nest-router#readme"
+}
