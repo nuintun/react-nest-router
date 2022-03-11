@@ -3,7 +3,7 @@
     "strict": true,
     "pretty": true,
     "newLine": "lf",
-    "target": "ES5",
+    "target": "ES2015",
     "module": "ESNext",
     "skipLibCheck": true,
     "importHelpers": true,
