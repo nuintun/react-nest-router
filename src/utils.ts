@@ -2,75 +2,109 @@
  * @module utils
  */
 
-import { RouteBranch, RouteObject } from './types';
+import { Tree } from './Tree';
+import { isAbsolute, resolve } from './path';
+import { Route, RouteBranch, RouteBranchMeta } from './types';
 
-type Resolve<T> = (node: T, index: number) => T[] | void;
+function isSplat(char: string): boolean {
+  return char === '*';
+}
 
-type IteratorValue<T> = [index: number, node: T, parent: T | undefined];
+function computeScore(path: string, index?: boolean): number {
+  const splatPenalty = -2;
+  const indexRouteValue = 2;
+  const emptySegmentValue = 1;
+  const dynamicSegmentValue = 3;
+  const staticSegmentValue = 10;
 
-type Waiting<T> = [iterator: Iterator<[index: number, value: T], undefined>, parent?: T];
+  const segments = path.split('/');
 
-/**
- * @class NestedList
- * @description An iterable nested list.
- */
-export class NestedList<T> {
-  private items: T[];
+  let initialScore = segments.length;
 
-  /**
-   * @constructor
-   * @description An iterable nested list.
-   * @param items Nested list items.
-   * @param resolve Items resolve function.
-   */
-  constructor(items: T[], private resolve: Resolve<T>) {
-    this.items = items;
+  if (segments.some(isSplat)) {
+    initialScore += splatPenalty;
   }
 
-  /**
-   * @method dfs
-   * @description The dfs traversal iterator.
-   */
-  *dfs(): Iterable<IteratorValue<T>> {
-    const { items, resolve } = this;
-    const waiting: Waiting<T>[] = [];
+  if (index) {
+    initialScore += indexRouteValue;
+  }
 
-    let current: Waiting<T> | undefined = [items.entries()];
+  return segments.reduce((score, segment) => {
+    if (isSplat(segment)) {
+      return score;
+    }
 
-    while (current) {
-      const [iterator] = current;
-      const item = iterator.next();
+    if (segment === '') {
+      return score + emptySegmentValue;
+    }
 
-      if (item.done) {
-        current = waiting.pop();
+    const paramRegexp = /^:\w+$/;
+
+    if (paramRegexp.test(segment)) {
+      return score + dynamicSegmentValue;
+    }
+
+    return score + staticSegmentValue;
+  }, initialScore);
+}
+
+function invariant(cond: any, message: string): asserts cond {
+  if (cond) throw new Error(message);
+}
+
+export function flattenRoutes<T>(routes: Route<T>[]): RouteBranch<T>[] {
+  const branches: RouteBranch<T>[] = [];
+
+  for (const route of routes) {
+    const paths: string[] = [];
+    const metadata: RouteBranchMeta<T>[] = [];
+    const items = new Tree(route, route => route.children).dfs();
+
+    for (const [index, item] of items) {
+      const { path: to, index: isIndex } = item;
+      const from = paths.reduce((from, to) => resolve(from, to), '');
+
+      invariant(
+        isIndex && 'path' in item,
+        `Index routes must not have path. Please remove path property from route path "${from}".`
+      );
+
+      invariant(
+        isIndex && 'children' in item,
+        `Index routes must not have child routes. Please remove all child routes from route path "${from}".`
+      );
+
+      invariant(
+        to != null && isAbsolute(to) && !to.startsWith(from),
+        `Absolute route path "${to}" nested under path "${from}" is not valid. An absolute child route path must start with the combined path of all its parent routes.`
+      );
+
+      metadata.push({ index, route: item });
+
+      if (isIndex || to != null) {
+        const path = resolve(from, to);
+        const { caseSensitive, end } = item;
+        const score = computeScore(path, isIndex);
+
+        branches.push({
+          path,
+          score,
+          end: end !== false,
+          meta: [...metadata],
+          caseSensitive: caseSensitive === true
+        });
+      }
+
+      const { children } = item;
+
+      if (children && children.length > 0) {
+        paths.push(to);
       } else {
-        const [, parent] = current;
-        const [index, node] = item.value;
-        const children = resolve(node, index);
-
-        if (children && children.length > 0) {
-          waiting.push(current);
-
-          current = [children.entries(), node];
-        }
-
-        yield [index, node, parent];
+        paths.pop();
+        metadata.pop();
       }
     }
   }
-}
 
-export function flattenRoutes<T>(routes: RouteObject<T>[]): RouteBranch[] {
-  const items = new NestedList(routes, route => route.children).dfs();
-
-  for (const [index, item, parent] of items) {
-    let meta: RouteMeta = {
-      relativePath: route.path || '',
-      caseSensitive: route.caseSensitive === true,
-      childrenIndex: index,
-      route
-    };
-  }
-
-  return [];
+  return branches;
 }

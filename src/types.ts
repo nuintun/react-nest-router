@@ -8,13 +8,14 @@ import React from 'react';
  * A route object represents a logical route, with (optionally) its child
  * routes organized in a tree-like structure.
  */
-export interface RouteObject<T = unknown> {
+export interface Route<T = unknown> {
   meta?: T;
   path?: string;
+  end?: boolean;
   index?: boolean;
+  children?: Route<T>[];
   caseSensitive?: boolean;
   element?: React.ReactNode;
-  children?: RouteObject<T>[];
 }
 
 /**
@@ -29,6 +30,10 @@ export type Params<Key extends string = string> = {
  */
 export interface RouteMatch<ParamKey extends string = string, T = unknown> {
   /**
+   * The route object that was used to match.
+   */
+  route: Route<T>;
+  /**
    * The portion of the URL pathname that was matched before child routes.
    */
   basename: string;
@@ -37,24 +42,20 @@ export interface RouteMatch<ParamKey extends string = string, T = unknown> {
    */
   pathname: string;
   /**
-   * The route object that was used to match.
-   */
-  route: RouteObject<T>;
-  /**
    * The names and values of dynamic parameters in the URL.
    */
   params: Params<ParamKey>;
 }
 
-export interface RouteBranchMeta {
-  route: RouteObject;
-  relativePath: string;
-  childrenIndex: number;
-  caseSensitive: boolean;
+export interface RouteBranchMeta<T> {
+  index: number;
+  route: Route<T>;
 }
 
-export interface RouteBranch {
+export interface RouteBranch<T> {
   path: string;
+  end: boolean;
   score: number;
-  meta: RouteBranchMeta[];
+  caseSensitive: boolean;
+  meta: RouteBranchMeta<T>[];
 }
