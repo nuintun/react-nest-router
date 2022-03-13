@@ -8,11 +8,11 @@ import { assert, computeScore } from './utils';
 import { Route, RouteBranch, RouteBranchMeta } from './types';
 
 /**
- * @function isRouteSiblings
+ * @function isBranchSiblings
  * @param prev Prev route branch.
  * @param next Next route branch.
  */
-function isRouteSiblings<T>(prev: RouteBranch<T>, next: RouteBranch<T>): boolean {
+function isBranchSiblings<T>(prev: RouteBranch<T>, next: RouteBranch<T>): boolean {
   const { meta: prevMeta } = prev;
   const { meta: nextMeta } = next;
   const { length: prevLength } = prevMeta;
@@ -36,7 +36,7 @@ function compareRouteMeta<T>(prev: RouteBranch<T>, next: RouteBranch<T>): number
   // first. This allows people to have fine-grained control over the matching
   // behavior by simply putting routes with identical paths in the order they
   // want them tried.
-  if (isRouteSiblings(prev, next)) {
+  if (isBranchSiblings(prev, next)) {
     const { meta: prevMeta } = prev;
     const { meta: nextMeta } = next;
     const { length: prevLength } = prevMeta;
@@ -51,10 +51,10 @@ function compareRouteMeta<T>(prev: RouteBranch<T>, next: RouteBranch<T>): number
 }
 
 /**
- * @function sortRoutes
+ * @function sortRouteBranches
  * @param branches Route branches.
  */
-function sortRoutes<T>(branches: RouteBranch<T>[]): RouteBranch<T>[] {
+function sortRouteBranches<T>(branches: RouteBranch<T>[]): RouteBranch<T>[] {
   // Higher score first
   return branches.sort((prev, next) => {
     return prev.score !== next.score ? next.score - prev.score : compareRouteMeta(prev, next);
@@ -121,5 +121,5 @@ export function flattenRoutes<T>(routes: Route<T>[], basename: string = '/'): Ro
     }
   }
 
-  return sortRoutes(branches);
+  return sortRouteBranches(branches);
 }
