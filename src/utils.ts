@@ -16,7 +16,7 @@ export function isSplat(char: string): boolean {
  * @param message Assert error message.
  */
 export function assert(cond: any, message: string): asserts cond {
-  if (cond) throw new Error(message);
+  if (!cond) throw new Error(message);
 }
 
 /**

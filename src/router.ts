@@ -75,27 +75,27 @@ export function flattenRoutes<T>(routes: Route<T>[], basename: string = '/'): Ro
       metadata.pop();
     };
 
-    const paths: string[] = [];
+    const paths: (string | undefined)[] = [];
     const metadata: RouteBranchMeta<T>[] = [];
     const items = new Tree(route, route => route.children).dfs(backtrace);
 
     // Traversal nested routes.
     for (const [index, item] of items) {
       const { path: to, index: isIndex } = item;
-      const from = paths.reduce((from, to) => resolve(from, to), basename);
+      const from = paths.reduce<string>((from, to) => resolve(from, to), basename);
 
       assert(
-        isIndex && 'path' in item,
+        !(isIndex && 'path' in item),
         `Index routes must not have path. Please remove path property from route path "${from}".`
       );
 
       assert(
-        isIndex && 'children' in item,
+        !(isIndex && 'children' in item),
         `Index routes must not have child routes. Please remove all child routes from route path "${from}".`
       );
 
       assert(
-        to != null && isAbsolute(to) && !to.startsWith(from),
+        !(to && isAbsolute(to) && !to.startsWith(from)),
         `Absolute route path "${to}" nested under path "${from}" is not valid. An absolute child route path must start with the combined path of all its parent routes.`
       );
 
@@ -133,9 +133,7 @@ export function flattenRoutes<T>(routes: Route<T>[], basename: string = '/'): Ro
       }
 
       // If route has no children, backtracking.
-      if (!hasChildren) {
-        backtrace();
-      }
+      !hasChildren && backtrace();
     }
   }
 
