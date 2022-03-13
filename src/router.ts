@@ -67,7 +67,7 @@ function sortRoutes<T>(branches: RouteBranch<T>[]): RouteBranch<T>[] {
  * @function flattenRoutes
  * @param routes User routes.
  */
-export function flattenRoutes<T>(routes: Route<T>[]): RouteBranch<T>[] {
+export function flattenRoutes<T>(routes: Route<T>[], basename: string = '/'): RouteBranch<T>[] {
   const branches: RouteBranch<T>[] = [];
 
   for (const route of routes) {
@@ -82,7 +82,7 @@ export function flattenRoutes<T>(routes: Route<T>[]): RouteBranch<T>[] {
 
     for (const [index, item] of items) {
       const { path: to, index: isIndex } = item;
-      const from = paths.reduce((from, to) => resolve(from, to), '');
+      const from = paths.reduce((from, to) => resolve(from, to), basename);
 
       assert(
         isIndex && 'path' in item,
@@ -103,8 +103,8 @@ export function flattenRoutes<T>(routes: Route<T>[]): RouteBranch<T>[] {
       metadata.push({ index, route: item });
 
       if (isIndex || to != null) {
+        const path = resolve(from, to);
         const { caseSensitive, end } = item;
-        const path = resolve(from, isIndex ? './' : to);
 
         branches.push({
           path,
