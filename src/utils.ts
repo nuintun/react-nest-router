@@ -56,9 +56,14 @@ export function flattenRoutes<T>(routes: Route<T>[]): RouteBranch<T>[] {
   const branches: RouteBranch<T>[] = [];
 
   for (const route of routes) {
+    const backtrace = () => {
+      paths.pop();
+      metadata.pop();
+    };
+
     const paths: string[] = [];
     const metadata: RouteBranchMeta<T>[] = [];
-    const items = new Tree(route, route => route.children).dfs();
+    const items = new Tree(route, route => route.children).dfs(backtrace);
 
     for (const [index, item] of items) {
       const { path: to, index: isIndex } = item;
@@ -79,29 +84,26 @@ export function flattenRoutes<T>(routes: Route<T>[]): RouteBranch<T>[] {
         `Absolute route path "${to}" nested under path "${from}" is not valid. An absolute child route path must start with the combined path of all its parent routes.`
       );
 
+      paths.push(to);
       metadata.push({ index, route: item });
 
       if (isIndex || to != null) {
-        const path = resolve(from, to);
         const { caseSensitive, end } = item;
-        const score = computeScore(path, isIndex);
+        const path = resolve(from, isIndex ? './' : to);
 
         branches.push({
           path,
-          score,
           end: end !== false,
           meta: [...metadata],
+          score: computeScore(path, isIndex),
           caseSensitive: caseSensitive === true
         });
       }
 
       const { children } = item;
 
-      if (children && children.length > 0) {
-        paths.push(to);
-      } else {
-        paths.pop();
-        metadata.pop();
+      if (!children || children.length <= 0) {
+        backtrace();
       }
     }
   }

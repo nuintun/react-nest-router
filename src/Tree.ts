@@ -28,8 +28,9 @@ export class Tree<T> {
   /**
    * @method dfs
    * @description The dfs traversal iterator.
+   * @param backtrace Backtracking callback function.
    */
-  *dfs(): Iterable<IteratorValue<T>> {
+  *dfs(backtrace?: () => void): Iterable<IteratorValue<T>> {
     const { roots, resolve } = this;
     const waiting: Waiting<T>[] = [];
 
@@ -40,6 +41,8 @@ export class Tree<T> {
 
       if (item.done) {
         current = waiting.pop();
+
+        backtrace && backtrace();
       } else {
         const [index, node] = item.value;
         const children = resolve(node, index);
