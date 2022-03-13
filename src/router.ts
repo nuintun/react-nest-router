@@ -103,8 +103,8 @@ export function flattenRoutes<T>(routes: Route<T>[], basename: string = '/'): Ro
       metadata.push({ index, route: item });
 
       if (isIndex || to != null) {
-        const path = resolve(from, to);
         const { caseSensitive, end } = item;
+        const path = resolve(from, isIndex ? './' : to);
 
         branches.push({
           path,
