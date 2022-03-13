@@ -50,6 +50,7 @@ export interface RouteMatch<ParamKey extends string = string, T = unknown> {
 export interface RouteBranchMeta<T> {
   index: number;
   route: Route<T>;
+  basename: string;
 }
 
 export interface RouteBranch<T> {

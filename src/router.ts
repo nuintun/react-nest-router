@@ -97,8 +97,15 @@ export function flattenRoutes<T>(routes: Route<T>[], basename: string = '/'): Ro
         `Absolute route path "${to}" nested under path "${from}" is not valid. An absolute child route path must start with the combined path of all its parent routes.`
       );
 
+      // Cache paths
       paths.push(to);
-      metadata.push({ index, route: item });
+
+      // Cache metadata
+      metadata.push({
+        index,
+        route: item,
+        basename: from
+      });
 
       if (isIndex || to != null) {
         const { caseSensitive, end } = item;
