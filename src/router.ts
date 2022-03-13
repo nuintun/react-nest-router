@@ -68,6 +68,7 @@ function sortRouteBranches<T>(branches: RouteBranch<T>[]): RouteBranch<T>[] {
 export function flattenRoutes<T>(routes: Route<T>[], basename: string = '/'): RouteBranch<T>[] {
   const branches: RouteBranch<T>[] = [];
 
+  // Traversal routes.
   for (const route of routes) {
     const backtrace = () => {
       paths.pop();
@@ -78,6 +79,7 @@ export function flattenRoutes<T>(routes: Route<T>[], basename: string = '/'): Ro
     const metadata: RouteBranchMeta<T>[] = [];
     const items = new Tree(route, route => route.children).dfs(backtrace);
 
+    // Traversal nested routes.
     for (const [index, item] of items) {
       const { path: to, index: isIndex } = item;
       const from = paths.reduce((from, to) => resolve(from, to), basename);
@@ -97,36 +99,46 @@ export function flattenRoutes<T>(routes: Route<T>[], basename: string = '/'): Ro
         `Absolute route path "${to}" nested under path "${from}" is not valid. An absolute child route path must start with the combined path of all its parent routes.`
       );
 
-      // Cache paths
+      // Cache paths.
       paths.push(to);
 
-      // Cache metadata
+      // Cache metadata.
       metadata.push({
         index,
         route: item,
         basename: from
       });
 
-      if (isIndex || to != null) {
-        const { caseSensitive, end } = item;
-        const path = resolve(from, isIndex ? './' : to);
+      // Get route children.
+      const { children } = item;
+      const hasChildren = children && children.length > 0;
 
-        branches.push({
-          path,
-          end: end !== false,
-          meta: [...metadata],
-          score: computeScore(path, isIndex),
-          caseSensitive: caseSensitive === true
-        });
+      // Routes without a path shouldn't ever match by themselves unless they are
+      // index routes, so don't add them to the list of possible branches.
+      if (isIndex || to != null) {
+        // Routes with children is layout route,
+        // so don't add them to the list of possible branches.
+        if (!hasChildren) {
+          const { caseSensitive, end } = item;
+          const path = resolve(from, isIndex ? './' : to);
+
+          branches.push({
+            path,
+            end: end !== false,
+            meta: [...metadata],
+            score: computeScore(path, isIndex),
+            caseSensitive: caseSensitive === true
+          });
+        }
       }
 
-      const { children } = item;
-
-      if (!children || children.length <= 0) {
+      // If route has no children, backtracking.
+      if (!hasChildren) {
         backtrace();
       }
     }
   }
 
+  // Sort route branches.
   return sortRouteBranches(branches);
 }
