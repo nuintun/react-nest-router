@@ -5,7 +5,7 @@
 import { Tree } from './Tree';
 import { assert, computeScore } from './utils';
 import { isAbsolute, normalize, resolve } from './path';
-import { Route, RouteBranch, RouteBranchMeta } from './types';
+import { CRoute, Route, RouteBranch, RouteBranchMeta } from './types';
 
 /**
  * @function isBranchSiblings
@@ -77,7 +77,7 @@ export function flattenRoutes<T>(routes: Route<T>[], basename: string = '/'): Ro
 
     const paths: (string | undefined)[] = [];
     const metadata: RouteBranchMeta<T>[] = [];
-    const items = new Tree(route, route => route.children).dfs(backtrace);
+    const items = new Tree(route as CRoute<T>, route => route.children).dfs(backtrace);
 
     // Traversal nested routes.
     for (const [index, item] of items) {
@@ -119,12 +119,11 @@ export function flattenRoutes<T>(routes: Route<T>[], basename: string = '/'): Ro
         // Routes with children is layout route,
         // so don't add them to the list of possible branches.
         if (!hasChildren) {
-          const { caseSensitive, end } = item;
+          const { caseSensitive } = item;
           const path = resolve(from, isIndex ? './' : to);
 
           branches.push({
             path,
-            end: end !== false,
             meta: [...metadata],
             score: computeScore(path, isIndex),
             caseSensitive: caseSensitive === true

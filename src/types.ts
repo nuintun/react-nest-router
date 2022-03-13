@@ -5,18 +5,52 @@
 import React from 'react';
 
 /**
- * A route object represents a logical route, with (optionally) its child
- * routes organized in a tree-like structure.
+ * Combined route.
  */
-export interface Route<T = unknown> {
+export interface CRoute<T> {
   meta?: T;
   path?: string;
-  end?: boolean;
   index?: boolean;
+  children?: CRoute<T>[];
+  caseSensitive?: boolean;
+  element?: React.ReactNode;
+}
+
+/**
+ * Index route.
+ */
+export interface IndexRoute<T = unknown> {
+  meta?: T;
+  index: true;
+  caseSensitive?: boolean;
+  element?: React.ReactNode;
+}
+
+/**
+ * Path route.
+ */
+export interface PathRoute<T = unknown> {
+  meta?: T;
+  path: string;
   children?: Route<T>[];
   caseSensitive?: boolean;
   element?: React.ReactNode;
 }
+
+/**
+ * Layout route.
+ */
+export interface LayoutRoute<T = unknown> {
+  meta?: T;
+  children?: Route<T>[];
+  element?: React.ReactNode;
+}
+
+/**
+ * A route object represents a logical route, with (optionally) its child
+ * routes organized in a tree-like structure.
+ */
+export type Route<T = unknown> = LayoutRoute<T> | PathRoute<T> | IndexRoute<T>;
 
 /**
  * The parameters that were parsed from the URL path.
@@ -47,15 +81,20 @@ export interface RouteMatch<ParamKey extends string = string, T = unknown> {
   params: Params<ParamKey>;
 }
 
+/**
+ * Route branch metadata.
+ */
 export interface RouteBranchMeta<T> {
   index: number;
   route: Route<T>;
   basename: string;
 }
 
+/**
+ * Route branch.
+ */
 export interface RouteBranch<T> {
   path: string;
-  end: boolean;
   score: number;
   caseSensitive: boolean;
   meta: RouteBranchMeta<T>[];
