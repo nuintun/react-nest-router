@@ -3,8 +3,8 @@
  */
 
 import { Tree } from './Tree';
-import { isAbsolute, resolve } from './path';
 import { assert, computeScore } from './utils';
+import { isAbsolute, normalize, resolve } from './path';
 import { Route, RouteBranch, RouteBranchMeta } from './types';
 
 /**
@@ -95,7 +95,7 @@ export function flattenRoutes<T>(routes: Route<T>[], basename: string = '/'): Ro
       );
 
       assert(
-        !(to && isAbsolute(to) && !to.startsWith(from)),
+        !(to && isAbsolute(to) && !to.startsWith(normalize(`${from}/`))),
         `Absolute route path "${to}" nested under path "${from}" is not valid. An absolute child route path must start with the combined path of all its parent routes.`
       );
 
