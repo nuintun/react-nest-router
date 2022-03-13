@@ -84,7 +84,7 @@ export interface RouteMatch<ParamKey extends string = string, T = unknown> {
 /**
  * Route branch metadata.
  */
-export interface RouteBranchMeta<T> {
+export interface BranchMetadata<T> {
   index: number;
   route: Route<T>;
   basename: string;
@@ -97,5 +97,5 @@ export interface RouteBranch<T> {
   path: string;
   score: number;
   caseSensitive: boolean;
-  meta: RouteBranchMeta<T>[];
+  metadata: BranchMetadata<T>[];
 }

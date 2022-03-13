@@ -5,7 +5,7 @@
 import { Tree } from './Tree';
 import { assert, computeScore } from './utils';
 import { isAbsolute, normalize, resolve } from './path';
-import { CRoute, Route, RouteBranch, RouteBranchMeta } from './types';
+import { BranchMetadata, CRoute, Route, RouteBranch } from './types';
 
 /**
  * @function isBranchSiblings
@@ -13,36 +13,36 @@ import { CRoute, Route, RouteBranch, RouteBranchMeta } from './types';
  * @param next Next route branch.
  */
 function isBranchSiblings<T>(prev: RouteBranch<T>, next: RouteBranch<T>): boolean {
-  const { meta: prevMeta } = prev;
-  const { meta: nextMeta } = next;
-  const { length: prevLength } = prevMeta;
-  const { length: nextLength } = nextMeta;
+  const { metadata: prevMetadata } = prev;
+  const { metadata: nextMetadata } = next;
+  const { length: prevLength } = prevMetadata;
+  const { length: nextLength } = nextMetadata;
 
   return (
     prevLength === nextLength &&
-    prevMeta.slice(0, -1).every((meta, index) => {
-      return meta.index === nextMeta[index].index;
+    prevMetadata.slice(0, -1).every((meta, index) => {
+      return meta.index === nextMetadata[index].index;
     })
   );
 }
 
 /**
- * @function compareRouteMeta
+ * @function compareBranchMeta
  * @param prev Prev route branch.
  * @param next Next route branch.
  */
-function compareRouteMeta<T>(prev: RouteBranch<T>, next: RouteBranch<T>): number {
+function compareBranchMetadata<T>(prev: RouteBranch<T>, next: RouteBranch<T>): number {
   // If two routes are siblings, we should try to match the earlier sibling
   // first. This allows people to have fine-grained control over the matching
   // behavior by simply putting routes with identical paths in the order they
   // want them tried.
   if (isBranchSiblings(prev, next)) {
-    const { meta: prevMeta } = prev;
-    const { meta: nextMeta } = next;
-    const { length: prevLength } = prevMeta;
-    const { length: nextLength } = nextMeta;
+    const { metadata: prevMetadata } = prev;
+    const { metadata: nextMetadata } = next;
+    const { length: prevLength } = prevMetadata;
+    const { length: nextLength } = nextMetadata;
 
-    return prevMeta[prevLength - 1].index - nextMeta[nextLength - 1].index;
+    return prevMetadata[prevLength - 1].index - nextMetadata[nextLength - 1].index;
   }
 
   // Otherwise, it doesn't really make sense to rank non-siblings by index,
@@ -57,7 +57,7 @@ function compareRouteMeta<T>(prev: RouteBranch<T>, next: RouteBranch<T>): number
 function sortRouteBranches<T>(branches: RouteBranch<T>[]): RouteBranch<T>[] {
   // Higher score first
   return branches.sort((prev, next) => {
-    return prev.score !== next.score ? next.score - prev.score : compareRouteMeta(prev, next);
+    return prev.score !== next.score ? next.score - prev.score : compareBranchMetadata(prev, next);
   });
 }
 
@@ -76,7 +76,7 @@ export function flattenRoutes<T>(routes: Route<T>[], basename: string = '/'): Ro
     };
 
     const paths: (string | undefined)[] = [];
-    const metadata: RouteBranchMeta<T>[] = [];
+    const metadata: BranchMetadata<T>[] = [];
     const items = new Tree(route as CRoute<T>, route => route.children).dfs(backtrace);
 
     // Traversal nested routes.
@@ -124,7 +124,7 @@ export function flattenRoutes<T>(routes: Route<T>[], basename: string = '/'): Ro
 
           branches.push({
             path,
-            meta: [...metadata],
+            metadata: [...metadata],
             score: computeScore(path, isIndex),
             caseSensitive: caseSensitive === true
           });
