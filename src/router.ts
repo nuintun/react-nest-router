@@ -19,8 +19,6 @@ function isRouteSiblings<T>(prev: RouteBranch<T>, next: RouteBranch<T>): boolean
   const { length: nextLength } = nextMeta;
 
   return (
-    prevLength > 0 &&
-    nextLength > 0 &&
     prevLength === nextLength &&
     prevMeta.slice(0, -1).every((meta, index) => {
       return meta.index === nextMeta[index].index;
@@ -38,8 +36,6 @@ function compareRouteMeta<T>(prev: RouteBranch<T>, next: RouteBranch<T>): number
   // first. This allows people to have fine-grained control over the matching
   // behavior by simply putting routes with identical paths in the order they
   // want them tried.
-  // Otherwise, it doesn't really make sense to rank non-siblings by index,
-  // so they sort equally.
   if (isRouteSiblings(prev, next)) {
     const { meta: prevMeta } = prev;
     const { meta: nextMeta } = next;
@@ -49,6 +45,8 @@ function compareRouteMeta<T>(prev: RouteBranch<T>, next: RouteBranch<T>): number
     return prevMeta[prevLength - 1].index - nextMeta[nextLength - 1].index;
   }
 
+  // Otherwise, it doesn't really make sense to rank non-siblings by index,
+  // so they sort equally.
   return 0;
 }
 

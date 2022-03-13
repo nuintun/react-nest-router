@@ -25,9 +25,9 @@ export function assert(cond: any, message: string): asserts cond {
  * @param index Is index route.
  */
 export function computeScore(path: string, index?: boolean): number {
-  const splatPenalty = -2;
   const indexRouteValue = 2;
   const emptySegmentValue = 1;
+  const splatPenaltyValue = -2;
   const dynamicSegmentValue = 3;
   const staticSegmentValue = 10;
 
@@ -35,12 +35,12 @@ export function computeScore(path: string, index?: boolean): number {
 
   let initialScore = segments.length;
 
-  if (segments.some(isSplat)) {
-    initialScore += splatPenalty;
-  }
-
   if (index) {
     initialScore += indexRouteValue;
+  }
+
+  if (segments.some(isSplat)) {
+    initialScore += splatPenaltyValue;
   }
 
   return segments.reduce((score, segment) => {
