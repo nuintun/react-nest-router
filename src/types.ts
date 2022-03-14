@@ -74,8 +74,8 @@ export type Params<K extends string = string> = {
  * Patch matcher
  */
 export interface Matcher {
-  keys: string[];
-  pattern: RegExp;
+  readonly keys: string[];
+  readonly pattern: RegExp;
   <K extends string = string>(pathname: string): Params<K> | null;
 }
 
@@ -86,36 +86,36 @@ export interface RouteMatch<T = unknown, K extends string = string> {
   /**
    * The route object that was used to match.
    */
-  route: Route<T>;
+  readonly route: Route<T>;
   /**
    * The portion of the URL pathname that was matched before child routes.
    */
-  basename: string;
+  readonly basename: string;
   /**
    * The portion of the URL pathname that was matched.
    */
-  pathname: string;
+  readonly pathname: string;
   /**
    * The names and values of dynamic parameters in the URL.
    */
-  params: Params<K>;
+  readonly params: Params<K>;
 }
 
 /**
  * Route branch metadata.
  */
 export interface BranchMetadata<T> {
-  index: number;
-  route: Route<T>;
-  referrer: string;
+  readonly index: number;
+  readonly route: Route<T>;
+  readonly referrer: string;
 }
 
 /**
  * Route branch.
  */
 export interface RouteBranch<T> {
-  path: string;
-  score: number;
-  matcher: Matcher;
-  metadata: BranchMetadata<T>[];
+  readonly path: string;
+  readonly score: number;
+  readonly matcher: Matcher;
+  readonly metadata: BranchMetadata<T>[];
 }
