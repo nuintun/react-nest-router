@@ -3,14 +3,6 @@
  */
 
 /**
- * @function isSplat
- * @param char The character to be tested.
- */
-export function isSplat(char: string): boolean {
-  return char === '*';
-}
-
-/**
  * @function assert
  * @param cond Assert flags.
  * @param message Assert error message.
@@ -25,36 +17,32 @@ export function assert(cond: any, message: string): asserts cond {
  * @param index Is index route.
  */
 export function computeScore(path: string, index?: boolean): number {
-  const indexRouteValue = 2;
+  const indexRouteValue = 3;
   const emptySegmentValue = 1;
   const splatPenaltyValue = -2;
-  const dynamicSegmentValue = 3;
+  const dynamicSegmentValue = 2;
   const staticSegmentValue = 10;
 
   const segments = path.split('/');
 
   let initialScore = segments.length;
 
+  if (segments[initialScore - 1] === '*') {
+    initialScore += splatPenaltyValue;
+  }
+
   if (index) {
     initialScore += indexRouteValue;
   }
 
-  if (segments.some(isSplat)) {
-    initialScore += splatPenaltyValue;
-  }
-
   return segments.reduce((score, segment) => {
-    if (isSplat(segment)) {
-      return score;
-    }
-
     if (segment === '') {
       return score + emptySegmentValue;
     }
 
-    const paramRegexp = /^:\w+$/;
+    const paramKeyRe = /^:\w+$/;
 
-    if (paramRegexp.test(segment)) {
+    if (paramKeyRe.test(segment)) {
       return score + dynamicSegmentValue;
     }
 

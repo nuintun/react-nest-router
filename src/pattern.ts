@@ -3,12 +3,7 @@
  */
 
 import { assert } from './utils';
-import { Mutable, Params } from './types';
-
-/**
- * Patch matcher
- */
-type Matcher = <K extends string = string>(pathname: string) => Params<K> | null;
+import { Matcher, Mutable, Params } from './types';
 
 /**
  * @function compile
@@ -49,10 +44,10 @@ export function compile(path: string, sensitive?: boolean): Matcher {
     source += '\\/*$';
   }
 
-  const matcher = new RegExp(source, sensitive ? '' : 'i');
+  const pattern = new RegExp(source, sensitive ? '' : 'i');
 
-  return <K extends string = string>(pathname: string): Params<K> | null => {
-    const matched = pathname.match(matcher);
+  const matcher: Matcher = <K extends string = string>(pathname: string): Params<K> | null => {
+    const matched = pathname.match(pattern);
 
     if (matched) {
       return keys.reduce((params, key, index) => {
@@ -64,4 +59,9 @@ export function compile(path: string, sensitive?: boolean): Matcher {
 
     return matched;
   };
+
+  matcher.keys = keys;
+  matcher.pattern = pattern;
+
+  return matcher;
 }

@@ -3,6 +3,7 @@
  */
 
 import { Tree } from './Tree';
+import { compile } from './pattern';
 import { assert, computeScore } from './utils';
 import { isAbsolute, normalize, resolve } from './path';
 import { BranchMetadata, CRoute, Route, RouteBranch } from './types';
@@ -125,7 +126,7 @@ export function flattenRoutes<T>(routes: Route<T>[]): RouteBranch<T>[] {
           branches.push({
             path,
             metadata: [...metadata],
-            sensitive: sensitive === true,
+            matcher: compile(path, sensitive),
             score: computeScore(path, isIndex)
           });
         }

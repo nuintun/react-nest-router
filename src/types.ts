@@ -71,9 +71,18 @@ export type Params<K extends string = string> = {
 };
 
 /**
+ * Patch matcher
+ */
+export interface Matcher {
+  keys: string[];
+  pattern: RegExp;
+  <K extends string = string>(pathname: string): Params<K> | null;
+}
+
+/**
  * A RouteMatch contains info about how a route matched a URL.
  */
-export interface RouteMatch<K extends string = string, T = unknown> {
+export interface RouteMatch<T = unknown, K extends string = string> {
   /**
    * The route object that was used to match.
    */
@@ -107,6 +116,6 @@ export interface BranchMetadata<T> {
 export interface RouteBranch<T> {
   path: string;
   score: number;
-  sensitive: boolean;
+  matcher: Matcher;
   metadata: BranchMetadata<T>[];
 }
