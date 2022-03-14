@@ -46,7 +46,7 @@ export function compile(path: string, sensitive?: boolean): Matcher {
 
   const pattern = new RegExp(source, sensitive ? '' : 'i');
 
-  const matcher: Matcher = <K extends string = string>(pathname: string): Params<K> | null => {
+  const matcher = <K extends string = string>(pathname: string): Params<K> | null => {
     const matched = pathname.match(pattern);
 
     if (matched) {
