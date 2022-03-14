@@ -65,7 +65,7 @@ function sortRouteBranches<T>(branches: RouteBranch<T>[]): RouteBranch<T>[] {
  * @function flattenRoutes
  * @param routes User routes.
  */
-export function flattenRoutes<T>(routes: Route<T>[], basename: string = '/'): RouteBranch<T>[] {
+export function flattenRoutes<T>(routes: Route<T>[]): RouteBranch<T>[] {
   const branches: RouteBranch<T>[] = [];
 
   // Traversal routes.
@@ -82,7 +82,7 @@ export function flattenRoutes<T>(routes: Route<T>[], basename: string = '/'): Ro
     // Traversal nested routes.
     for (const [index, item] of items) {
       const { path: to, index: isIndex } = item;
-      const from = paths.reduce<string>((from, to) => resolve(from, to), basename);
+      const from = paths.reduce<string>((from, to) => resolve(from, to), '/');
 
       assert(
         !(isIndex && 'path' in item),
@@ -105,8 +105,8 @@ export function flattenRoutes<T>(routes: Route<T>[], basename: string = '/'): Ro
       // Cache metadata.
       metadata.push({
         index,
-        route: item,
-        basename: from
+        referrer: from,
+        route: item as Route<T>
       });
 
       // Get route children.
@@ -119,14 +119,14 @@ export function flattenRoutes<T>(routes: Route<T>[], basename: string = '/'): Ro
         // Routes with children is layout route,
         // so don't add them to the list of possible branches.
         if (!hasChildren) {
-          const { caseSensitive } = item;
+          const { sensitive } = item;
           const path = resolve(from, isIndex ? './' : to);
 
           branches.push({
             path,
             metadata: [...metadata],
-            score: computeScore(path, isIndex),
-            caseSensitive: caseSensitive === true
+            sensitive: sensitive === true,
+            score: computeScore(path, isIndex)
           });
         }
       }

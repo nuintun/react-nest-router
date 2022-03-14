@@ -11,8 +11,8 @@ export interface CRoute<T> {
   meta?: T;
   path?: string;
   index?: boolean;
+  sensitive?: boolean;
   children?: CRoute<T>[];
-  caseSensitive?: boolean;
   element?: React.ReactNode;
 }
 
@@ -22,18 +22,20 @@ export interface CRoute<T> {
 export interface IndexRoute<T = unknown> {
   meta?: T;
   index: true;
-  caseSensitive?: boolean;
+  sensitive?: boolean;
+  children?: undefined;
   element?: React.ReactNode;
 }
 
 /**
- * Path route.
+ * Page route.
  */
-export interface PathRoute<T = unknown> {
+export interface PageRoute<T = unknown> {
   meta?: T;
   path: string;
-  children?: Route<T>[];
-  caseSensitive?: boolean;
+  index?: false;
+  sensitive?: boolean;
+  children?: undefined;
   element?: React.ReactNode;
 }
 
@@ -42,7 +44,9 @@ export interface PathRoute<T = unknown> {
  */
 export interface LayoutRoute<T = unknown> {
   meta?: T;
-  children?: Route<T>[];
+  path?: string;
+  index?: false;
+  children: Route<T>[];
   element?: React.ReactNode;
 }
 
@@ -50,7 +54,7 @@ export interface LayoutRoute<T = unknown> {
  * A route object represents a logical route, with (optionally) its child
  * routes organized in a tree-like structure.
  */
-export type Route<T = unknown> = LayoutRoute<T> | PathRoute<T> | IndexRoute<T>;
+export type Route<T = unknown> = LayoutRoute<T> | PageRoute<T> | IndexRoute<T>;
 
 /**
  * The parameters that were parsed from the URL path.
@@ -87,7 +91,7 @@ export interface RouteMatch<ParamKey extends string = string, T = unknown> {
 export interface BranchMetadata<T> {
   index: number;
   route: Route<T>;
-  basename: string;
+  referrer: string;
 }
 
 /**
@@ -96,6 +100,6 @@ export interface BranchMetadata<T> {
 export interface RouteBranch<T> {
   path: string;
   score: number;
-  caseSensitive: boolean;
+  sensitive: boolean;
   metadata: BranchMetadata<T>[];
 }
