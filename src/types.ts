@@ -5,6 +5,13 @@
 import React from 'react';
 
 /**
+ * Set object mutable
+ */
+export type Mutable<T> = {
+  -readonly [P in keyof T]: T[P];
+};
+
+/**
  * Combined route.
  */
 export interface CRoute<T> {
@@ -59,14 +66,14 @@ export type Route<T = unknown> = LayoutRoute<T> | PageRoute<T> | IndexRoute<T>;
 /**
  * The parameters that were parsed from the URL path.
  */
-export type Params<Key extends string = string> = {
-  readonly [key in Key]: string | undefined;
+export type Params<K extends string = string> = {
+  readonly [P in K]: string | undefined;
 };
 
 /**
  * A RouteMatch contains info about how a route matched a URL.
  */
-export interface RouteMatch<ParamKey extends string = string, T = unknown> {
+export interface RouteMatch<K extends string = string, T = unknown> {
   /**
    * The route object that was used to match.
    */
@@ -82,7 +89,7 @@ export interface RouteMatch<ParamKey extends string = string, T = unknown> {
   /**
    * The names and values of dynamic parameters in the URL.
    */
-  params: Params<ParamKey>;
+  params: Params<K>;
 }
 
 /**
