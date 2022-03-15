@@ -26,7 +26,7 @@ export interface CRoute<T> {
 /**
  * Index route.
  */
-export interface IndexRoute<T = unknown> {
+export interface IndexRoute<T> {
   meta?: T;
   index: true;
   sensitive?: boolean;
@@ -37,7 +37,7 @@ export interface IndexRoute<T = unknown> {
 /**
  * Page route.
  */
-export interface PageRoute<T = unknown> {
+export interface PageRoute<T> {
   meta?: T;
   path: string;
   index?: false;
@@ -49,7 +49,7 @@ export interface PageRoute<T = unknown> {
 /**
  * Layout route.
  */
-export interface LayoutRoute<T = unknown> {
+export interface LayoutRoute<T> {
   meta?: T;
   path?: string;
   index?: false;
@@ -61,7 +61,7 @@ export interface LayoutRoute<T = unknown> {
  * A route object represents a logical route, with (optionally) its child
  * routes organized in a tree-like structure.
  */
-export type Route<T = unknown> = LayoutRoute<T> | PageRoute<T> | IndexRoute<T>;
+export type Route<T> = LayoutRoute<T> | PageRoute<T> | IndexRoute<T>;
 
 /**
  * The parameters that were parsed from the URL path.
@@ -83,7 +83,7 @@ export interface Matcher {
 /**
  * A RouteMatch contains info about how a route matched a URL.
  */
-export interface RouteMatch<T = unknown, K extends string = string> {
+export interface RouteMatch<T, K extends string = string> {
   /**
    * The route object that was used to match.
    */
@@ -123,7 +123,7 @@ export interface RouteBranch<T> {
 /**
  * Route context.
  */
-export interface RouteContext<T = unknown, K extends string = string> {
+export interface RouteContext<T, K extends string = string> {
   readonly matches: RouteMatch<T, K>[];
   readonly current: RouteMatch<T, K> | null;
   readonly outlet: React.ReactElement | null;
