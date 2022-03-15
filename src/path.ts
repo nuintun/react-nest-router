@@ -4,8 +4,8 @@
 
 /**
  * @function isAbsolute
- * @description 判断路径是否为绝对路径
- * @param path 需要判断的路径
+ * @description Check if the path is absolute.
+ * @param path The path to check.
  */
 export function isAbsolute(path: string): boolean {
   return /^\//.test(path);
@@ -13,8 +13,8 @@ export function isAbsolute(path: string): boolean {
 
 /**
  * @function normalize
- * @description 标准化路径
- * @param path 需要标准化的路径
+ * @description Normalize the path.
+ * @param path The path to normalize.
  */
 export function normalize(path: string): string {
   const segments: string[] = [];
@@ -35,9 +35,9 @@ export function normalize(path: string): string {
 
 /**
  * @function resolve
- * @description 计算路径
- * @param from 开始路径
- * @param to 指向路径
+ * @description Resolve the path.
+ * @param from The path to start.
+ * @param to The path to end.
  */
 export function resolve(from: string, to?: string): string {
   if (!to) return normalize(from);
@@ -45,4 +45,24 @@ export function resolve(from: string, to?: string): string {
   if (isAbsolute(to)) return normalize(to);
 
   return normalize(`${from}/${to}`);
+}
+
+/**
+ * @function prefix
+ * @description Prefix the path with symbol.
+ * @param path The path to prefix.
+ * @param symbol Prefix symbol.
+ */
+export function prefix(path: string, symbol: string): string {
+  return path.startsWith(symbol) ? path : `/${path}`;
+}
+
+/**
+ * @function suffix
+ * @description Suffix the path with symbol.
+ * @param path The path to suffix.
+ * @param symbol Suffix symbol.
+ */
+export function suffix(path: string, symbol: string): string {
+  return path.endsWith(symbol) ? path : `${path}/`;
 }

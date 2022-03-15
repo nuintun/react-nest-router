@@ -5,7 +5,7 @@
 import { Tree } from './Tree';
 import { compile } from './pattern';
 import { assert, computeScore } from './utils';
-import { isAbsolute, normalize, resolve } from './path';
+import { isAbsolute, resolve, suffix } from './path';
 import { BranchMeta, CRoute, Route, RouteBranch, RouteMatch } from './types';
 
 /**
@@ -84,6 +84,9 @@ export function flattenRoutes<T>(routes: Route<T>[]): RouteBranch<T>[] {
       const from = paths.reduce<string>((from, to) => resolve(from, to), '/');
 
       if (__DEV__) {
+        const path = resolve(from, to);
+        const hasChildren = children && children.length > 0;
+
         assert(
           !(isIndex && 'path' in item),
           `Index route must not have path. Please remove path property from route path "${from}".`
@@ -96,14 +99,12 @@ export function flattenRoutes<T>(routes: Route<T>[]): RouteBranch<T>[] {
 
         assert(
           !(!isIndex && 'index' in item),
-          `Layout or page route must not have index. Please remove index property from route path "${resolve(from, to)}".`
+          `Layout or page route must not have index. Please remove index property from route path "${path}".`
         );
-
-        const hasChildren = children && children.length > 0;
 
         assert(
           !(hasChildren && 'sensitive' in item),
-          `Layout route must not have sensitive. Please remove sensitive property from route path "${resolve(from, to)}".`
+          `Layout route must not have sensitive. Please remove sensitive property from route path "${path}".`
         );
 
         assert(
@@ -112,7 +113,7 @@ export function flattenRoutes<T>(routes: Route<T>[]): RouteBranch<T>[] {
         );
 
         assert(
-          !(to && isAbsolute(to) && !to.startsWith(normalize(`${from}/`))),
+          !(to && isAbsolute(to) && !to.startsWith(suffix(from, '/'))),
           `Absolute route path "${to}" nested under path "${from}" is not valid. An absolute child route path must start with the combined path of all its parent routes.`
         );
       }
@@ -161,13 +162,10 @@ export function matchRoutes<T = unknown, K extends string = string>(
   pathname: string,
   basename: string = '/'
 ): RouteMatch<T, K>[] | null {
-  basename = normalize(`/${basename}`);
-  pathname = normalize(`/${pathname}`);
-
   if (pathname === basename) {
     pathname = '/';
   } else {
-    const base = basename.endsWith('/') ? basename : `${basename}/`;
+    const base = suffix(basename, '/');
 
     if (!pathname.toLowerCase().startsWith(base.toLowerCase())) {
       return null;
