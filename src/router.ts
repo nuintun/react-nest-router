@@ -13,7 +13,7 @@ import { BranchMeta, CRoute, Route, RouteBranch, RouteMatch } from './types';
  * @param prev Prev route branch.
  * @param next Next route branch.
  */
-function isBranchSiblings<T>(prev: RouteBranch<T, string>, next: RouteBranch<T, string>): boolean {
+function isBranchSiblings<T, K extends string>(prev: RouteBranch<T, K>, next: RouteBranch<T, K>): boolean {
   const { meta: prevMeta } = prev;
   const { meta: nextMeta } = next;
   const { length: prevLength } = prevMeta;
@@ -32,7 +32,7 @@ function isBranchSiblings<T>(prev: RouteBranch<T, string>, next: RouteBranch<T, 
  * @param prev Prev route branch.
  * @param next Next route branch.
  */
-function compareBranchMeta<T>(prev: RouteBranch<T, string>, next: RouteBranch<T, string>): number {
+function compareBranchMeta<T, K extends string>(prev: RouteBranch<T, K>, next: RouteBranch<T, K>): number {
   // If two routes are siblings, we should try to match the earlier sibling
   // first. This allows people to have fine-grained control over the matching
   // behavior by simply putting routes with identical paths in the order they
@@ -55,7 +55,7 @@ function compareBranchMeta<T>(prev: RouteBranch<T, string>, next: RouteBranch<T,
  * @function sortRouteBranches
  * @param branches Route branches.
  */
-function sortRouteBranches<T>(branches: RouteBranch<T, string>[]): RouteBranch<T, string>[] {
+function sortRouteBranches<T, K extends string>(branches: RouteBranch<T, K>[]): RouteBranch<T, K>[] {
   // Higher score first
   return branches.sort((prev, next) => {
     return prev.score !== next.score ? next.score - prev.score : compareBranchMeta(prev, next);
@@ -66,26 +66,27 @@ function sortRouteBranches<T>(branches: RouteBranch<T, string>[]): RouteBranch<T
  * @function flatten
  * @param routes User routes.
  */
-export function flatten<T>(routes: Route<T>[]): RouteBranch<T, string>[] {
-  const branches: RouteBranch<T, string>[] = [];
+export function flatten<T, K extends string>(routes: Route<T, K>[]): RouteBranch<T, K>[] {
+  const defaultGuard = () => true;
+  const branches: RouteBranch<T, K>[] = [];
 
   // Traversal routes.
   for (const route of routes) {
-    const meta: BranchMeta<T>[] = [];
+    const meta: BranchMeta<T, K>[] = [];
     const paths: (string | undefined)[] = [];
-    const items = new Tree<CRoute<T>>(route, route => route.children).dfs(() => {
+    const items = new Tree<CRoute<T, K>>(route, route => route.children).dfs(() => {
       meta.pop();
       paths.pop();
     });
 
     // Traversal nested routes.
     for (const [index, item] of items) {
-      const { path: to, index: isIndex, children } = item;
+      const { path: to, index: isIndex, children, guard } = item;
       const from = paths.reduce<string>((from, to) => resolve(from, to), '/');
 
       if (__DEV__) {
         const path = resolve(from, to);
-        const hasChildren = children && children.length > 0;
+        const isLayout = children && children.length > 0;
 
         assert(
           !(isIndex && 'path' in item),
@@ -103,34 +104,44 @@ export function flatten<T>(routes: Route<T>[]): RouteBranch<T, string>[] {
         );
 
         assert(
-          !(hasChildren && 'sensitive' in item),
+          !(isLayout && 'guard' in item),
+          `Layout route must not have guard. Please remove guard property from route path "${path}".`
+        );
+
+        assert(
+          !(isLayout && 'sensitive' in item),
           `Layout route must not have sensitive. Please remove sensitive property from route path "${path}".`
         );
 
         assert(
-          !(!hasChildren && !isIndex && to == null),
-          `The route nested under path "${from}" is not valid. It may be index or page route, but missing "index" or "path" property.`
+          !(!isLayout && !isIndex && to == null),
+          `The route nested under path "${from}" is not valid. It may be index or page route, but missing index or path property.`
         );
 
         assert(
-          !(to && isAbsolute(to) && isOutBounds(from, to, hasChildren ? false : item.sensitive)),
+          !('guard' in item && typeof guard !== 'function'),
+          `The guard of the route path "${path}" must be a function. If the route has guard, the guard property must be a function.`
+        );
+
+        assert(
+          !(to && isAbsolute(to) && isOutBounds(from, to, isLayout ? false : item.sensitive)),
           `Absolute route path "${to}" nested under path "${from}" is not valid. An absolute child route path must start with the combined path of all its parent routes.`
         );
       }
 
-      const metadata: BranchMeta<T> = {
+      const metadata: BranchMeta<T, K> = {
         index,
-        route: item as Route<T>
+        route: item as Route<T, K>
       };
 
-      // Route has children.
+      // Route is layout route.
       if (children && children.length > 0) {
         // Cache meta.
         meta.push(metadata);
         // Cache paths.
         paths.push(to);
       } else {
-        const { sensitive } = item;
+        const { guard, sensitive } = item;
         const path = resolve(from, isIndex ? './' : to);
 
         // Routes with children is layout routes,
@@ -138,6 +149,7 @@ export function flatten<T>(routes: Route<T>[]): RouteBranch<T, string>[] {
         // only page page routes or index routes will add to branches.
         branches.push({
           meta: [...meta, metadata],
+          guard: guard || defaultGuard,
           matcher: compile(path, sensitive),
           score: computeScore(path, isIndex)
         });
@@ -155,11 +167,11 @@ export function flatten<T>(routes: Route<T>[]): RouteBranch<T, string>[] {
  * @param pathname
  * @param basename
  */
-export function match<T>(
-  routes: RouteBranch<T, string>[],
+export function match<T, K extends string>(
+  routes: RouteBranch<T, K>[],
   pathname: string,
   basename: string = '/'
-): RouteMatch<T, string> | null {
+): RouteMatch<T, K> | null {
   if (pathname === basename) {
     pathname = '/';
   } else {
@@ -172,11 +184,11 @@ export function match<T>(
     pathname = pathname.slice(base.length - 1);
   }
 
-  for (const { meta: metadata, matcher } of routes) {
+  for (const { meta: metadata, matcher, guard } of routes) {
     const { path, match } = matcher;
     const params = match(pathname);
 
-    if (params !== null) {
+    if (params !== null && guard(params)) {
       const meta = metadata.map(({ route }) => route);
 
       return { path, meta, params, basename, pathname };

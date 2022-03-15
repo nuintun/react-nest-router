@@ -13,13 +13,13 @@ import { flatten, match } from '../router';
  * @param pathname
  * @param basename
  */
-export function useRoutes<T>(routes: Route<T>[], pathname: string, basename: string = '/') {
+export function useRoutes<T, K extends string>(routes: Route<T, K>[], pathname: string, basename: string = '/') {
   const branches = useMemo(() => {
-    return flatten<T>(routes);
+    return flatten(routes);
   }, [routes]);
 
   const matched = useMemo(() => {
-    return match<T>(branches, normalize(`/${pathname}`), normalize(`/${basename}`));
+    return match(branches, normalize(`/${pathname}`), normalize(`/${basename}`));
   }, [basename, pathname]);
 
   return matched;

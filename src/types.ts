@@ -14,46 +14,49 @@ export type Mutable<T> = {
 /**
  * Combined route.
  */
-export interface CRoute<T> {
+export interface CRoute<T, K extends string> {
   meta?: T;
   path?: string;
   index?: boolean;
   sensitive?: boolean;
-  children?: CRoute<T>[];
+  children?: CRoute<T, K>[];
   element?: React.ReactNode;
+  guard?: (params: Params<K>) => boolean;
 }
 
 /**
  * Index route.
  */
-export interface IndexRoute<T> {
+export interface IndexRoute<T, K extends string> {
   meta?: T;
   index: true;
   sensitive?: boolean;
   children?: undefined;
   element?: React.ReactNode;
+  guard?: (params: Params<K>) => boolean;
 }
 
 /**
  * Page route.
  */
-export interface PageRoute<T> {
+export interface PageRoute<T, K extends string> {
   meta?: T;
   path: string;
   index?: false;
   sensitive?: boolean;
   children?: undefined;
   element?: React.ReactNode;
+  guard?: (params: Params<K>) => boolean;
 }
 
 /**
  * Layout route.
  */
-export interface LayoutRoute<T> {
+export interface LayoutRoute<T, K extends string> {
   meta?: T;
   path?: string;
   index?: false;
-  children: Route<T>[];
+  children: Route<T, K>[];
   element?: React.ReactNode;
 }
 
@@ -61,7 +64,7 @@ export interface LayoutRoute<T> {
  * A route object represents a logical route, with (optionally) its child
  * routes organized in a tree-like structure.
  */
-export type Route<T> = LayoutRoute<T> | PageRoute<T> | IndexRoute<T>;
+export type Route<T, K extends string> = LayoutRoute<T, K> | PageRoute<T, K> | IndexRoute<T, K>;
 
 /**
  * The parameters that were parsed from the URL path.
@@ -90,10 +93,6 @@ export interface RouteMatch<T, K extends string> {
    */
   readonly path: string;
   /**
-   * The route branch meta that was used to match.
-   */
-  readonly meta: Route<T>[];
-  /**
    * The portion of the URL pathname that was matched before child routes.
    */
   readonly basename: string;
@@ -105,14 +104,18 @@ export interface RouteMatch<T, K extends string> {
    * The names and values of dynamic parameters in the URL.
    */
   readonly params: Params<K>;
+  /**
+   * The route branch meta that was used to match.
+   */
+  readonly meta: Route<T, K>[];
 }
 
 /**
  * Route branch meta.
  */
-export interface BranchMeta<T> {
+export interface BranchMeta<T, K extends string> {
   readonly index: number;
-  readonly route: Route<T>;
+  readonly route: Route<T, K>;
 }
 
 /**
@@ -121,14 +124,15 @@ export interface BranchMeta<T> {
 export interface RouteBranch<T, K extends string> {
   readonly score: number;
   readonly matcher: Matcher<K>;
-  readonly meta: BranchMeta<T>[];
+  readonly meta: BranchMeta<T, K>[];
+  readonly guard: (params: Params<K>) => boolean;
 }
 
 /**
  * Route context.
  */
 export interface RouteContext<T, K extends string> {
-  readonly current: Route<T> | null;
+  readonly current: Route<T, K> | null;
   readonly match: RouteMatch<T, K> | null;
   readonly outlet: React.ReactElement | null;
 }
