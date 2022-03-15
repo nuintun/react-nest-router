@@ -5,7 +5,7 @@
 import { Tree } from './Tree';
 import { compile } from './pattern';
 import { assert, computeScore } from './utils';
-import { isAbsolute, resolve, suffix } from './path';
+import { isAbsolute, isOutBounds, resolve, suffix } from './path';
 import { BranchMeta, CRoute, Route, RouteBranch, RouteMatch } from './types';
 
 /**
@@ -113,7 +113,7 @@ export function flatten<T>(routes: Route<T>[]): RouteBranch<T, string>[] {
         );
 
         assert(
-          !(to && isAbsolute(to) && !to.startsWith(suffix(from, '/'))),
+          !(to && isAbsolute(to) && isOutBounds(from, to, hasChildren ? false : item.sensitive)),
           `Absolute route path "${to}" nested under path "${from}" is not valid. An absolute child route path must start with the combined path of all its parent routes.`
         );
       }

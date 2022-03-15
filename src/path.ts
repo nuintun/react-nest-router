@@ -66,3 +66,20 @@ export function prefix(path: string, symbol: string): string {
 export function suffix(path: string, symbol: string): string {
   return path.endsWith(symbol) ? path : `${path}/`;
 }
+
+/**
+ * @function isOutBounds
+ * @param from
+ * @param to
+ * @param sensitive
+ */
+export function isOutBounds(from: string, to: string, sensitive?: boolean): boolean {
+  from = suffix(from, '/');
+
+  if (!sensitive) {
+    from = from.toLowerCase();
+    to = to.toLowerCase();
+  }
+
+  return !to.startsWith(from);
+}
