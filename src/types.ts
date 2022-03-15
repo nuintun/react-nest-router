@@ -102,9 +102,9 @@ export interface RouteMatch<T = unknown, K extends string = string> {
 }
 
 /**
- * Route branch metadata.
+ * Route branch meta.
  */
-export interface BranchMetadata<T> {
+export interface BranchMeta<T> {
   readonly index: number;
   readonly route: Route<T>;
   readonly referrer: string;
@@ -117,5 +117,5 @@ export interface RouteBranch<T> {
   readonly path: string;
   readonly score: number;
   readonly matcher: Matcher;
-  readonly metadata: BranchMetadata<T>[];
+  readonly meta: BranchMeta<T>[];
 }

@@ -6,7 +6,7 @@ import { Tree } from './Tree';
 import { compile } from './pattern';
 import { assert, computeScore } from './utils';
 import { isAbsolute, normalize, resolve } from './path';
-import { BranchMetadata, CRoute, Route, RouteBranch } from './types';
+import { BranchMeta, CRoute, Route, RouteBranch } from './types';
 
 /**
  * @function isBranchSiblings
@@ -14,15 +14,15 @@ import { BranchMetadata, CRoute, Route, RouteBranch } from './types';
  * @param next Next route branch.
  */
 function isBranchSiblings<T>(prev: RouteBranch<T>, next: RouteBranch<T>): boolean {
-  const { metadata: prevMetadata } = prev;
-  const { metadata: nextMetadata } = next;
-  const { length: prevLength } = prevMetadata;
-  const { length: nextLength } = nextMetadata;
+  const { meta: prevMeta } = prev;
+  const { meta: nextMeta } = next;
+  const { length: prevLength } = prevMeta;
+  const { length: nextLength } = nextMeta;
 
   return (
     prevLength === nextLength &&
-    prevMetadata.slice(0, -1).every((meta, index) => {
-      return meta.index === nextMetadata[index].index;
+    prevMeta.slice(0, -1).every((meta, index) => {
+      return meta.index === nextMeta[index].index;
     })
   );
 }
@@ -32,18 +32,18 @@ function isBranchSiblings<T>(prev: RouteBranch<T>, next: RouteBranch<T>): boolea
  * @param prev Prev route branch.
  * @param next Next route branch.
  */
-function compareBranchMetadata<T>(prev: RouteBranch<T>, next: RouteBranch<T>): number {
+function compareBranchMeta<T>(prev: RouteBranch<T>, next: RouteBranch<T>): number {
   // If two routes are siblings, we should try to match the earlier sibling
   // first. This allows people to have fine-grained control over the matching
   // behavior by simply putting routes with identical paths in the order they
   // want them tried.
   if (isBranchSiblings(prev, next)) {
-    const { metadata: prevMetadata } = prev;
-    const { metadata: nextMetadata } = next;
-    const { length: prevLength } = prevMetadata;
-    const { length: nextLength } = nextMetadata;
+    const { meta: prevMeta } = prev;
+    const { meta: nextMeta } = next;
+    const { length: prevLength } = prevMeta;
+    const { length: nextLength } = nextMeta;
 
-    return prevMetadata[prevLength - 1].index - nextMetadata[nextLength - 1].index;
+    return prevMeta[prevLength - 1].index - nextMeta[nextLength - 1].index;
   }
 
   // Otherwise, it doesn't really make sense to rank non-siblings by index,
@@ -58,7 +58,7 @@ function compareBranchMetadata<T>(prev: RouteBranch<T>, next: RouteBranch<T>): n
 function sortRouteBranches<T>(branches: RouteBranch<T>[]): RouteBranch<T>[] {
   // Higher score first
   return branches.sort((prev, next) => {
-    return prev.score !== next.score ? next.score - prev.score : compareBranchMetadata(prev, next);
+    return prev.score !== next.score ? next.score - prev.score : compareBranchMeta(prev, next);
   });
 }
 
@@ -71,11 +71,11 @@ export function flattenRoutes<T>(routes: Route<T>[]): RouteBranch<T>[] {
 
   // Traversal routes.
   for (const route of routes) {
+    const meta: BranchMeta<T>[] = [];
     const paths: (string | undefined)[] = [];
-    const metadata: BranchMetadata<T>[] = [];
     const items = new Tree<CRoute<T>>(route, route => route.children).dfs(() => {
+      meta.pop();
       paths.pop();
-      metadata.pop();
     });
 
     // Traversal nested routes.
@@ -117,7 +117,7 @@ export function flattenRoutes<T>(routes: Route<T>[]): RouteBranch<T>[] {
         );
       }
 
-      const meta: BranchMetadata<T> = {
+      const metadata: BranchMeta<T> = {
         index,
         route: item as Route<T>,
         referrer: paths.length > 0 ? from : ''
@@ -125,10 +125,10 @@ export function flattenRoutes<T>(routes: Route<T>[]): RouteBranch<T>[] {
 
       // Route has children.
       if (children && children.length > 0) {
+        // Cache meta.
+        meta.push(metadata);
         // Cache paths.
         paths.push(to);
-        // Cache metadata.
-        metadata.push(meta);
       } else {
         const { sensitive } = item;
         const path = resolve(from, isIndex ? './' : to);
@@ -138,7 +138,7 @@ export function flattenRoutes<T>(routes: Route<T>[]): RouteBranch<T>[] {
         // only page page routes or index routes will add to branches.
         branches.push({
           path,
-          metadata: [...metadata, meta],
+          meta: [...meta, metadata],
           matcher: compile(path, sensitive),
           score: computeScore(path, isIndex)
         });
@@ -148,4 +148,37 @@ export function flattenRoutes<T>(routes: Route<T>[]): RouteBranch<T>[] {
 
   // Sort route branches.
   return sortRouteBranches(branches);
+}
+
+/**
+ * @function matchRoutes
+ * @param routes
+ * @param pathname
+ * @param basename
+ */
+export function matchRoutes<K extends string = string, T = unknown>(
+  routes: RouteBranch<T>[],
+  pathname: string,
+  basename: string = '/'
+) {
+  pathname = normalize(`/${pathname}`);
+  basename = normalize(`/${basename}/`);
+
+  if (!pathname.toLowerCase().startsWith(basename.toLowerCase())) {
+    return null;
+  }
+
+  pathname = pathname.slice(basename.length - 1);
+
+  for (const route of routes) {
+    const params = route.matcher<K>(pathname);
+
+    if (params !== null) {
+      return route.meta.map(({ route }) => {
+        return route;
+      });
+    }
+  }
+
+  return null;
 }
