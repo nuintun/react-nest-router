@@ -28,6 +28,8 @@ export function computeScore(path: string, index?: boolean): number {
   let initialScore = segments.length;
 
   if (segments[initialScore - 1] === '*') {
+    segments.pop();
+
     initialScore += splatPenaltyValue;
   }
 

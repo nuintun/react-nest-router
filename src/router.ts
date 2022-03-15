@@ -71,69 +71,77 @@ export function flattenRoutes<T>(routes: Route<T>[]): RouteBranch<T>[] {
 
   // Traversal routes.
   for (const route of routes) {
-    const backtrace = () => {
-      paths.pop();
-      metadata.pop();
-    };
-
     const paths: (string | undefined)[] = [];
     const metadata: BranchMetadata<T>[] = [];
-    const items = new Tree(route as CRoute<T>, route => route.children).dfs(backtrace);
+    const items = new Tree<CRoute<T>>(route, route => route.children).dfs(() => {
+      paths.pop();
+      metadata.pop();
+    });
 
     // Traversal nested routes.
     for (const [index, item] of items) {
-      const { path: to, index: isIndex } = item;
+      const { path: to, index: isIndex, children } = item;
       const from = paths.reduce<string>((from, to) => resolve(from, to), '/');
 
-      assert(
-        !(isIndex && 'path' in item),
-        `Index routes must not have path. Please remove path property from route path "${from}".`
-      );
+      if (__DEV__) {
+        assert(
+          !(isIndex && 'path' in item),
+          `Index route must not have path. Please remove path property from route path "${from}".`
+        );
 
-      assert(
-        !(isIndex && 'children' in item),
-        `Index routes must not have child routes. Please remove all child routes from route path "${from}".`
-      );
+        assert(
+          !(isIndex && 'children' in item),
+          `Index route must not have child routes. Please remove all child routes from route path "${from}".`
+        );
 
-      assert(
-        !(to && isAbsolute(to) && !to.startsWith(normalize(`${from}/`))),
-        `Absolute route path "${to}" nested under path "${from}" is not valid. An absolute child route path must start with the combined path of all its parent routes.`
-      );
+        assert(
+          !(!isIndex && 'index' in item),
+          `Layout or page route must not have index. Please remove index property from route path "${resolve(from, to)}".`
+        );
 
-      // Cache paths.
-      paths.push(to);
+        const hasChildren = children && children.length > 0;
 
-      // Cache metadata.
-      metadata.push({
-        index,
-        referrer: from,
-        route: item as Route<T>
-      });
+        assert(
+          !(hasChildren && 'sensitive' in item),
+          `Layout route must not have sensitive. Please remove sensitive property from route path "${resolve(from, to)}".`
+        );
 
-      // Get route children.
-      const { children } = item;
-      const hasChildren = children && children.length > 0;
+        assert(
+          !(!hasChildren && !isIndex && to == null),
+          `The route nested under path "${from}" is not valid. It may be index or page route, but missing "index" or "path" property.`
+        );
 
-      // Routes without a path shouldn't ever match by themselves unless they are
-      // index routes, so don't add them to the list of possible branches.
-      if (isIndex || to != null) {
-        // Routes with children is layout route,
-        // so don't add them to the list of possible branches.
-        if (!hasChildren) {
-          const { sensitive } = item;
-          const path = resolve(from, isIndex ? './' : to);
-
-          branches.push({
-            path,
-            metadata: [...metadata],
-            matcher: compile(path, sensitive),
-            score: computeScore(path, isIndex)
-          });
-        }
+        assert(
+          !(to && isAbsolute(to) && !to.startsWith(normalize(`${from}/`))),
+          `Absolute route path "${to}" nested under path "${from}" is not valid. An absolute child route path must start with the combined path of all its parent routes.`
+        );
       }
 
-      // If route has no children, backtracking.
-      !hasChildren && backtrace();
+      // Route has children.
+      if (children && children.length > 0) {
+        // Cache paths.
+        paths.push(to);
+
+        // Cache metadata.
+        metadata.push({
+          index,
+          referrer: from,
+          route: item as Route<T>
+        });
+      } else {
+        const { sensitive } = item;
+        const path = resolve(from, isIndex ? './' : to);
+
+        // Routes with children is layout routes,
+        // otherwise is page routes or index routes,
+        // only page page routes or index routes will add to branches.
+        branches.push({
+          path,
+          metadata: [...metadata],
+          matcher: compile(path, sensitive),
+          score: computeScore(path, isIndex)
+        });
+      }
     }
   }
 
