@@ -63,10 +63,10 @@ function sortRouteBranches<T>(branches: RouteBranch<T>[]): RouteBranch<T>[] {
 }
 
 /**
- * @function flattenRoutes
+ * @function flatten
  * @param routes User routes.
  */
-export function flattenRoutes<T>(routes: Route<T>[]): RouteBranch<T>[] {
+export function flatten<T>(routes: Route<T>[]): RouteBranch<T>[] {
   const branches: RouteBranch<T>[] = [];
 
   // Traversal routes.
@@ -152,12 +152,12 @@ export function flattenRoutes<T>(routes: Route<T>[]): RouteBranch<T>[] {
 }
 
 /**
- * @function matchRoutes
+ * @function match
  * @param routes
  * @param pathname
  * @param basename
  */
-export function matchRoutes<T = unknown, K extends string = string>(
+export function match<T = unknown, K extends string = string>(
   routes: RouteBranch<T>[],
   pathname: string,
   basename: string = '/'
@@ -175,7 +175,7 @@ export function matchRoutes<T = unknown, K extends string = string>(
   }
 
   for (const route of routes) {
-    const params = route.matcher<K>(pathname);
+    const params = route.matcher.match<K>(pathname);
 
     if (params !== null) {
       return route.meta.map(({ route }) => {

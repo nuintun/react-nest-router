@@ -76,7 +76,7 @@ export type Params<K extends string = string> = {
 export interface Matcher {
   readonly keys: string[];
   readonly pattern: RegExp;
-  <K extends string = string>(pathname: string): Params<K> | null;
+  readonly match: <K extends string = string>(pathname: string) => Params<K> | null;
 }
 
 /**
@@ -118,4 +118,13 @@ export interface RouteBranch<T> {
   readonly score: number;
   readonly matcher: Matcher;
   readonly meta: BranchMeta<T>[];
+}
+
+/**
+ * Route context.
+ */
+export interface RouteContext<T = unknown, K extends string = string> {
+  readonly matches: RouteMatch<T, K>[];
+  readonly current: RouteMatch<T, K> | null;
+  readonly outlet: React.ReactElement | null;
 }
