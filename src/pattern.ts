@@ -11,12 +11,12 @@ import { Matcher, Mutable, Params } from './types';
  * @param path Route path.
  * @param sensitive Case sensitive.
  */
-export function compile(path: string, sensitive?: boolean): Matcher {
+export function compile<K extends string>(path: string, sensitive?: boolean): Matcher<K> {
   if (__DEV__) {
     assert(!/[^/](?=\*$)/.test(path), `Trailing "*" in routing path "${path}" must follow "/".`);
   }
 
-  const keys: string[] = [];
+  const keys: K[] = [];
 
   let source = `^${path
     // Ignore trailing / and /*, we'll handle it below.
@@ -26,14 +26,14 @@ export function compile(path: string, sensitive?: boolean): Matcher {
     // Escape special regex chars.
     .replace(/[\\.*+^$?{}|()[\]]/g, '\\$&')
     // Collect params and create match group.
-    .replace(/:(\w+)/g, (_matched: string, param: string) => {
+    .replace(/:(\w+)/g, (_matched, param: K) => {
       keys.push(param);
 
       return '([^\\/]+)';
     })}`;
 
   if (path.endsWith('*')) {
-    keys.push('*');
+    keys.push('*' as K);
 
     // Already matched the initial /, just match the rest.
     if (path === '*' || path === '/*') {
@@ -48,12 +48,12 @@ export function compile(path: string, sensitive?: boolean): Matcher {
 
   const pattern = new RegExp(source, sensitive ? '' : 'i');
 
-  const match = <K extends string = string>(pathname: string): Params<K> | null => {
+  const match = (pathname: string): Params<K> | null => {
     const matched = pathname.match(pattern);
 
     if (matched) {
       return keys.reduce((params, key, index) => {
-        params[key as K] = matched[index + 1];
+        params[key] = matched[index + 1];
 
         return params;
       }, {} as Mutable<Params<K>>);

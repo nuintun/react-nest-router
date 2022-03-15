@@ -6,9 +6,9 @@ import { createContext } from 'react';
 import { RouteContext } from './types';
 
 /**
- * Init route context.
+ * Route context.
  */
-export const ROUTE_CONTEXT = createContext<RouteContext>({ current: null, matches: [], outlet: null });
+export const ROUTE_CONTEXT = createContext<RouteContext<unknown, string>>({ current: null, match: null, outlet: null });
 
 if (__DEV__) {
   ROUTE_CONTEXT.displayName = 'Route';

@@ -66,28 +66,25 @@ export type Route<T> = LayoutRoute<T> | PageRoute<T> | IndexRoute<T>;
 /**
  * The parameters that were parsed from the URL path.
  */
-export type Params<K extends string = string> = {
+export type Params<K extends string> = {
   readonly [P in K]: string | undefined;
 };
 
 /**
  * Patch matcher
  */
-export interface Matcher {
+export interface Matcher<K extends string> {
+  readonly keys: K[];
   readonly path: string;
-  readonly keys: string[];
   readonly pattern: RegExp;
-  readonly match: <K extends string = string>(pathname: string) => Params<K> | null;
+  readonly match: (pathname: string) => Params<K> | null;
 }
 
 /**
  * A RouteMatch contains info about how a route matched a URL.
  */
 export interface RouteMatch<T, K extends string = string> {
-  /**
-   * The route object that was used to match.
-   */
-  readonly route: Route<T>;
+  readonly path: string;
   /**
    * The portion of the URL pathname that was matched before child routes.
    */
@@ -100,6 +97,10 @@ export interface RouteMatch<T, K extends string = string> {
    * The names and values of dynamic parameters in the URL.
    */
   readonly params: Params<K>;
+  /**
+   * The route branch meta that was used to match.
+   */
+  readonly meta: Route<T>[];
 }
 
 /**
@@ -108,23 +109,22 @@ export interface RouteMatch<T, K extends string = string> {
 export interface BranchMeta<T> {
   readonly index: number;
   readonly route: Route<T>;
-  readonly referrer: string;
 }
 
 /**
  * Route branch.
  */
-export interface RouteBranch<T> {
+export interface RouteBranch<T, K extends string> {
   readonly score: number;
-  readonly matcher: Matcher;
+  readonly matcher: Matcher<K>;
   readonly meta: BranchMeta<T>[];
 }
 
 /**
  * Route context.
  */
-export interface RouteContext<T, K extends string = string> {
-  readonly matches: RouteMatch<T, K>[];
-  readonly current: RouteMatch<T, K> | null;
+export interface RouteContext<T, K extends string> {
+  readonly current: Route<T> | null;
+  readonly match: RouteMatch<T, K> | null;
   readonly outlet: React.ReactElement | null;
 }
