@@ -3,6 +3,7 @@
     "strict": true,
     "pretty": true,
     "newLine": "lf",
+    "jsx": "react-jsx",
     "target": "ES2015",
     "module": "ESNext",
     "skipLibCheck": true,

@@ -1,3 +1,7 @@
+/**
+ * @module index
+ */
+
 const { flatten, match } = require('../cjs');
 
 const routes = [

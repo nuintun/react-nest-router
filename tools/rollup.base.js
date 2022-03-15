@@ -24,13 +24,13 @@ export default function rollup(esnext) {
       dir: esnext ? 'esm' : 'cjs',
       format: esnext ? 'esm' : 'cjs'
     },
-    external: ['tslib'],
     preserveModules: true,
     plugins: [env(), typescript(), treeShake()],
     onwarn(error, warn) {
       if (error.code !== 'CIRCULAR_DEPENDENCY') {
         warn(error);
       }
-    }
+    },
+    external: ['tslib', 'react/jsx-runtime', 'react/jsx-dev-runtime']
   };
 }

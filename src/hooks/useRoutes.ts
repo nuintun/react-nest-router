@@ -3,10 +3,16 @@
  */
 
 import { useMemo } from 'react';
-import { Route } from './types';
-import { normalize } from './path';
-import { flatten, match } from './router';
+import { Route } from '../types';
+import { normalize } from '../path';
+import { flatten, match } from '../router';
 
+/**
+ * @function useRoutes
+ * @param routes
+ * @param pathname
+ * @param basename
+ */
 export function useRoutes<T = unknown, K extends string = string>(
   routes: Route<T>[],
   pathname: string,
