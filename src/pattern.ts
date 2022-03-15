@@ -62,5 +62,5 @@ export function compile<K extends string>(path: string, sensitive?: boolean): Ma
     return matched;
   };
 
-  return { path, keys, pattern, match };
+  return { path, keys, match, pattern };
 }

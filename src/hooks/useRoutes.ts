@@ -19,7 +19,7 @@ export function useRoutes<T>(routes: Route<T>[], pathname: string, basename: str
   }, [routes]);
 
   const matched = useMemo(() => {
-    return match<T, string>(branches, normalize(`/${pathname}`), normalize(`/${basename}`));
+    return match<T>(branches, normalize(`/${pathname}`), normalize(`/${basename}`));
   }, [basename, pathname]);
 
   return matched;

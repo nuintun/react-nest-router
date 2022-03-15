@@ -155,11 +155,11 @@ export function flatten<T>(routes: Route<T>[]): RouteBranch<T, string>[] {
  * @param pathname
  * @param basename
  */
-export function match<T, K extends string>(
-  routes: RouteBranch<T, K>[],
+export function match<T>(
+  routes: RouteBranch<T, string>[],
   pathname: string,
   basename: string = '/'
-): RouteMatch<T, K> | null {
+): RouteMatch<T, string> | null {
   if (pathname === basename) {
     pathname = '/';
   } else {
