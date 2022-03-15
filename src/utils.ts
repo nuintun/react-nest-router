@@ -17,10 +17,10 @@ export function assert(cond: any, message: string): asserts cond {
  * @param index Is index route.
  */
 export function computeScore(path: string, index?: boolean): number {
-  const indexRouteValue = 3;
+  const indexRouteValue = 2;
   const emptySegmentValue = 1;
   const splatPenaltyValue = -2;
-  const dynamicSegmentValue = 2;
+  const dynamicSegmentValue = 3;
   const staticSegmentValue = 10;
 
   const segments = path.split('/');

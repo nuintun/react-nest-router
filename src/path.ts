@@ -18,7 +18,7 @@ export function isAbsolute(path: string): boolean {
  */
 export function normalize(path: string): string {
   const segments: string[] = [];
-  const paths = path.replace(/\\+/, '/').split(/\/+/);
+  const paths = path.replace(/\\+|\/{2,}/, '/').split('/');
 
   for (const segment of paths) {
     if (segment === '..') {
