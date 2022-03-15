@@ -84,7 +84,7 @@ export interface Matcher<K extends string> {
 /**
  * A RouteMatch contains info about how a route matched a URL.
  */
-export interface RouteMatch<T, K extends string = string> {
+export interface RouteMatch<T, K extends string> {
   /**
    * The route path that was used to match.
    */
