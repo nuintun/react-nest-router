@@ -6,7 +6,7 @@ import { Tree } from './Tree';
 import { compile } from './pattern';
 import { assert, computeScore } from './utils';
 import { isAbsolute, normalize, resolve } from './path';
-import { BranchMeta, CRoute, Route, RouteBranch } from './types';
+import { BranchMeta, CRoute, Route, RouteBranch, RouteMatch } from './types';
 
 /**
  * @function isBranchSiblings
@@ -156,26 +156,32 @@ export function flattenRoutes<T>(routes: Route<T>[]): RouteBranch<T>[] {
  * @param pathname
  * @param basename
  */
-export function matchRoutes<K extends string = string, T = unknown>(
+export function matchRoutes<T = unknown, K extends string = string>(
   routes: RouteBranch<T>[],
   pathname: string,
   basename: string = '/'
-) {
+): RouteMatch<T, K>[] | null {
+  basename = normalize(`/${basename}`);
   pathname = normalize(`/${pathname}`);
-  basename = normalize(`/${basename}/`);
 
-  if (!pathname.toLowerCase().startsWith(basename.toLowerCase())) {
-    return null;
+  if (pathname === basename) {
+    pathname = '/';
+  } else {
+    const base = basename.endsWith('/') ? basename : `${basename}/`;
+
+    if (!pathname.toLowerCase().startsWith(base.toLowerCase())) {
+      return null;
+    }
+
+    pathname = pathname.slice(base.length - 1);
   }
-
-  pathname = pathname.slice(basename.length - 1);
 
   for (const route of routes) {
     const params = route.matcher<K>(pathname);
 
     if (params !== null) {
       return route.meta.map(({ route }) => {
-        return route;
+        return { route, params, basename, pathname };
       });
     }
   }
