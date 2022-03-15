@@ -117,17 +117,18 @@ export function flattenRoutes<T>(routes: Route<T>[]): RouteBranch<T>[] {
         );
       }
 
+      const meta: BranchMetadata<T> = {
+        index,
+        route: item as Route<T>,
+        referrer: paths.length > 0 ? from : ''
+      };
+
       // Route has children.
       if (children && children.length > 0) {
         // Cache paths.
         paths.push(to);
-
         // Cache metadata.
-        metadata.push({
-          index,
-          referrer: from,
-          route: item as Route<T>
-        });
+        metadata.push(meta);
       } else {
         const { sensitive } = item;
         const path = resolve(from, isIndex ? './' : to);
@@ -137,7 +138,7 @@ export function flattenRoutes<T>(routes: Route<T>[]): RouteBranch<T>[] {
         // only page page routes or index routes will add to branches.
         branches.push({
           path,
-          metadata: [...metadata],
+          metadata: [...metadata, meta],
           matcher: compile(path, sensitive),
           score: computeScore(path, isIndex)
         });
