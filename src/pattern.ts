@@ -2,8 +2,8 @@
  * @module pattern
  */
 
-import { assert, safelyDecodeURIComponent } from './utils';
 import { Matcher, Mutable, Params } from './types';
+import { assert, safelyDecodeURIComponent } from './utils';
 
 /**
  * @function compile
@@ -11,7 +11,7 @@ import { Matcher, Mutable, Params } from './types';
  * @param path Route path.
  * @param sensitive Case sensitive.
  */
-export function compile<K extends string>(path: string, sensitive?: boolean): Matcher<K> {
+export function compile<K extends string>(path: string, sensitive: boolean = false): Matcher<K> {
   if (__DEV__) {
     assert(!/[^/](?=\*$)/.test(path), `Trailing "*" in routing path "${path}" must follow "/".`);
   }
@@ -64,5 +64,5 @@ export function compile<K extends string>(path: string, sensitive?: boolean): Ma
     return matched;
   };
 
-  return { path, keys, match, pattern };
+  return { path, keys, match, pattern, sensitive };
 }

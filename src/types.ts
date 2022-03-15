@@ -77,6 +77,7 @@ export interface Matcher<K extends string> {
   readonly keys: K[];
   readonly path: string;
   readonly pattern: RegExp;
+  readonly sensitive: boolean;
   readonly match: (pathname: string) => Params<K> | null;
 }
 
@@ -89,6 +90,10 @@ export interface RouteMatch<T, K extends string = string> {
    */
   readonly path: string;
   /**
+   * The route branch meta that was used to match.
+   */
+  readonly meta: Route<T>[];
+  /**
    * The portion of the URL pathname that was matched before child routes.
    */
   readonly basename: string;
@@ -100,10 +105,6 @@ export interface RouteMatch<T, K extends string = string> {
    * The names and values of dynamic parameters in the URL.
    */
   readonly params: Params<K>;
-  /**
-   * The route branch meta that was used to match.
-   */
-  readonly meta: Route<T>[];
 }
 
 /**
