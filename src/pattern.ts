@@ -2,7 +2,7 @@
  * @module pattern
  */
 
-import { assert } from './utils';
+import { assert, safelyDecodeURIComponent } from './utils';
 import { Matcher, Mutable, Params } from './types';
 
 /**
@@ -53,7 +53,9 @@ export function compile<K extends string>(path: string, sensitive?: boolean): Ma
 
     if (matched) {
       return keys.reduce((params, key, index) => {
-        params[key] = matched[index + 1];
+        const value: string | undefined = matched[index + 1];
+
+        params[key] = value ? safelyDecodeURIComponent(value) : value;
 
         return params;
       }, {} as Mutable<Params<K>>);

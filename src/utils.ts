@@ -51,3 +51,15 @@ export function computeScore(path: string, index?: boolean): number {
     return score + staticSegmentValue;
   }, initialScore);
 }
+
+/**
+ * @function safelyDecodeURIComponent
+ * @param value
+ */
+export function safelyDecodeURIComponent(value: string): string {
+  try {
+    return decodeURIComponent(value);
+  } catch (error) {
+    return value;
+  }
+}
