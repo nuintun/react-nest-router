@@ -36,9 +36,10 @@ console.time('flatten');
 const branches = flatten(routes);
 console.timeEnd('flatten');
 
+console.log('branches', branches);
+
 console.time('match');
 const matched = match(branches, '/courses/1');
 console.timeEnd('match');
 
-console.dir(branches);
-console.dir(matched);
+console.log('matched', matched);
