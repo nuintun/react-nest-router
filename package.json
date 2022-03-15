@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/nuintun/react-nest-router#readme",
   "scripts": {
+    "tests": "node tests",
     "lint": "tsc --noEmit",
     "clean": "node tools/clean.js",
     "prepublishOnly": "npm run build",
