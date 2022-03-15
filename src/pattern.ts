@@ -12,7 +12,9 @@ import { Matcher, Mutable, Params } from './types';
  * @param sensitive Case sensitive.
  */
 export function compile(path: string, sensitive?: boolean): Matcher {
-  assert(!/[^/](?=\*$)/.test(path), `Trailing "*" in routing path "${path}" must follow "/".`);
+  if (__DEV__) {
+    assert(!/[^/](?=\*$)/.test(path), `Trailing "*" in routing path "${path}" must follow "/".`);
+  }
 
   const keys: string[] = [];
 
