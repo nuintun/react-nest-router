@@ -62,5 +62,5 @@ export function compile(path: string, sensitive?: boolean): Matcher {
     return matched;
   };
 
-  return { keys, pattern, match };
+  return { path, keys, pattern, match };
 }

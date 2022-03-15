@@ -74,6 +74,7 @@ export type Params<K extends string = string> = {
  * Patch matcher
  */
 export interface Matcher {
+  readonly path: string;
   readonly keys: string[];
   readonly pattern: RegExp;
   readonly match: <K extends string = string>(pathname: string) => Params<K> | null;
@@ -114,7 +115,6 @@ export interface BranchMeta<T> {
  * Route branch.
  */
 export interface RouteBranch<T> {
-  readonly path: string;
   readonly score: number;
   readonly matcher: Matcher;
   readonly meta: BranchMeta<T>[];

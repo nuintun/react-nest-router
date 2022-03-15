@@ -138,7 +138,6 @@ export function flatten<T>(routes: Route<T>[]): RouteBranch<T>[] {
         // otherwise is page routes or index routes,
         // only page page routes or index routes will add to branches.
         branches.push({
-          path,
           meta: [...meta, metadata],
           matcher: compile(path, sensitive),
           score: computeScore(path, isIndex)
