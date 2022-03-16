@@ -69,9 +69,10 @@ export function suffix(path: string, symbol: string): string {
 
 /**
  * @function isOutBounds
- * @param from
- * @param to
- * @param sensitive
+ * @description Is the path out of bounds.
+ * @param from The bounds path.
+ * @param to The path to check.
+ * @param sensitive Is case sensitive.
  */
 export function isOutBounds(from: string, to: string, sensitive?: boolean): boolean {
   from = suffix(from, '/');

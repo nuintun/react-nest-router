@@ -54,7 +54,8 @@ export function computeScore(path: string, index?: boolean): number {
 
 /**
  * @function safelyDecodeURIComponent
- * @param value
+ * @description Safely decode URI component.
+ * @param value The value to decode.
  */
 export function safelyDecodeURIComponent(value: string): string {
   try {

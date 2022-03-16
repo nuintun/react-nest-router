@@ -10,6 +10,7 @@ import { BranchMeta, CRoute, Route, RouteBranch, RouteMatch } from './types';
 
 /**
  * @function isBranchSiblings
+ * @description Is siblings branch.
  * @param prev Prev route branch.
  * @param next Next route branch.
  */
@@ -29,6 +30,7 @@ function isBranchSiblings<T, K extends string>(prev: RouteBranch<T, K>, next: Ro
 
 /**
  * @function compareBranchMeta
+ * @description Compare branch meta.
  * @param prev Prev route branch.
  * @param next Next route branch.
  */
@@ -53,6 +55,7 @@ function compareBranchMeta<T, K extends string>(prev: RouteBranch<T, K>, next: R
 
 /**
  * @function sortRouteBranches
+ * @description Sort route branches.
  * @param branches Route branches.
  */
 function sortRouteBranches<T, K extends string>(branches: RouteBranch<T, K>[]): RouteBranch<T, K>[] {
@@ -64,6 +67,7 @@ function sortRouteBranches<T, K extends string>(branches: RouteBranch<T, K>[]): 
 
 /**
  * @function flatten
+ * @description Flatten user routes.
  * @param routes User routes.
  */
 export function flatten<T, K extends string>(routes: Route<T, K>[]): RouteBranch<T, K>[] {
@@ -163,9 +167,10 @@ export function flatten<T, K extends string>(routes: Route<T, K>[]): RouteBranch
 
 /**
  * @function match
- * @param routes
- * @param pathname
- * @param basename
+ * @description Match route branch.
+ * @param routes The flatten routes.
+ * @param pathname The pathname to match.
+ * @param basename The basename to match.
  */
 export function match<T, K extends string>(
   routes: RouteBranch<T, K>[],
