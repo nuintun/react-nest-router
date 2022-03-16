@@ -46,8 +46,8 @@ export const NavigationContext = createContext<NavigationContext | null>(null);
 
 // Set display name if development mode.
 if (__DEV__) {
-  RouteContext.displayName = 'Route';
-  OutletContext.displayName = 'Outlet';
-  LocationContext.displayName = 'Location';
-  NavigationContext.displayName = 'Navigation';
+  RouteContext.displayName = 'RouteContext';
+  OutletContext.displayName = 'OutletContext';
+  LocationContext.displayName = 'LocationContext';
+  NavigationContext.displayName = 'NavigationContext';
 }
