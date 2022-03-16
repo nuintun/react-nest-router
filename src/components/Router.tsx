@@ -15,9 +15,15 @@ export interface RouterProps<M, K extends string> {
   basename?: string;
   history?: History;
   routes: Route<M, K>[];
+  fallback?: React.ReactNode;
 }
 
-export function Router<M, K extends string>({ history, routes, basename = '/' }: RouterProps<M, K>): React.ReactElement {
+export function Router<M, K extends string>({
+  history,
+  routes,
+  basename = '/',
+  fallback = '404'
+}: RouterProps<M, K>): React.ReactElement {
   const routeContext = useRouteContext();
 
   if (__DEV__) {
@@ -47,13 +53,13 @@ export function Router<M, K extends string>({ history, routes, basename = '/' }:
     return { basename, navigator };
   }, [basename, navigator]);
 
-  const element = useRouter(routes, state.location.pathname, basename);
-
   useLayoutEffect(() => navigator.listen(setState), [navigator]);
+
+  const element = useRouter(routes, state.location.pathname, basename);
 
   return (
     <NavigationContext.Provider value={navigation}>
-      <LocationContext.Provider value={state}>{element}</LocationContext.Provider>
+      <LocationContext.Provider value={state}>{element || fallback}</LocationContext.Provider>
     </NavigationContext.Provider>
   );
 }
