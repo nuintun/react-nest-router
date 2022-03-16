@@ -127,12 +127,3 @@ export interface RouteBranch<T, K extends string> {
   readonly meta: BranchMeta<T, K>[];
   readonly guard: (match: RouteMatch<T, K>) => boolean;
 }
-
-/**
- * Route context.
- */
-export interface RouteContext<T, K extends string> {
-  readonly current: Route<T, K> | null;
-  readonly match: RouteMatch<T, K> | null;
-  readonly outlet: React.ReactElement | null;
-}

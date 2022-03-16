@@ -3,23 +3,27 @@
  */
 
 import { useMemo } from 'react';
-import { Route } from '../types';
 import { flatten, match } from '../router';
+import { Route, RouteMatch } from '../types';
 
 /**
- * @function useRoutes
+ * @function useRouter
  * @param routes
  * @param pathname
  * @param basename
  */
-export function useRoutes<T, K extends string>(routes: Route<T, K>[], pathname: string, basename: string = '/') {
+export function useRouter<T, K extends string>(
+  routes: Route<T, K>[],
+  pathname: string,
+  basename: string = '/'
+): RouteMatch<T, K> | null {
   const branches = useMemo(() => {
     return flatten(routes);
   }, [routes]);
 
   const matched = useMemo(() => {
     return match(branches, pathname, basename);
-  }, [basename, pathname]);
+  }, [pathname, basename]);
 
   return matched;
 }

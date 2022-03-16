@@ -40,6 +40,6 @@ export default function rollup(esnext) {
         warn(error);
       }
     },
-    external: ['tslib', 'react/jsx-runtime', 'react/jsx-dev-runtime']
+    external: ['tslib', 'react', 'history', 'react/jsx-runtime', 'react/jsx-dev-runtime']
   };
 }
