@@ -16,15 +16,15 @@ import { useRouteContext } from './useRouteContext';
  * @param pathname
  * @param basename
  */
-export function useRouter<T, K extends string>(
-  routes: Route<T, K>[],
+export function useRouter<M, K extends string>(
+  routes: Route<M, K>[],
   pathname: string,
   basename: string = '/'
 ): React.ReactElement | null {
-  const context = useRouteContext();
+  const routeContext = useRouteContext();
 
   if (__DEV__) {
-    assert(!context, `You cannot use another useRouter in a child route of useRouter.`);
+    assert(!routeContext, `You cannot use useRouter inside another useRouter.`);
   }
 
   pathname = useMemo(() => {
@@ -41,7 +41,7 @@ export function useRouter<T, K extends string>(
 
   const matched = useMemo(() => {
     return match(branches, pathname, basename);
-  }, [pathname, basename]);
+  }, [pathname, basename, branches]);
 
   return useMemo<React.ReactElement | null>(() => {
     if (matched) {

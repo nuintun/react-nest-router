@@ -14,49 +14,49 @@ export type Mutable<T> = {
 /**
  * Combined route.
  */
-export interface CRoute<T, K extends string> {
-  meta?: T;
+export interface CRoute<M, K extends string> {
+  meta?: M;
   path?: string;
   index?: boolean;
   sensitive?: boolean;
-  children?: CRoute<T, K>[];
+  children?: CRoute<M, K>[];
   element?: React.ReactNode;
-  guard?: (match: RouteMatch<T, K>) => boolean;
+  guard?: (match: RouteMatch<M, K>) => boolean;
 }
 
 /**
  * Index route.
  */
-export interface IndexRoute<T, K extends string> {
-  meta?: T;
+export interface IndexRoute<M, K extends string> {
+  meta?: M;
   index: true;
   sensitive?: boolean;
   children?: undefined;
   element?: React.ReactNode;
-  guard?: (match: RouteMatch<T, K>) => boolean;
+  guard?: (match: RouteMatch<M, K>) => boolean;
 }
 
 /**
  * Page route.
  */
-export interface PageRoute<T, K extends string> {
-  meta?: T;
+export interface PageRoute<M, K extends string> {
+  meta?: M;
   path: string;
   index?: false;
   sensitive?: boolean;
   children?: undefined;
   element?: React.ReactNode;
-  guard?: (match: RouteMatch<T, K>) => boolean;
+  guard?: (match: RouteMatch<M, K>) => boolean;
 }
 
 /**
  * Layout route.
  */
-export interface LayoutRoute<T, K extends string> {
-  meta?: T;
+export interface LayoutRoute<M, K extends string> {
+  meta?: M;
   path?: string;
   index?: false;
-  children: Route<T, K>[];
+  children: Route<M, K>[];
   element?: React.ReactNode;
 }
 
@@ -64,7 +64,7 @@ export interface LayoutRoute<T, K extends string> {
  * A route object represents a logical route, with (optionally) its child
  * routes organized in a tree-like structure.
  */
-export type Route<T, K extends string> = LayoutRoute<T, K> | PageRoute<T, K> | IndexRoute<T, K>;
+export type Route<M, K extends string> = LayoutRoute<M, K> | PageRoute<M, K> | IndexRoute<M, K>;
 
 /**
  * The parameters that were parsed from the URL path.
@@ -87,7 +87,7 @@ export interface Matcher<K extends string> {
 /**
  * A RouteMatch contains info about how a route matched a URL.
  */
-export interface RouteMatch<T, K extends string> {
+export interface RouteMatch<M, K extends string> {
   /**
    * The route path that was used to match.
    */
@@ -107,23 +107,23 @@ export interface RouteMatch<T, K extends string> {
   /**
    * The route branch meta that was used to match.
    */
-  readonly meta: Route<T, K>[];
+  readonly meta: Route<M, K>[];
 }
 
 /**
  * Route branch meta.
  */
-export interface BranchMeta<T, K extends string> {
+export interface BranchMeta<M, K extends string> {
   readonly index: number;
-  readonly route: Route<T, K>;
+  readonly route: Route<M, K>;
 }
 
 /**
  * Route branch.
  */
-export interface RouteBranch<T, K extends string> {
+export interface RouteBranch<M, K extends string> {
   readonly score: number;
   readonly matcher: Matcher<K>;
-  readonly meta: BranchMeta<T, K>[];
-  readonly guard: (match: RouteMatch<T, K>) => boolean;
+  readonly meta: BranchMeta<M, K>[];
+  readonly guard: (match: RouteMatch<M, K>) => boolean;
 }

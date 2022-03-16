@@ -11,17 +11,17 @@ import { useRouteContext } from '../hooks/useRouteContext';
 import { LocationContext, NavigationContext } from '../context';
 import React, { useLayoutEffect, useMemo, useState } from 'react';
 
-export interface RouterProps<T, K extends string> {
+export interface RouterProps<M, K extends string> {
   basename?: string;
   history?: History;
-  router: Route<T, K>[];
+  routes: Route<M, K>[];
 }
 
-export function Router<T, K extends string>({ history, router, basename = '/' }: RouterProps<T, K>): React.ReactElement {
-  const context = useRouteContext();
+export function Router<M, K extends string>({ history, routes, basename = '/' }: RouterProps<M, K>): React.ReactElement {
+  const routeContext = useRouteContext();
 
   if (__DEV__) {
-    assert(!context, `You cannot render a <Router> inside another <Router>.`);
+    assert(!routeContext, `You cannot render <Router> inside another <Router>.`);
   }
 
   basename = useMemo(() => {
@@ -29,7 +29,7 @@ export function Router<T, K extends string>({ history, router, basename = '/' }:
   }, [basename]);
 
   if (__DEV__) {
-    assert(!basename.startsWith('/'), 'Router basename must start with /.');
+    assert(basename.startsWith('/'), 'Router basename must start with /.');
   }
 
   const navigator = useMemo<History>(() => {
@@ -47,7 +47,7 @@ export function Router<T, K extends string>({ history, router, basename = '/' }:
     return { basename, navigator };
   }, [basename, navigator]);
 
-  const element = useRouter(router, state.location.pathname, basename);
+  const element = useRouter(routes, state.location.pathname, basename);
 
   useLayoutEffect(() => navigator.listen(setState), [navigator]);
 

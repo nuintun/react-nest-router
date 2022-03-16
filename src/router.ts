@@ -14,7 +14,7 @@ import { BranchMeta, CRoute, Route, RouteBranch, RouteMatch } from './types';
  * @param prev Prev route branch.
  * @param next Next route branch.
  */
-function isBranchSiblings<T, K extends string>(prev: RouteBranch<T, K>, next: RouteBranch<T, K>): boolean {
+function isBranchSiblings<M, K extends string>(prev: RouteBranch<M, K>, next: RouteBranch<M, K>): boolean {
   const { meta: prevMeta } = prev;
   const { meta: nextMeta } = next;
   const { length: prevLength } = prevMeta;
@@ -34,7 +34,7 @@ function isBranchSiblings<T, K extends string>(prev: RouteBranch<T, K>, next: Ro
  * @param prev Prev route branch.
  * @param next Next route branch.
  */
-function compareBranchMeta<T, K extends string>(prev: RouteBranch<T, K>, next: RouteBranch<T, K>): number {
+function compareBranchMeta<M, K extends string>(prev: RouteBranch<M, K>, next: RouteBranch<M, K>): number {
   // If two routes are siblings, we should try to match the earlier sibling
   // first. This allows people to have fine-grained control over the matching
   // behavior by simply putting routes with identical paths in the order they
@@ -58,7 +58,7 @@ function compareBranchMeta<T, K extends string>(prev: RouteBranch<T, K>, next: R
  * @description Sort route branches.
  * @param branches Route branches.
  */
-function sortRouteBranches<T, K extends string>(branches: RouteBranch<T, K>[]): RouteBranch<T, K>[] {
+function sortRouteBranches<M, K extends string>(branches: RouteBranch<M, K>[]): RouteBranch<M, K>[] {
   // Higher score first
   return branches.sort((prev, next) => {
     return prev.score !== next.score ? next.score - prev.score : compareBranchMeta(prev, next);
@@ -70,15 +70,15 @@ function sortRouteBranches<T, K extends string>(branches: RouteBranch<T, K>[]): 
  * @description Flatten user routes.
  * @param routes User routes.
  */
-export function flatten<T, K extends string>(routes: Route<T, K>[]): RouteBranch<T, K>[] {
+export function flatten<M, K extends string>(routes: Route<M, K>[]): RouteBranch<M, K>[] {
   const defaultGuard = () => true;
-  const branches: RouteBranch<T, K>[] = [];
+  const branches: RouteBranch<M, K>[] = [];
 
   // Traversal routes.
   for (const route of routes) {
-    const meta: BranchMeta<T, K>[] = [];
+    const meta: BranchMeta<M, K>[] = [];
     const paths: (string | undefined)[] = [];
-    const items = new Tree<CRoute<T, K>>(route, route => route.children).dfs(() => {
+    const items = new Tree<CRoute<M, K>>(route, route => route.children).dfs(() => {
       meta.pop();
       paths.pop();
     });
@@ -133,9 +133,9 @@ export function flatten<T, K extends string>(routes: Route<T, K>[]): RouteBranch
         );
       }
 
-      const metadata: BranchMeta<T, K> = {
+      const metadata: BranchMeta<M, K> = {
         index,
-        route: item as Route<T, K>
+        route: item as Route<M, K>
       };
 
       // Route is layout route.
@@ -172,11 +172,11 @@ export function flatten<T, K extends string>(routes: Route<T, K>[]): RouteBranch
  * @param pathname The pathname to match.
  * @param basename The basename to match.
  */
-export function match<T, K extends string>(
-  routes: RouteBranch<T, K>[],
+export function match<M, K extends string>(
+  routes: RouteBranch<M, K>[],
   pathname: string,
   basename: string = '/'
-): RouteMatch<T, K> | null {
+): RouteMatch<M, K> | null {
   if (pathname === basename) {
     pathname = '/';
   } else if (isAbsolute(pathname)) {

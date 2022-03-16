@@ -32,6 +32,9 @@ export interface RouteContext {
   readonly match: RouteMatch<any, string> | null;
 }
 
+// Outlet context.
+export const OutletContext = createContext<unknown>(null);
+
 // Route context.
 export const RouteContext = createContext<RouteContext | null>(null);
 
@@ -44,6 +47,7 @@ export const NavigationContext = createContext<NavigationContext | null>(null);
 // Set display name if development mode.
 if (__DEV__) {
   RouteContext.displayName = 'Route';
+  OutletContext.displayName = 'Outlet';
   LocationContext.displayName = 'Location';
   NavigationContext.displayName = 'Navigation';
 }
