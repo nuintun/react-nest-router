@@ -4,4 +4,4 @@
 
 import rollup from './rollup.base';
 
-export default rollup(true);
+export default [rollup(true, true), rollup(true, false)];

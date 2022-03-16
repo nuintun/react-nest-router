@@ -21,7 +21,7 @@ export interface CRoute<T, K extends string> {
   sensitive?: boolean;
   children?: CRoute<T, K>[];
   element?: React.ReactNode;
-  guard?: (params: Params<K>) => boolean;
+  guard?: (match: RouteMatch<T, K>) => boolean;
 }
 
 /**
@@ -33,7 +33,7 @@ export interface IndexRoute<T, K extends string> {
   sensitive?: boolean;
   children?: undefined;
   element?: React.ReactNode;
-  guard?: (params: Params<K>) => boolean;
+  guard?: (match: RouteMatch<T, K>) => boolean;
 }
 
 /**
@@ -46,7 +46,7 @@ export interface PageRoute<T, K extends string> {
   sensitive?: boolean;
   children?: undefined;
   element?: React.ReactNode;
-  guard?: (params: Params<K>) => boolean;
+  guard?: (match: RouteMatch<T, K>) => boolean;
 }
 
 /**
@@ -125,7 +125,7 @@ export interface RouteBranch<T, K extends string> {
   readonly score: number;
   readonly matcher: Matcher<K>;
   readonly meta: BranchMeta<T, K>[];
-  readonly guard: (params: Params<K>) => boolean;
+  readonly guard: (match: RouteMatch<T, K>) => boolean;
 }
 
 /**

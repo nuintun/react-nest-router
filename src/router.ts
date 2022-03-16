@@ -188,10 +188,13 @@ export function match<T, K extends string>(
     const { path, match } = matcher;
     const params = match(pathname);
 
-    if (params !== null && guard(params)) {
+    if (params) {
       const meta = metadata.map(({ route }) => route);
+      const match = { path, meta, params, basename, pathname };
 
-      return { path, meta, params, basename, pathname };
+      if (guard(match)) {
+        return match;
+      }
     }
   }
 

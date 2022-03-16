@@ -2,7 +2,7 @@
  * @module index
  */
 
-const { flatten, match } = require('../cjs');
+const { flatten, match } = require('../cjs/development');
 
 const routes = [
   { path: '/login', meta: { id: 1 }, element: '<Login />' },

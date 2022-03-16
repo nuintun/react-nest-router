@@ -2,6 +2,9 @@
   "name": "react-nest-router",
   "version": "0.0.0",
   "description": "Declarative routing for React.",
+  "main": "index.js",
+  "typings": "typings/index.d.ts",
+  "sideEffects": false,
   "repository": {
     "type": "git",
     "url": "git+https://github.com/nuintun/react-nest-router.git"
