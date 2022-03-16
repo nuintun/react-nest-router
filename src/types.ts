@@ -12,14 +12,14 @@ export type Mutable<T> = {
 };
 
 /**
- * Combined route.
+ * Interface Route.
  */
-export interface CRoute<M, K extends string> {
+export interface IRoute<M, K extends string> {
   meta?: M;
+  index?: true;
   path?: string;
-  index?: boolean;
   sensitive?: boolean;
-  children?: CRoute<M, K>[];
+  children?: IRoute<M, K>[];
   element?: React.ReactNode;
   guard?: (match: RouteMatch<M, K>) => boolean;
 }
@@ -42,7 +42,7 @@ export interface IndexRoute<M, K extends string> {
 export interface PageRoute<M, K extends string> {
   meta?: M;
   path: string;
-  index?: false;
+  index?: undefined;
   sensitive?: boolean;
   children?: undefined;
   element?: React.ReactNode;
@@ -55,7 +55,7 @@ export interface PageRoute<M, K extends string> {
 export interface LayoutRoute<M, K extends string> {
   meta?: M;
   path?: string;
-  index?: false;
+  index?: undefined;
   children: Route<M, K>[];
   element?: React.ReactNode;
 }
@@ -107,7 +107,7 @@ export interface RouteMatch<M, K extends string> {
   /**
    * The route branch meta that was used to match.
    */
-  readonly meta: Route<M, K>[];
+  readonly meta: IRoute<M, K>[];
 }
 
 /**
@@ -115,7 +115,7 @@ export interface RouteMatch<M, K extends string> {
  */
 export interface BranchMeta<M, K extends string> {
   readonly index: number;
-  readonly route: Route<M, K>;
+  readonly route: IRoute<M, K>;
 }
 
 /**

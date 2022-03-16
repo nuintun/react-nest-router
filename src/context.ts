@@ -4,7 +4,7 @@
 
 import { Action } from 'history';
 import { createContext } from 'react';
-import { Route, RouteMatch } from './types';
+import { IRoute, RouteMatch } from './types';
 import { History, Location } from 'history';
 
 /**
@@ -27,9 +27,9 @@ export interface LocationContext {
  * Route context.
  */
 export interface RouteContext {
+  readonly current: IRoute<unknown, string>;
   readonly outlet: React.ReactElement | null;
-  readonly current: Route<any, string> | null;
-  readonly match: RouteMatch<any, string> | null;
+  readonly match: RouteMatch<unknown, string>;
 }
 
 // Outlet context.

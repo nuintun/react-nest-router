@@ -6,7 +6,7 @@ import { Tree } from './Tree';
 import { compile } from './pattern';
 import { assert, computeScore } from './utils';
 import { isAbsolute, isOutBounds, prefix, resolve, suffix } from './path';
-import { BranchMeta, CRoute, Route, RouteBranch, RouteMatch } from './types';
+import { BranchMeta, IRoute, Route, RouteBranch, RouteMatch } from './types';
 
 /**
  * @function isBranchSiblings
@@ -78,7 +78,7 @@ export function flatten<M, K extends string>(routes: Route<M, K>[]): RouteBranch
   for (const route of routes) {
     const meta: BranchMeta<M, K>[] = [];
     const paths: (string | undefined)[] = [];
-    const items = new Tree<CRoute<M, K>>(route, route => route.children).dfs(() => {
+    const items = new Tree<IRoute<M, K>>(route, route => route.children).dfs(() => {
       meta.pop();
       paths.pop();
     });
@@ -135,7 +135,7 @@ export function flatten<M, K extends string>(routes: Route<M, K>[]): RouteBranch
 
       const metadata: BranchMeta<M, K> = {
         index,
-        route: item as Route<M, K>
+        route: item
       };
 
       // Route is layout route.
