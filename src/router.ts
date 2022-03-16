@@ -5,7 +5,7 @@
 import { Tree } from './Tree';
 import { compile } from './pattern';
 import { assert, computeScore } from './utils';
-import { isAbsolute, isOutBounds, resolve, suffix } from './path';
+import { isAbsolute, isOutBounds, prefix, resolve, suffix } from './path';
 import { BranchMeta, CRoute, Route, RouteBranch, RouteMatch } from './types';
 
 /**
@@ -179,7 +179,7 @@ export function match<T, K extends string>(
 ): RouteMatch<T, K> | null {
   if (pathname === basename) {
     pathname = '/';
-  } else {
+  } else if (isAbsolute(pathname)) {
     const base = suffix(basename, '/');
 
     if (!pathname.toLowerCase().startsWith(base.toLowerCase())) {
@@ -187,6 +187,8 @@ export function match<T, K extends string>(
     }
 
     pathname = pathname.slice(base.length - 1);
+  } else {
+    pathname = prefix(pathname, '/');
   }
 
   for (const { meta: metadata, matcher, guard } of routes) {

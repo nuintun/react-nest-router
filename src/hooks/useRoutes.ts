@@ -4,7 +4,6 @@
 
 import { useMemo } from 'react';
 import { Route } from '../types';
-import { normalize } from '../path';
 import { flatten, match } from '../router';
 
 /**
@@ -19,7 +18,7 @@ export function useRoutes<T, K extends string>(routes: Route<T, K>[], pathname: 
   }, [routes]);
 
   const matched = useMemo(() => {
-    return match(branches, normalize(`/${pathname}`), normalize(`/${basename}`));
+    return match(branches, pathname, basename);
   }, [basename, pathname]);
 
   return matched;
