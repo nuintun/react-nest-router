@@ -2,13 +2,14 @@
  * @module Router
  */
 
+import { Route } from '../types';
+import { assert } from '../utils';
 import { normalize } from '../path';
-import { Route, RouteMatch } from '../types';
-import { useRouter } from '../hooks/useRoutes';
-import { useRender } from '../hooks/useRender';
+import { useRouter } from '../hooks/useRouter';
 import { createBrowserHistory, History } from 'history';
+import { useRouteContext } from '../hooks/useRouteContext';
+import { LocationContext, NavigationContext } from '../context';
 import React, { useLayoutEffect, useMemo, useState } from 'react';
-import { LocationContext, NavigationContext, RouteContext } from '../context';
 
 export interface RouterProps<T, K extends string> {
   basename?: string;
@@ -16,20 +17,20 @@ export interface RouterProps<T, K extends string> {
   router: Route<T, K>[];
 }
 
-export function render<T, K extends string>(match: RouteMatch<T, K>): React.ReactElement | null {
-  return match.meta.reduceRight<React.ReactElement | null>((outlet, route, index, meta) => {
-    return (
-      <RouteContext.Provider value={{ match, outlet, current: meta[index] }}>
-        {'element' in route ? route.element : outlet}
-      </RouteContext.Provider>
-    );
-  }, null);
-}
+export function Router<T, K extends string>({ history, router, basename = '/' }: RouterProps<T, K>): React.ReactElement {
+  const context = useRouteContext();
 
-export function Router<T, K extends string>({ basename = '/', history, router }: RouterProps<T, K>): React.ReactElement {
+  if (__DEV__) {
+    assert(!context, `You cannot render a <Router> inside another <Router>.`);
+  }
+
   basename = useMemo(() => {
-    return normalize(`/${basename}`);
+    return normalize(basename);
   }, [basename]);
+
+  if (__DEV__) {
+    assert(!basename.startsWith('/'), 'Router basename must start with /.');
+  }
 
   const navigator = useMemo<History>(() => {
     return history ?? createBrowserHistory();
@@ -46,7 +47,7 @@ export function Router<T, K extends string>({ basename = '/', history, router }:
     return { basename, navigator };
   }, [basename, navigator]);
 
-  const element = useRender(useRouter(router, state.location.pathname, basename));
+  const element = useRouter(router, state.location.pathname, basename);
 
   useLayoutEffect(() => navigator.listen(setState), [navigator]);
 

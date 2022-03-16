@@ -4,8 +4,8 @@
 
 import { Action } from 'history';
 import { createContext } from 'react';
-import { History, Location } from 'history';
 import { Route, RouteMatch } from './types';
+import { History, Location } from 'history';
 
 /**
  * Navigation context.
@@ -26,20 +26,20 @@ export interface LocationContext {
 /**
  * Route context.
  */
-export interface RouteContext<T, K extends string> {
-  readonly current: Route<T, K> | null;
-  readonly match: RouteMatch<T, K> | null;
+export interface RouteContext {
   readonly outlet: React.ReactElement | null;
+  readonly current: Route<any, string> | null;
+  readonly match: RouteMatch<any, string> | null;
 }
 
+// Route context.
+export const RouteContext = createContext<RouteContext | null>(null);
+
 // Location context.
-export const LocationContext = createContext<LocationContext>(null!);
+export const LocationContext = createContext<LocationContext | null>(null);
 
 // Navigation context.
-export const NavigationContext = createContext<NavigationContext>(null!);
-
-// Route context.
-export const RouteContext = createContext<RouteContext<any, string>>(null!);
+export const NavigationContext = createContext<NavigationContext | null>(null);
 
 // Set display name if development mode.
 if (__DEV__) {

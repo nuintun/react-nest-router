@@ -7,7 +7,7 @@
  * @param cond Assert flags.
  * @param message Assert error message.
  */
-export function assert(cond: any, message: string): asserts cond {
+export function assert<T>(cond: T, message: string): asserts cond {
   if (!cond) throw new Error(message);
 }
 
