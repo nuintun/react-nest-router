@@ -3,6 +3,7 @@
  */
 
 import React from 'react';
+import { Location as HistoryLocation } from 'history';
 
 /**
  * Set object mutable
@@ -140,4 +141,11 @@ export interface OutletProps<C> {
  */
 export interface Outlet {
   <C>(props: OutletProps<C>): React.ReactElement | null;
+}
+
+/**
+ * History location enhance
+ */
+export interface Location<S> extends HistoryLocation {
+  state: S;
 }

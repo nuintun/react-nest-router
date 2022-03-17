@@ -64,3 +64,11 @@ export function safelyDecodeURIComponent(value: string): string {
     return value;
   }
 }
+
+/**
+ * @function isNumber
+ * @param value
+ */
+export function isNumber(value: unknown): value is number {
+  return Object.prototype.toString.call(value) === '[object Number]';
+}

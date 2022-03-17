@@ -3,18 +3,18 @@
  */
 
 import { assert } from '../utils';
-import { Location } from 'history';
+import { Location } from '../types';
 import { useLocationContext } from './useLocationContext';
 
 /**
  * @function useLocation
  */
-export function useLocation(): Location {
+export function useLocation<S>(): Location<S> {
   const locationContext = useLocationContext();
 
   if (__DEV__) {
     assert(locationContext, `The hook useLocation can only be used in the context of a <Router> component.`);
   }
 
-  return locationContext!.location;
+  return locationContext!.location as Location<S>;
 }

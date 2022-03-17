@@ -3,9 +3,9 @@
  */
 
 import { To } from 'history';
-import { assert } from '../utils';
-import { useLocation } from './useLocation';
-import { useRouteContext } from './useRouteContext';
+import { assert, isNumber } from '../utils';
+import usePersistCallback from './usePersistCallback';
+import { useLocationContext } from './useLocationContext';
 import { useNavigationContext } from './useNavigationContext';
 
 export interface NavigateOptions<S> {
@@ -19,15 +19,26 @@ export interface Navigate<S> {
 }
 
 export function useNavigate<S>(): Navigate<S> {
-  const location = useLocation();
-  const routeContext = useRouteContext();
+  const locationContext = useLocationContext();
   const navigationContext = useNavigationContext();
 
   if (__DEV__) {
-    assert(routeContext && navigationContext, `The hook useNavigate can only be used in the context of a <Router> component.`);
+    assert(
+      navigationContext && locationContext,
+      `The hook useNavigate can only be used in the context of a <Router> component.`
+    );
   }
 
-  return () => {
-    console.log(location);
-  };
+  const { location } = locationContext!;
+  const { basename, navigator } = navigationContext!;
+
+  const navigate = usePersistCallback<Navigate<S>>((to, options: NavigateOptions<S> = {}) => {
+    if (isNumber(to)) {
+      return navigator.go(to);
+    }
+
+    const href = navigator.createHref(to);
+  });
+
+  return navigate;
 }

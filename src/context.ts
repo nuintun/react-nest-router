@@ -2,10 +2,9 @@
  * @module context
  */
 
-import { Action } from 'history';
 import { createContext } from 'react';
-import { History, Location } from 'history';
-import { IRoute, Outlet, RouteMatch } from './types';
+import { Action, History } from 'history';
+import { IRoute, Location, Outlet, RouteMatch } from './types';
 
 /**
  * Route context.
@@ -33,7 +32,7 @@ export const OutletContext = createContext<OutletContext | null>(null);
  */
 export interface LocationContext {
   action: Action;
-  location: Location;
+  location: Location<unknown>;
 }
 
 // Location context.
