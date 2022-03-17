@@ -4,7 +4,6 @@
 
 import { memo } from 'react';
 import { OutletProps } from '../types';
-import { useOutlet } from '../hooks/useOutlet';
 import { useRouteContext } from '../hooks/useRouteContext';
 import { assert } from '../utils';
 
@@ -17,5 +16,5 @@ export const Outlet = memo(function Outlet(props) {
 
   const { Outlet } = routeContext!;
 
-  return 'context' in props ? useOutlet(props.context) : <Outlet />;
+  return <Outlet {...props} />;
 }) as <C>(props: OutletProps<C>) => React.ReactElement;

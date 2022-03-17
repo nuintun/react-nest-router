@@ -17,6 +17,7 @@ export function useOutlet<C>(context?: C): React.ReactElement {
   }
 
   const { Outlet } = routeContext!;
+  const props = arguments.length > 0 ? { context } : {};
 
-  return arguments.length > 0 ? <Outlet context={context} /> : <Outlet />;
+  return <Outlet {...props} />;
 }
