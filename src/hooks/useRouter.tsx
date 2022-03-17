@@ -56,8 +56,8 @@ export function useRouter<M, K extends string, C>(
             return (
               <RouteContext.Provider
                 value={{
-                  match: matched,
                   outlet,
+                  match: matched,
                   current: meta[index]
                 }}
               >
