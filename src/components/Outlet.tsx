@@ -2,9 +2,10 @@
  * @module Outlet
  */
 
-import { memo } from 'react';
 import { assert } from '../utils';
+import React, { memo } from 'react';
 import { OutletProps } from '../types';
+import { useOutlet } from '../hooks/useOutlet';
 import { useRouteContext } from '../hooks/useRouteContext';
 
 /**
@@ -18,7 +19,5 @@ export const Outlet = memo(function Outlet(props) {
     assert(routeContext, `The <Outlet> can only be used in the context of a route component.`);
   }
 
-  const { Outlet } = routeContext!;
-
-  return <Outlet {...props} />;
-}) as <C>(props: OutletProps<C>) => React.ReactElement;
+  return useOutlet(props);
+}) as <C>(props: OutletProps<C>) => React.ReactElement | null;

@@ -55,13 +55,11 @@ export const Router = memo(function Router({ history, routes, context, basename 
 
   useLayoutEffect(() => navigator.listen(setState), [navigator]);
 
-  const MainOutlet = useRouter(routes, state.location.pathname, basename);
+  const element = useRouter(routes, state.location.pathname, basename, context);
 
   return (
     <NavigationContext.Provider value={navigation}>
-      <LocationContext.Provider value={state}>
-        {MainOutlet ? <MainOutlet context={context} /> : children}
-      </LocationContext.Provider>
+      <LocationContext.Provider value={state}>{element ? element : children}</LocationContext.Provider>
     </NavigationContext.Provider>
   );
 }) as <M, K extends string, C>(props: RouterProps<M, K, C>) => React.ReactElement;

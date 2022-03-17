@@ -137,13 +137,6 @@ export interface OutletProps<C> {
 }
 
 /**
- * Outlet components.
- */
-export interface Outlet {
-  <C>(props: OutletProps<C>): React.ReactElement | null;
-}
-
-/**
  * History location enhance
  */
 export interface Location<S> extends HistoryLocation {

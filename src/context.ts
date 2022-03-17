@@ -2,16 +2,17 @@
  * @module context
  */
 
+import React from 'react';
 import { createContext } from 'react';
 import { Action, History } from 'history';
-import { IRoute, Location, Outlet, RouteMatch } from './types';
+import { IRoute, Location, RouteMatch } from './types';
 
 /**
  * Route context.
  */
 export interface RouteContext {
-  readonly Outlet: Outlet;
   readonly current: IRoute<unknown, string>;
+  readonly outlet: React.ReactElement | null;
   readonly match: RouteMatch<unknown, string>;
 }
 

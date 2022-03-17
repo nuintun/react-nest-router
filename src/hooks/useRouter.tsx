@@ -2,11 +2,11 @@
  * @module hooks
  */
 
+import { Route } from '../types';
 import { assert } from '../utils';
 import { normalize } from '../path';
-import { Outlet, Route } from '../types';
+import React, { useMemo } from 'react';
 import { flatten, match } from '../router';
-import { memo, useContext, useMemo } from 'react';
 import { useRouteContext } from './useRouteContext';
 import { OutletContext, RouteContext } from '../context';
 
@@ -16,24 +16,33 @@ import { OutletContext, RouteContext } from '../context';
  * @param pathname
  * @param basename
  */
-export function useRouter<M, K extends string>(routes: Route<M, K>[], pathname: string, basename: string = '/'): Outlet | null {
+export function useRouter<M, K extends string, C>(
+  routes: Route<M, K>[],
+  pathname: string,
+  basename: string = '/',
+  context?: C
+): React.ReactElement | null {
   const routeContext = useRouteContext();
 
   if (__DEV__) {
     assert(!routeContext, `You cannot use useRouter inside another useRouter.`);
   }
 
-  pathname = useMemo(() => {
-    return normalize(pathname);
-  }, [pathname]);
-
   basename = useMemo(() => {
     return normalize(basename);
   }, [basename]);
 
+  pathname = useMemo(() => {
+    return normalize(pathname);
+  }, [pathname]);
+
   const branches = useMemo(() => {
     return flatten(routes);
   }, [routes]);
+
+  const outletContext = useMemo(() => {
+    return { context };
+  }, [context]);
 
   const matched = useMemo(() => {
     return match(branches, pathname, basename);
@@ -41,39 +50,25 @@ export function useRouter<M, K extends string>(routes: Route<M, K>[], pathname: 
 
   return useMemo(() => {
     if (matched) {
-      const EmptyOutlet: Outlet = () => null;
-
-      return matched.meta.reduceRight((NextOutlet, route, index, meta) => {
-        return memo(function Outlet(props) {
-          const outletContext = useContext(OutletContext);
-
-          const outlet = useMemo<OutletContext>(() => {
-            const { context } = props;
-
-            if ('context' in props) {
-              return { context };
-            }
-
-            return outletContext || { context };
-          }, [props.context, outletContext]);
-
-          return (
-            <OutletContext.Provider value={outlet}>
+      return (
+        <OutletContext.Provider value={outletContext}>
+          {matched.meta.reduceRight<React.ReactElement | null>((outlet, route, index, meta) => {
+            return (
               <RouteContext.Provider
                 value={{
                   match: matched,
-                  Outlet: NextOutlet,
+                  outlet,
                   current: meta[index]
                 }}
               >
-                {'element' in route ? route.element : <NextOutlet context={outlet} />}
+                {'element' in route ? route.element : outlet}
               </RouteContext.Provider>
-            </OutletContext.Provider>
-          );
-        });
-      }, EmptyOutlet);
+            );
+          }, null)}
+        </OutletContext.Provider>
+      );
     }
 
     return null;
-  }, [matched]);
+  }, [matched, outletContext]);
 }

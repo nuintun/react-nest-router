@@ -3,21 +3,31 @@
  */
 
 import { assert } from '../utils';
+import React, { useMemo } from 'react';
+import { OutletProps } from '../types';
+import { OutletContext } from '../context';
 import { useRouteContext } from './useRouteContext';
 
 /**
  * @function useOutlet
  * @param context
  */
-export function useOutlet<C>(context?: C): React.ReactElement {
+export function useOutlet<C>(props: OutletProps<C> = {}): React.ReactElement | null {
   const routeContext = useRouteContext();
 
   if (__DEV__) {
     assert(routeContext, `The hook useOutlet can only be used in the context of a route component.`);
   }
 
-  const { Outlet } = routeContext!;
-  const props = arguments.length > 0 ? { context } : {};
+  const { outlet } = routeContext!;
 
-  return <Outlet {...props} />;
+  const outletContext = useMemo(() => {
+    return { context: props.context };
+  }, [props.context]);
+
+  if ('context' in props && outlet) {
+    return <OutletContext.Provider value={outletContext}>{outlet}</OutletContext.Provider>;
+  }
+
+  return outlet;
 }
