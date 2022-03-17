@@ -4,16 +4,29 @@
 
 import { Action } from 'history';
 import { createContext } from 'react';
-import { IRoute, RouteMatch } from './types';
 import { History, Location } from 'history';
+import { IRoute, Outlet, RouteMatch } from './types';
 
 /**
- * Navigation context.
+ * Route context.
  */
-export interface NavigationContext {
-  basename: string;
-  navigator: History;
+export interface RouteContext {
+  readonly Outlet: Outlet;
+  readonly current: IRoute<unknown, string>;
+  readonly match: RouteMatch<unknown, string>;
 }
+
+// Route context.
+export const RouteContext = createContext<RouteContext | null>(null);
+
+/**
+ * Outlet context.
+ */
+export interface OutletContext {
+  context: unknown;
+}
+// Outlet context.
+export const OutletContext = createContext<OutletContext | null>(null);
 
 /**
  * Location context.
@@ -23,23 +36,16 @@ export interface LocationContext {
   location: Location;
 }
 
-/**
- * Route context.
- */
-export interface RouteContext {
-  readonly current: IRoute<unknown, string>;
-  readonly outlet: React.ReactElement | null;
-  readonly match: RouteMatch<unknown, string>;
-}
-
-// Outlet context.
-export const OutletContext = createContext<unknown>(null);
-
-// Route context.
-export const RouteContext = createContext<RouteContext | null>(null);
-
 // Location context.
 export const LocationContext = createContext<LocationContext | null>(null);
+
+/**
+ * Navigation context.
+ */
+export interface NavigationContext {
+  basename: string;
+  navigator: History;
+}
 
 // Navigation context.
 export const NavigationContext = createContext<NavigationContext | null>(null);

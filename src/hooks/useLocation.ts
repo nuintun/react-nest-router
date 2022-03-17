@@ -12,7 +12,9 @@ import { useLocationContext } from './useLocationContext';
 export function useLocation(): Location {
   const locationContext = useLocationContext();
 
-  assert(locationContext, `The hook useLocation can only be used in the context of a <Router> component.`);
+  if (__DEV__) {
+    assert(locationContext, `The hook useLocation can only be used in the context of a <Router> component.`);
+  }
 
-  return locationContext.location;
+  return locationContext!.location;
 }

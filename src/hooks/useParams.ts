@@ -12,7 +12,9 @@ import { useRouteContext } from './useRouteContext';
 export function useParams<K extends string>(): Params<K> {
   const routeContext = useRouteContext();
 
-  assert(routeContext, `The hook useParams can only be used in the context of a route component.`);
+  if (__DEV__) {
+    assert(routeContext, `The hook useParams can only be used in the context of a route component.`);
+  }
 
-  return routeContext.match.params;
+  return routeContext!.match.params;
 }

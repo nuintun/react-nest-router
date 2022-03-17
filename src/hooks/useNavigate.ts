@@ -23,7 +23,9 @@ export function useNavigate<S>(): Navigate<S> {
   const routeContext = useRouteContext();
   const navigationContext = useNavigationContext();
 
-  assert(routeContext && navigationContext, `The hook useNavigate can only be used in the context of a <Router> component.`);
+  if (__DEV__) {
+    assert(routeContext && navigationContext, `The hook useNavigate can only be used in the context of a <Router> component.`);
+  }
 
   return () => {
     console.log(location);

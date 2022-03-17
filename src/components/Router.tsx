@@ -9,21 +9,17 @@ import { useRouter } from '../hooks/useRouter';
 import { createBrowserHistory, History } from 'history';
 import { useRouteContext } from '../hooks/useRouteContext';
 import { LocationContext, NavigationContext } from '../context';
-import React, { useLayoutEffect, useMemo, useState } from 'react';
+import React, { memo, useLayoutEffect, useMemo, useState } from 'react';
 
-export interface RouterProps<M, K extends string> {
+export interface RouterProps<M, K extends string, C> {
+  context?: C;
   basename?: string;
   history?: History;
   routes: Route<M, K>[];
   fallback?: React.ReactNode;
 }
 
-export function Router<M, K extends string>({
-  history,
-  routes,
-  basename = '/',
-  fallback = '404'
-}: RouterProps<M, K>): React.ReactElement {
+export const Router = memo(function Router({ history, routes, context, basename = '/', fallback = '404' }) {
   const routeContext = useRouteContext();
 
   if (__DEV__) {
@@ -55,11 +51,13 @@ export function Router<M, K extends string>({
 
   useLayoutEffect(() => navigator.listen(setState), [navigator]);
 
-  const element = useRouter(routes, state.location.pathname, basename);
+  const MainOutlet = useRouter(routes, state.location.pathname, basename);
 
   return (
     <NavigationContext.Provider value={navigation}>
-      <LocationContext.Provider value={state}>{element || fallback}</LocationContext.Provider>
+      <LocationContext.Provider value={state}>
+        {MainOutlet ? <MainOutlet context={context} /> : fallback}
+      </LocationContext.Provider>
     </NavigationContext.Provider>
   );
-}
+}) as <M, K extends string, C>(props: RouterProps<M, K, C>) => React.ReactElement;

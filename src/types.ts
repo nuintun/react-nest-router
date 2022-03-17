@@ -127,3 +127,17 @@ export interface RouteBranch<M, K extends string> {
   readonly meta: BranchMeta<M, K>[];
   readonly guard: (match: RouteMatch<M, K>) => boolean;
 }
+
+/**
+ * Outlet props.
+ */
+export interface OutletProps<C> {
+  context?: C;
+}
+
+/**
+ * Outlet components.
+ */
+export interface Outlet {
+  <C>(props: OutletProps<C>): React.ReactElement | null;
+}
