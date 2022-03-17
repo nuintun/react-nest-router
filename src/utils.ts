@@ -12,6 +12,22 @@ export function assert<T>(cond: T, message: string): asserts cond {
 }
 
 /**
+ * @function isNumber
+ * @param value
+ */
+export function isNumber(value: unknown): value is number {
+  return Object.prototype.toString.call(value) === '[object Number]';
+}
+
+/**
+ * @function isString
+ * @param value
+ */
+export function isString(value: unknown): value is string {
+  return Object.prototype.toString.call(value) === '[object String]';
+}
+
+/**
  * @function computeScore
  * @param path Route path.
  * @param index Is index route.
@@ -63,12 +79,4 @@ export function safelyDecodeURIComponent(value: string): string {
   } catch {
     return value;
   }
-}
-
-/**
- * @function isNumber
- * @param value
- */
-export function isNumber(value: unknown): value is number {
-  return Object.prototype.toString.call(value) === '[object Number]';
 }

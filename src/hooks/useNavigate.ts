@@ -3,8 +3,9 @@
  */
 
 import { To } from 'history';
-import { assert, isNumber } from '../utils';
-import usePersistCallback from './usePersistCallback';
+import { isAbsolute, normalize } from '../path';
+import { assert, isNumber, isString } from '../utils';
+import { usePersistCallback } from './usePersistCallback';
 import { useLocationContext } from './useLocationContext';
 import { useNavigationContext } from './useNavigationContext';
 
@@ -16,6 +17,31 @@ export interface NavigateOptions<S> {
 export interface Navigate<S> {
   (delta: number): void;
   (to: To, options?: NavigateOptions<S>): void;
+}
+
+/**
+ * @function parseURL
+ * @description Parse url.
+ * @param path URL path.
+ */
+function parseURL(path: string): [origin: string, pathname: string, search: string, hash: string] {
+  const matched = path.match(/^((?:[a-z0-9.+-]+:)?\/\/[^/]+)?([^?#]*)(\?[^#]*)?(#.*)?$/i);
+
+  if (matched) {
+    const [, origin = '', pathname, search = '', hash = ''] = matched;
+
+    return [origin, pathname, search, hash];
+  }
+
+  return ['', '', '', ''];
+}
+
+function createURL(basename: string, from: string, to: string, search: string, hash: string): string {
+  if (isAbsolute(to)) {
+    return `${normalize(`${basename}/${to}`)}${search}${hash}`;
+  } else {
+    return `${normalize(`${from}/${to}`)}${search}${hash}`;
+  }
 }
 
 export function useNavigate<S>(): Navigate<S> {
@@ -37,7 +63,29 @@ export function useNavigate<S>(): Navigate<S> {
       return navigator.go(to);
     }
 
-    const href = navigator.createHref(to);
+    let path: string;
+
+    if (isString(to)) {
+      const [origin, pathname, search, hash] = parseURL(to);
+
+      if (__DEV__) {
+        assert(origin === '', `The hook useNavigate does not support path with protocol.`);
+      }
+
+      path = createURL(basename, location.pathname, pathname, search, hash);
+    } else {
+      const { pathname = '/', search = '', hash = '' } = to;
+
+      path = createURL(basename, location.pathname, pathname, search, hash);
+    }
+
+    const { replace, state } = options;
+
+    if (replace) {
+      navigator.replace(path, state);
+    } else {
+      navigator.push(path, state);
+    }
   });
 
   return navigate;
