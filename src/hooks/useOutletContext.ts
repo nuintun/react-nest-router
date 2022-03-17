@@ -13,7 +13,7 @@ export function useOutletContext<C>(): C {
   const outletContext = useContext(OutletContext);
 
   if (__DEV__) {
-    assert(outletContext, `The hook useOutletValue can only be used in the context of a route component.`);
+    assert(outletContext, `The hook useOutletContext can only be used in the context of a route component.`);
   }
 
   return outletContext!.context as C;
