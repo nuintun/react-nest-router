@@ -1,10 +1,14 @@
 {
   "name": "react-nest-router",
-  "version": "0.0.0-dev-1",
+  "version": "0.0.0-dev-2",
   "description": "Declarative routing for React.",
   "main": "cjs/index.js",
   "module": "esm/index.js",
   "typings": "typings/index.d.ts",
+  "files": [
+    "cjs",
+    "esm"
+  ],
   "sideEffects": false,
   "repository": {
     "type": "git",
