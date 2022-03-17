@@ -14,9 +14,9 @@ export interface NavigateOptions<S> {
   replace?: boolean;
 }
 
-export interface Navigate<S> {
+export interface Navigate {
   (delta: number): void;
-  (to: To, options?: NavigateOptions<S>): void;
+  <S>(to: To, options?: NavigateOptions<S>): void;
 }
 
 /**
@@ -37,14 +37,10 @@ function parseURL(path: string): [origin: string, pathname: string, search: stri
 }
 
 function createURL(basename: string, from: string, to: string, search: string, hash: string): string {
-  if (isAbsolute(to)) {
-    return `${normalize(`${basename}/${to}`)}${search}${hash}`;
-  } else {
-    return `${normalize(`${from}/${to}`)}${search}${hash}`;
-  }
+  return `${normalize(`${isAbsolute(to) ? basename : from}/${to}`)}${search}${hash}`;
 }
 
-export function useNavigate<S>(): Navigate<S> {
+export function useNavigate(): Navigate {
   const locationContext = useLocationContext();
   const navigationContext = useNavigationContext();
 
@@ -58,7 +54,7 @@ export function useNavigate<S>(): Navigate<S> {
   const { location } = locationContext!;
   const { basename, navigator } = navigationContext!;
 
-  const navigate = usePersistCallback<Navigate<S>>((to, options: NavigateOptions<S> = {}) => {
+  const navigate = usePersistCallback(<S>(to: To | number, options: NavigateOptions<S> = {}) => {
     if (isNumber(to)) {
       return navigator.go(to);
     }
