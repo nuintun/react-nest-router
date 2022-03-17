@@ -50,7 +50,7 @@ export function useRouter<M, K extends string>(routes: Route<M, K>[], pathname: 
           const outlet = useMemo<OutletContext>(() => {
             const { context } = props;
 
-            if (context !== undefined) {
+            if ('context' in props) {
               return { context };
             }
 
