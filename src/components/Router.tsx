@@ -16,10 +16,14 @@ export interface RouterProps<M, K extends string, C> {
   basename?: string;
   history?: History;
   routes: Route<M, K>[];
-  fallback?: React.ReactNode;
+  children?: React.ReactNode;
 }
 
-export const Router = memo(function Router({ history, routes, context, basename = '/', fallback = '404' }) {
+/**
+ * @function Router
+ * @param props
+ */
+export const Router = memo(function Router({ history, routes, context, basename = '/', children = '404' }) {
   const routeContext = useRouteContext();
 
   if (__DEV__) {
@@ -56,7 +60,7 @@ export const Router = memo(function Router({ history, routes, context, basename 
   return (
     <NavigationContext.Provider value={navigation}>
       <LocationContext.Provider value={state}>
-        {MainOutlet ? <MainOutlet context={context} /> : fallback}
+        {MainOutlet ? <MainOutlet context={context} /> : children}
       </LocationContext.Provider>
     </NavigationContext.Provider>
   );

@@ -3,10 +3,14 @@
  */
 
 import { memo } from 'react';
+import { assert } from '../utils';
 import { OutletProps } from '../types';
 import { useRouteContext } from '../hooks/useRouteContext';
-import { assert } from '../utils';
 
+/**
+ * @function Outlet
+ * @param props
+ */
 export const Outlet = memo(function Outlet(props) {
   const routeContext = useRouteContext();
 
