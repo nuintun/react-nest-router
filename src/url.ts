@@ -42,6 +42,16 @@ export function parseURL(path: string): URLSchema {
 }
 
 /**
+ * @function normalizeQuery
+ * @description Normalize query.
+ * @param query Query to normalize.
+ * @param symbol Query symbol.
+ */
+export function normalizeQuery(query: string, symbol: string): string {
+  return query !== '' && query !== symbol ? prefix(query, symbol) : '';
+}
+
+/**
  * @function resolveURL
  * @description Resolve URL.
  * @param from URL from.
@@ -53,8 +63,11 @@ export function resolveURL(
   { pathname, search, hash }: Omit<URLSchema, 'origin'>,
   basename: string = '/'
 ): string {
+  hash = normalizeQuery(hash, '#');
+  search = normalizeQuery(search, '?');
+
   const to = normalize(pathname);
-  const query = `${prefix(search, '?')}${prefix(hash, '#')}`;
+  const query = `${search}${hash}`;
 
   if (to === '') return `${from}${query}`;
 
