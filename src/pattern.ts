@@ -27,6 +27,10 @@ export function compile<K extends string>(path: string, sensitive: boolean = fal
     .replace(/[\\.*+^$?{}|()[\]]/g, '\\$&')
     // Collect params and create match group.
     .replace(/:(\w+)/g, (_matched, param: K) => {
+      if (__DEV__) {
+        assert(!keys.includes(param), `Duplicate param key "${param}" found in path "${path}".`);
+      }
+
       keys.push(param);
 
       return '([^\\/]+)';
