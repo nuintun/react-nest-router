@@ -9,7 +9,7 @@ import { useLocationContext } from './useLocationContext';
 /**
  * @function useLocation
  */
-export function useLocation<S>(): Location<S> {
+export function useLocation<S = unknown>(): Location<S> {
   const locationContext = useLocationContext();
 
   if (__DEV__) {

@@ -9,7 +9,7 @@ import { OutletContext } from '../context';
 /**
  * @function useOutletContext
  */
-export function useOutletContext<C>(): C {
+export function useOutletContext<C = unknown>(): C {
   const outletContext = useContext(OutletContext);
 
   if (__DEV__) {

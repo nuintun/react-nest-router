@@ -16,7 +16,7 @@ import { OutletContext, RouteContext } from '../context';
  * @param pathname
  * @param basename
  */
-export function useRouter<M, K extends string, C>(
+export function useRouter<M = unknown, K extends string = string, C = unknown>(
   routes: Route<M, K>[],
   pathname: string,
   basename: string = '/',

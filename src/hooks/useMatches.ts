@@ -9,7 +9,7 @@ import { useRouteContext } from './useRouteContext';
 /**
  * @function useMatches
  */
-export function useMatches<M, K extends string>(): IRoute<M, K>[] {
+export function useMatches<M = unknown, K extends string = string>(): IRoute<M, K>[] {
   const routeContext = useRouteContext();
 
   if (__DEV__) {

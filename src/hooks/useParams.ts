@@ -9,7 +9,7 @@ import { useRouteContext } from './useRouteContext';
 /**
  * @function useParams
  */
-export function useParams<K extends string>(): Params<K> {
+export function useParams<K extends string = string>(): Params<K> {
   const routeContext = useRouteContext();
 
   if (__DEV__) {
