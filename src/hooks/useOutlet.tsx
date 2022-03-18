@@ -12,7 +12,7 @@ import { useRouteContext } from './useRouteContext';
  * @function useOutlet
  * @param context
  */
-export function useOutlet<C>(props: OutletProps<C> = {}): React.ReactElement | null {
+export function useOutlet<C = unknown>(props: OutletProps<C> = {}): React.ReactElement | null {
   const routeContext = useRouteContext();
 
   if (__DEV__) {

@@ -20,4 +20,4 @@ export const Outlet = memo(function Outlet(props) {
   }
 
   return useOutlet(props);
-}) as <C>(props: OutletProps<C>) => React.ReactElement | null;
+}) as <C = unknown>(props: OutletProps<C>) => React.ReactElement | null;

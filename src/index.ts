@@ -2,6 +2,18 @@
  * @module index
  */
 
+export type {
+  IRoute,
+  Location,
+  NavigateProps,
+  Navigator,
+  NavigatorListener,
+  OutletProps,
+  Params,
+  Route,
+  RouteMatch,
+  RouterProps
+} from './types';
 export * from './hooks/useMatch';
 export * from './hooks/useRouter';
 export * from './hooks/useOutlet';
@@ -13,4 +25,3 @@ export * from './components/Outlet';
 export * from './hooks/useNavigate';
 export * from './hooks/useLocation';
 export * from './hooks/useOutletContext';
-export type { IRoute, Location, Navigator, OutletProps, Params, Route, RouteMatch } from './types';

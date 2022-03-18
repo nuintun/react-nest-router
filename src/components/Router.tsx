@@ -4,20 +4,12 @@
 
 import { assert } from '../utils';
 import { normalize } from '../path';
-import { Navigator, Route } from '../types';
 import { useRouter } from '../hooks/useRouter';
 import { createBrowserHistory } from 'history';
+import { Navigator, RouterProps } from '../types';
 import { useRouteContext } from '../hooks/useRouteContext';
 import { LocationContext, NavigationContext } from '../context';
 import React, { memo, useLayoutEffect, useMemo, useState } from 'react';
-
-export interface RouterProps<M = unknown, K extends string = string, C = unknown> {
-  context?: C;
-  basename?: string;
-  routes: Route<M, K>[];
-  navigator?: Navigator;
-  children?: React.ReactNode;
-}
 
 /**
  * @function Router
@@ -62,4 +54,4 @@ export const Router = memo(function Router({ navigator: history, routes, context
       <LocationContext.Provider value={state}>{element ? element : children}</LocationContext.Provider>
     </NavigationContext.Provider>
   );
-}) as <M, K extends string, C>(props: RouterProps<M, K, C>) => React.ReactElement;
+}) as <M = unknown, K extends string = string, C = unknown>(props: RouterProps<M, K, C>) => React.ReactElement;
