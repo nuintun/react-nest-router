@@ -4,49 +4,10 @@
 
 import { To } from 'history';
 import { assert, isString } from '../utils';
-import { isAbsolute, normalize } from '../path';
+import { createURL, parseURL } from '../url';
 import { useLocationContext } from './useLocationContext';
 import { usePersistCallback } from './usePersistCallback';
 import { useNavigationContext } from './useNavigationContext';
-
-/**
- * @function parseURL
- * @description Parse url.
- * @param path URL path.
- */
-function parseURL(path: string): [origin: string, pathname: string, search: string, hash: string] {
-  const matched = path.match(/^((?:[a-z0-9.+-]+:)?\/\/[^/]+)?([^?#]*)(\?[^#]*)?(#.*)?$/i);
-
-  if (matched) {
-    const [, origin = '', pathname, search = '', hash = ''] = matched;
-
-    return [origin, pathname, search, hash];
-  }
-
-  return ['', '', '', ''];
-}
-
-/**
- * @function createURL
- * @param basename
- * @param pathname
- * @param to
- * @param search
- * @param hash
- */
-function createURL(basename: string, pathname: string, to: string, search: string, hash: string): string {
-  to = normalize(to);
-
-  if (to === '') return pathname;
-
-  if (to === '/') return basename;
-
-  if (isAbsolute(to)) {
-    return normalize(`${basename}/${to}`);
-  }
-
-  return `${normalize(`${pathname}/${to}`)}${search}${hash}`;
-}
 
 /**
  * @function useResolve

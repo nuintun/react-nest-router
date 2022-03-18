@@ -2,8 +2,9 @@
  * @module pattern
  */
 
+import { assert } from './utils';
+import { safelyDecodeURIComponent } from './url';
 import { Matcher, Mutable, Params } from './types';
-import { assert, safelyDecodeURIComponent } from './utils';
 
 /**
  * @function compile

@@ -3,10 +3,51 @@
  */
 
 import { Tree } from './Tree';
+import { assert } from './utils';
 import { compile } from './pattern';
-import { assert, computeScore } from './utils';
 import { isAbsolute, isOutBounds, prefix, resolve, suffix } from './path';
 import { BranchMeta, IRoute, Route, RouteBranch, RouteMatch } from './types';
+
+/**
+ * @function computeScore
+ * @param path Route path.
+ * @param index Is index route.
+ */
+function computeScore(path: string, index?: boolean): number {
+  const indexRouteValue = 2;
+  const emptySegmentValue = 1;
+  const splatPenaltyValue = -2;
+  const dynamicSegmentValue = 3;
+  const staticSegmentValue = 10;
+
+  const segments = path.split('/');
+
+  let initialScore = segments.length;
+
+  if (segments[initialScore - 1] === '*') {
+    segments.pop();
+
+    initialScore += splatPenaltyValue;
+  }
+
+  if (index) {
+    initialScore += indexRouteValue;
+  }
+
+  return segments.reduce((score, segment) => {
+    if (segment === '') {
+      return score + emptySegmentValue;
+    }
+
+    const paramKeyRe = /^:\w+$/;
+
+    if (paramKeyRe.test(segment)) {
+      return score + dynamicSegmentValue;
+    }
+
+    return score + staticSegmentValue;
+  }, initialScore);
+}
 
 /**
  * @function isBranchSiblings
