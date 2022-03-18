@@ -54,7 +54,7 @@ export function resolve(from: string, to?: string): string {
  * @param symbol Prefix symbol.
  */
 export function prefix(path: string, symbol: string): string {
-  return path.startsWith(symbol) ? path : `/${path}`;
+  return path.startsWith(symbol) ? path : `${symbol}${path}`;
 }
 
 /**
@@ -64,7 +64,7 @@ export function prefix(path: string, symbol: string): string {
  * @param symbol Suffix symbol.
  */
 export function suffix(path: string, symbol: string): string {
-  return path.endsWith(symbol) ? path : `${path}/`;
+  return path.endsWith(symbol) ? path : `${path}${symbol}`;
 }
 
 /**

@@ -2,7 +2,7 @@
  * @module url
  */
 
-import { isAbsolute, normalize } from './path';
+import { isAbsolute, normalize, prefix } from './path';
 
 export interface URLSchema {
   readonly hash: string;
@@ -54,14 +54,15 @@ export function resolveURL(
   basename: string = '/'
 ): string {
   const to = normalize(pathname);
+  const query = `${prefix(search, '?')}${prefix(hash, '#')}`;
 
-  if (to === '') return `${from}${to}`;
+  if (to === '') return `${from}${query}`;
 
-  if (to === '/') return `${basename}${to}`;
+  if (to === '/') return `${basename}${query}`;
 
   if (isAbsolute(to)) {
-    return normalize(`${basename}/${to}${search}${hash}`);
+    return normalize(`${basename}/${to}${query}`);
   }
 
-  return `${normalize(`${from}/${to}`)}${search}${hash}`;
+  return `${normalize(`${from}/${to}`)}${query}`;
 }
