@@ -3,7 +3,7 @@
  */
 
 import React from 'react';
-import { Location as HistoryLocation } from 'history';
+import { Action, Location as ILocation, To } from 'history';
 
 /**
  * Set object mutable
@@ -15,7 +15,7 @@ export type Mutable<T> = {
 /**
  * Interface Route.
  */
-export interface IRoute<M, K extends string> {
+export interface IRoute<M = unknown, K extends string = string> {
   meta?: M;
   index?: true;
   path?: string;
@@ -28,7 +28,7 @@ export interface IRoute<M, K extends string> {
 /**
  * Index route.
  */
-export interface IndexRoute<M, K extends string> {
+export interface IndexRoute<M = unknown, K extends string = string> {
   meta?: M;
   index: true;
   sensitive?: boolean;
@@ -40,7 +40,7 @@ export interface IndexRoute<M, K extends string> {
 /**
  * Page route.
  */
-export interface PageRoute<M, K extends string> {
+export interface PageRoute<M = unknown, K extends string = string> {
   meta?: M;
   path: string;
   index?: undefined;
@@ -53,7 +53,7 @@ export interface PageRoute<M, K extends string> {
 /**
  * Layout route.
  */
-export interface LayoutRoute<M, K extends string> {
+export interface LayoutRoute<M = unknown, K extends string = string> {
   meta?: M;
   path?: string;
   index?: undefined;
@@ -65,19 +65,19 @@ export interface LayoutRoute<M, K extends string> {
  * A route object represents a logical route, with (optionally) its child
  * routes organized in a tree-like structure.
  */
-export type Route<M, K extends string> = LayoutRoute<M, K> | PageRoute<M, K> | IndexRoute<M, K>;
+export type Route<M = unknown, K extends string = string> = LayoutRoute<M, K> | PageRoute<M, K> | IndexRoute<M, K>;
 
 /**
  * The parameters that were parsed from the URL path.
  */
-export type Params<K extends string> = {
+export type Params<K extends string = string> = {
   readonly [P in K]: string | undefined;
 };
 
 /**
  * Patch matcher
  */
-export interface Matcher<K extends string> {
+export interface Matcher<K extends string = string> {
   readonly keys: K[];
   readonly path: string;
   readonly pattern: RegExp;
@@ -88,7 +88,7 @@ export interface Matcher<K extends string> {
 /**
  * A RouteMatch contains info about how a route matched a URL.
  */
-export interface RouteMatch<M, K extends string> {
+export interface RouteMatch<M = unknown, K extends string = string> {
   /**
    * The route path that was used to match.
    */
@@ -114,7 +114,7 @@ export interface RouteMatch<M, K extends string> {
 /**
  * Route branch meta.
  */
-export interface BranchMeta<M, K extends string> {
+export interface BranchMeta<M = unknown, K extends string = string> {
   readonly index: number;
   readonly route: IRoute<M, K>;
 }
@@ -122,7 +122,7 @@ export interface BranchMeta<M, K extends string> {
 /**
  * Route branch.
  */
-export interface RouteBranch<M, K extends string> {
+export interface RouteBranch<M = unknown, K extends string = string> {
   readonly score: number;
   readonly matcher: Matcher<K>;
   readonly meta: BranchMeta<M, K>[];
@@ -132,13 +132,40 @@ export interface RouteBranch<M, K extends string> {
 /**
  * Outlet props.
  */
-export interface OutletProps<C> {
+export interface OutletProps<C = unknown> {
   context?: C;
 }
 
 /**
- * History location enhance
+ * Location
  */
-export interface Location<S> extends HistoryLocation {
+export interface Location<S = unknown> extends ILocation {
   state: S;
+}
+
+/**
+ * Navigator update.
+ */
+export interface NavigatorUpdate<S = unknown> {
+  action: Action;
+  location: Location<S>;
+}
+
+/**
+ * Navigator listener.
+ */
+export interface NavigatorListener {
+  <S = unknown>(update: NavigatorUpdate<S>): void;
+}
+
+/**
+ * Navigator
+ */
+export interface Navigator {
+  action: Action;
+  location: Location;
+  go(delta: number): void;
+  push<S = unknown>(to: To, state?: S): void;
+  replace<S = unknown>(to: To, state?: S): void;
+  listen(listener: NavigatorListener): () => void;
 }

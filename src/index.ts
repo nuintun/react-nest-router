@@ -13,4 +13,4 @@ export * from './components/Outlet';
 export * from './hooks/useNavigate';
 export * from './hooks/useLocation';
 export * from './hooks/useOutletContext';
-export type { OutletProps, Route, RouteMatch } from './types';
+export type { IRoute, Location, Navigator, OutletProps, Params, Route, RouteMatch } from './types';

@@ -3,9 +3,9 @@
  */
 
 import React from 'react';
+import { Action } from 'history';
 import { createContext } from 'react';
-import { Action, History } from 'history';
-import { IRoute, Location, RouteMatch } from './types';
+import { IRoute, Location, Navigator, RouteMatch } from './types';
 
 /**
  * Route context.
@@ -44,7 +44,7 @@ export const LocationContext = createContext<LocationContext | null>(null);
  */
 export interface NavigationContext {
   basename: string;
-  navigator: History;
+  navigator: Navigator;
 }
 
 // Navigation context.

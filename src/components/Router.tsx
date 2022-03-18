@@ -2,20 +2,20 @@
  * @module Router
  */
 
-import { Route } from '../types';
 import { assert } from '../utils';
 import { normalize } from '../path';
+import { Navigator, Route } from '../types';
 import { useRouter } from '../hooks/useRouter';
-import { createBrowserHistory, History } from 'history';
+import { createBrowserHistory } from 'history';
 import { useRouteContext } from '../hooks/useRouteContext';
 import { LocationContext, NavigationContext } from '../context';
 import React, { memo, useLayoutEffect, useMemo, useState } from 'react';
 
-export interface RouterProps<M, K extends string, C> {
+export interface RouterProps<M = unknown, K extends string = string, C = unknown> {
   context?: C;
   basename?: string;
-  history?: History;
   routes: Route<M, K>[];
+  navigator?: Navigator;
   children?: React.ReactNode;
 }
 
@@ -23,7 +23,7 @@ export interface RouterProps<M, K extends string, C> {
  * @function Router
  * @param props
  */
-export const Router = memo(function Router({ history, routes, context, basename = '/', children = '404' }) {
+export const Router = memo(function Router({ navigator: history, routes, context, basename = '/', children = '404' }) {
   const routeContext = useRouteContext();
 
   if (__DEV__) {
@@ -38,7 +38,7 @@ export const Router = memo(function Router({ history, routes, context, basename 
     assert(basename.startsWith('/'), 'Router basename must start with /.');
   }
 
-  const navigator = useMemo<History>(() => {
+  const navigator = useMemo<Navigator>(() => {
     return history ?? createBrowserHistory();
   }, [history]);
 
