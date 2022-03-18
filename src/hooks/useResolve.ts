@@ -4,7 +4,7 @@
 
 import { To } from 'history';
 import { assert, isString } from '../utils';
-import { createURL, parseURL } from '../url';
+import { parseURL, resolveURL } from '../url';
 import { useLocationContext } from './useLocationContext';
 import { usePersistCallback } from './usePersistCallback';
 import { useNavigationContext } from './useNavigationContext';
@@ -27,18 +27,22 @@ export function useResolve(): (to: To) => string {
   const { pathname: from } = locationContext!.location;
 
   return usePersistCallback(to => {
+    let hash = '';
+    let search = '';
+    let pathname = '';
+
     if (isString(to)) {
-      const [origin, pathname, search, hash] = parseURL(to);
+      const parts = parseURL(to);
 
       if (__DEV__) {
-        assert(origin === '', `The path to be resolved cannot have a protocol.`);
+        assert(parts.origin === '', `The path to be resolved cannot have a protocol.`);
       }
 
-      return createURL(basename, from, pathname, search, hash);
+      ({ pathname, search, hash } = parts);
     } else {
-      const { pathname = '/', search = '', hash = '' } = to;
-
-      return createURL(basename, from, pathname, search, hash);
+      ({ pathname = '/', search = '', hash = '' } = to);
     }
+
+    return resolveURL(from, { pathname, search, hash }, basename);
   });
 }
