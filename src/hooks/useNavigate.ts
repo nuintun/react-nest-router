@@ -5,19 +5,10 @@
 import { To } from 'history';
 import { useResolve } from './useResolve';
 import { assert, isNumber } from '../utils';
+import { Navigate, NavigateOptions } from '../types';
 import { usePersistCallback } from './usePersistCallback';
 import { useLocationContext } from './useLocationContext';
 import { useNavigationContext } from './useNavigationContext';
-
-export interface NavigateOptions<S> {
-  state?: S;
-  replace?: boolean;
-}
-
-export interface Navigate {
-  (delta: number): void;
-  <S>(to: To, options?: NavigateOptions<S>): void;
-}
 
 export function useNavigate(): Navigate {
   const locationContext = useLocationContext();
@@ -33,7 +24,7 @@ export function useNavigate(): Navigate {
   const resolve = useResolve();
   const { navigator } = navigationContext!;
 
-  return usePersistCallback(<S>(to: To | number, options: NavigateOptions<S> = {}) => {
+  return usePersistCallback(<S = unknown>(to: To | number, options: NavigateOptions<S> = {}) => {
     if (isNumber(to)) {
       return navigator.go(to);
     }

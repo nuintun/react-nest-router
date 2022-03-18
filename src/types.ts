@@ -189,3 +189,13 @@ export interface Navigator {
   replace<S = unknown>(to: To, state?: S): void;
   listen(listener: NavigatorListener): () => void;
 }
+
+export interface NavigateOptions<S> {
+  state?: S;
+  replace?: boolean;
+}
+
+export interface Navigate {
+  (delta: number): void;
+  <S>(to: To, options?: NavigateOptions<S>): void;
+}

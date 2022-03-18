@@ -5,6 +5,8 @@
 export type {
   IRoute,
   Location,
+  Navigate,
+  NavigateOptions,
   NavigateProps,
   Navigator,
   NavigatorListener,
