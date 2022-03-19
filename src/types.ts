@@ -130,33 +130,6 @@ export interface RouteBranch<M = unknown, K extends string = string> {
 }
 
 /**
- * Route props.
- */
-export interface RouterProps<M = unknown, K extends string = string, C = unknown> {
-  context?: C;
-  basename?: string;
-  routes: Route<M, K>[];
-  navigator?: Navigator;
-  children?: React.ReactNode;
-}
-
-/**
- * Outlet props.
- */
-export interface OutletProps<C = unknown> {
-  context?: C;
-}
-
-/**
- * Navigate props.
- */
-export interface NavigateProps<S = unknown> {
-  to: To;
-  state?: S;
-  replace?: boolean;
-}
-
-/**
  * Location.
  */
 export interface Location<S = unknown> extends ILocation {
@@ -197,5 +170,32 @@ export interface NavigateOptions<S> {
 
 export interface Navigate {
   (delta: number): void;
-  <S>(to: To, options?: NavigateOptions<S>): void;
+  <S = unknown>(to: To, options?: NavigateOptions<S>): void;
+}
+
+/**
+ * Route props.
+ */
+export interface RouterProps<M = unknown, K extends string = string, C = unknown> {
+  context?: C;
+  basename?: string;
+  routes: Route<M, K>[];
+  navigator?: Navigator;
+  children?: React.ReactNode;
+}
+
+/**
+ * Outlet props.
+ */
+export interface OutletProps<C = unknown> {
+  context?: C;
+}
+
+/**
+ * Navigate props.
+ */
+export interface NavigateProps<S = unknown> {
+  to: To;
+  state?: S;
+  replace?: boolean;
 }
