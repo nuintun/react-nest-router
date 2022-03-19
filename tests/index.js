@@ -2,7 +2,7 @@
  * @module index
  */
 
-const { flatten, match } = require('../cjs');
+const { flatten, match } = require('../cjs/router');
 
 const routes = [
   { path: '/login', meta: { id: 1 }, element: '<Login />' },
@@ -11,19 +11,19 @@ const routes = [
     meta: { id: 2 },
     element: '<Layout />',
     children: [
+      { index: true, meta: { id: 6 }, element: '<Home />' },
       {
         path: 'courses',
         meta: { id: 3 },
         element: '<Courses />',
         children: [
           { index: true, meta: { id: 4 }, element: '<CoursesIndex />' },
-          { path: '/courses/:id', meta: { id: 5 }, element: '<Course />' }
+          { path: '/courses/:id', meta: { id: 5 }, element: '<CoursesDetails />' }
         ]
-      },
-      { index: true, meta: { id: 6 }, element: '<Home />' }
+      }
     ]
   },
-  { path: '*', meta: { id: 7 }, element: '<LayoutNoMatch />' }
+  { path: '*', meta: { id: 7 }, element: '<NoMatch />' }
 ];
 
 console.time('benchmark');
