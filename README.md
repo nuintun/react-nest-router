@@ -1,3 +1,3 @@
 # react-nest-router
 
-Declarative routing for React.
+> Declarative routing for React.
