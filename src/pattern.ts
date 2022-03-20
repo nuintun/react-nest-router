@@ -11,6 +11,7 @@ import { Matcher, Mutable, Params } from './types';
  * @description Compile route path.
  * @param path Route path.
  * @param sensitive Case sensitive.
+ * @see https://github.com/remix-run/react-router
  */
 export function compile<K extends string>(path: string, sensitive: boolean = false): Matcher<K> {
   if (__DEV__) {
