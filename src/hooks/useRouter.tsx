@@ -49,21 +49,19 @@ export function useRouter<M = unknown, K extends string = string, C = unknown>(
     return match(branches, pathname, basename);
   }, [pathname, basename, branches]);
 
-  return useMemo(() => {
+  const element = useMemo(() => {
     if (matched) {
-      return (
-        <OutletContext.Provider value={outletContext}>
-          {matched.meta.reduceRight<React.ReactElement | null>((outlet, route) => {
-            return (
-              <RouteContext.Provider value={{ outlet, match: matched, current: route }}>
-                {'element' in route ? route.element : outlet}
-              </RouteContext.Provider>
-            );
-          }, null)}
-        </OutletContext.Provider>
-      );
+      return matched.meta.reduceRight<React.ReactElement | null>((outlet, route) => {
+        return (
+          <RouteContext.Provider value={{ outlet, match: matched, current: route }}>
+            {'element' in route ? route.element : outlet}
+          </RouteContext.Provider>
+        );
+      }, null);
     }
 
     return null;
-  }, [matched, outletContext]);
+  }, [matched]);
+
+  return element ? <OutletContext.Provider value={outletContext}>{element}</OutletContext.Provider> : element;
 }
