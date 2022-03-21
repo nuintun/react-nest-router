@@ -9,12 +9,12 @@ import { OutletContext } from '../context';
 /**
  * @function useOutletContext
  */
-export function useOutletContext<C = unknown>(): C {
+export function useOutletContext<C = unknown>(): Readonly<C> {
   const outletContext = useContext(OutletContext);
 
   if (__DEV__) {
     assert(outletContext, `The hook useOutletContext can only be used in the context of a route component.`);
   }
 
-  return outletContext!.context as C;
+  return outletContext!.context as Readonly<C>;
 }

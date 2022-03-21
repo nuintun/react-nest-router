@@ -16,13 +16,13 @@ export type Mutable<T> = {
  * Interface Route.
  */
 export interface IRoute<M = unknown, K extends string = string> {
-  meta?: M;
-  index?: true;
-  path?: string;
-  sensitive?: boolean;
-  children?: IRoute<M, K>[];
-  element?: React.ReactNode;
-  guard?: (match: RouteMatch<M, K>) => boolean;
+  readonly index?: true;
+  readonly path?: string;
+  readonly meta?: Readonly<M>;
+  readonly sensitive?: boolean;
+  readonly element?: React.ReactNode;
+  readonly children?: IRoute<M, K>[];
+  readonly guard?: (match: RouteMatch<M, K>) => boolean;
 }
 
 /**
@@ -93,21 +93,9 @@ export interface RouteMatch<M = unknown, K extends string = string> {
    * The route path that was used to match.
    */
   readonly path: string;
-  /**
-   * The portion of the URL pathname that was matched before child routes.
-   */
   readonly basename: string;
-  /**
-   * The portion of the URL pathname that was matched.
-   */
   readonly pathname: string;
-  /**
-   * The names and values of dynamic parameters in the URL.
-   */
   readonly params: Params<K>;
-  /**
-   * The route branch meta that was used to match.
-   */
   readonly meta: IRoute<M, K>[];
 }
 
@@ -132,16 +120,16 @@ export interface RouteBranch<M = unknown, K extends string = string> {
 /**
  * Location.
  */
-export interface Location<S = unknown> extends ILocation {
-  state: S;
+export interface Location<S = unknown> extends Readonly<ILocation> {
+  readonly state: S;
 }
 
 /**
  * Navigator update.
  */
 export interface NavigatorUpdate<S = unknown> {
-  action: Action;
-  location: Location<S>;
+  readonly action: Action;
+  readonly location: Location<S>;
 }
 
 /**

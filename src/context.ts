@@ -23,7 +23,7 @@ export const RouteContext = createContext<RouteContext | null>(null);
  * Outlet context.
  */
 export interface OutletContext {
-  context: unknown;
+  readonly context: unknown;
 }
 // Outlet context.
 export const OutletContext = createContext<OutletContext | null>(null);
@@ -32,8 +32,8 @@ export const OutletContext = createContext<OutletContext | null>(null);
  * Location context.
  */
 export interface LocationContext {
-  action: Action;
-  location: Location<unknown>;
+  readonly action: Action;
+  readonly location: Location<unknown>;
 }
 
 // Location context.
@@ -43,8 +43,8 @@ export const LocationContext = createContext<LocationContext | null>(null);
  * Navigation context.
  */
 export interface NavigationContext {
-  basename: string;
-  navigator: Navigator;
+  readonly basename: string;
+  readonly navigator: Navigator;
 }
 
 // Navigation context.
