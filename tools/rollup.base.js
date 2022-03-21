@@ -30,6 +30,7 @@ export default function rollup(esnext) {
     preserveModules: true,
     output: {
       interop: false,
+      exports: 'auto',
       esModule: false,
       dir: esnext ? 'esm' : 'cjs',
       format: esnext ? 'esm' : 'cjs'
