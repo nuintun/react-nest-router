@@ -10,6 +10,10 @@ import { usePersistCallback } from './usePersistCallback';
 import { useLocationContext } from './useLocationContext';
 import { useNavigationContext } from './useNavigationContext';
 
+/**
+ * @function useNavigate
+ * @description Get navigate method.
+ */
 export function useNavigate(): Navigate {
   const locationContext = useLocationContext();
   const navigationContext = useNavigationContext();

@@ -8,6 +8,7 @@ import { useRouteContext } from './useRouteContext';
 
 /**
  * @function useMatch
+ * @description Get current match route.
  */
 export function useMatch<M = unknown, K extends string = string>(): IRoute<M, K> {
   const routeContext = useRouteContext();

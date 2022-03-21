@@ -8,6 +8,7 @@ import { OutletContext } from '../context';
 
 /**
  * @function useOutletContext
+ * @description Get outlet context.
  */
 export function useOutletContext<C = unknown>(): Readonly<C> {
   const outletContext = useContext(OutletContext);

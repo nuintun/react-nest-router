@@ -12,9 +12,10 @@ import { OutletContext, RouteContext } from '../context';
 
 /**
  * @function useRouter
- * @param routes
- * @param pathname
- * @param basename
+ * @description Get the element of the route that matched the current location.
+ * @param routes User routes.
+ * @param pathname The pathname to match.
+ * @param basename The basename of the route.
  */
 export function useRouter<M = unknown, K extends string = string, C = unknown>(
   routes: Route<M, K>[],

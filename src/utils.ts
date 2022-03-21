@@ -13,7 +13,7 @@ export function assert<T>(cond: T, message: string): asserts cond {
 
 /**
  * @function isNumber
- * @param value
+ * @param value The value to check.
  */
 export function isNumber(value: unknown): value is number {
   return Object.prototype.toString.call(value) === '[object Number]';
@@ -21,7 +21,7 @@ export function isNumber(value: unknown): value is number {
 
 /**
  * @function isString
- * @param value
+ * @param value The value to check.
  */
 export function isString(value: unknown): value is string {
   return Object.prototype.toString.call(value) === '[object String]';

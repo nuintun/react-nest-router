@@ -11,6 +11,7 @@ import { useNavigationContext } from './useNavigationContext';
 
 /**
  * @function useResolve
+ * @description Get resolve method.
  */
 export function useResolve(): (to: To) => string {
   const locationContext = useLocationContext();
