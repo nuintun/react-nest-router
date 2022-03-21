@@ -18,10 +18,7 @@ export function useResolve(): (to: To) => string {
   const navigationContext = useNavigationContext();
 
   if (__DEV__) {
-    assert(
-      navigationContext && locationContext,
-      `The hook useResolve can only be used in the context of a <Router> component.`
-    );
+    assert(navigationContext && locationContext, `The hook useResolve can only be used inside a <Router> component.`);
   }
 
   const { basename } = navigationContext!;

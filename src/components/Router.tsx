@@ -9,6 +9,8 @@ import { createBrowserHistory } from 'history';
 import { Navigator, RouterProps } from '../types';
 import { useRouteContext } from '../hooks/useRouteContext';
 import { LocationContext, NavigationContext } from '../context';
+import { useLocationContext } from '../hooks/useLocationContext';
+import { useNavigationContext } from '../hooks/useNavigationContext';
 import React, { memo, useLayoutEffect, useMemo, useState } from 'react';
 
 /**
@@ -17,9 +19,14 @@ import React, { memo, useLayoutEffect, useMemo, useState } from 'react';
  */
 export const Router = memo(function Router({ navigator: history, routes, context, basename = '/', children = '404' }) {
   const routeContext = useRouteContext();
+  const locationContext = useLocationContext();
+  const navigationContext = useNavigationContext();
 
   if (__DEV__) {
-    assert(!routeContext, `You cannot render <Router> inside another <Router>.`);
+    assert(
+      !navigationContext && !locationContext && !routeContext,
+      `The component <Router> cannot render inside another <Router> component.`
+    );
   }
 
   basename = useMemo(() => {

@@ -14,7 +14,7 @@ export function useLocation<S = unknown>(): Location<S> {
   const locationContext = useLocationContext();
 
   if (__DEV__) {
-    assert(locationContext, `The hook useLocation can only be used in the context of a <Router> component.`);
+    assert(locationContext, `The hook useLocation can only be used inside a <Router> component.`);
   }
 
   return locationContext!.location as Location<S>;

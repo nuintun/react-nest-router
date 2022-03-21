@@ -14,7 +14,7 @@ export function useOutletContext<C = unknown>(): Readonly<C> {
   const outletContext = useContext(OutletContext);
 
   if (__DEV__) {
-    assert(outletContext, `The hook useOutletContext can only be used in the context of a route component.`);
+    assert(outletContext, `The hook useOutletContext can only be used inside a route element.`);
   }
 
   return outletContext!.context as Readonly<C>;

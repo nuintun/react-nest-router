@@ -16,10 +16,7 @@ export function useNavigateAction(): Action {
   const navigationContext = useNavigationContext();
 
   if (__DEV__) {
-    assert(
-      navigationContext && locationContext,
-      `The hook useNavigateAction can only be used in the context of a <Router> component.`
-    );
+    assert(navigationContext && locationContext, `The hook useNavigateAction can only be used inside a <Router> component.`);
   }
 
   return locationContext!.action;

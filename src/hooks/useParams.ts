@@ -14,7 +14,7 @@ export function useParams<K extends string = string>(): Params<K> {
   const routeContext = useRouteContext();
 
   if (__DEV__) {
-    assert(routeContext, `The hook useParams can only be used in the context of a route component.`);
+    assert(routeContext, `The hook useParams can only be used inside a route element.`);
   }
 
   return routeContext!.match.params;
