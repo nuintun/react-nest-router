@@ -18,9 +18,14 @@ export function compile<K extends string>(path: string, sensitive: boolean = fal
     assert(!/[^/](?=\*$)/.test(path), `Trailing "*" in routing path "${path}" must follow "/".`);
   }
 
+  // Source string.
+  let source = '^';
+
+  // Path parameter keys.
   const keys: K[] = [];
 
-  let source = `^${path
+  // Add path source string.
+  source += path
     // Ignore trailing / and /*, we'll handle it below.
     .replace(/\/*\*?$/, '')
     // Make sure it has a leading /.
@@ -36,7 +41,7 @@ export function compile<K extends string>(path: string, sensitive: boolean = fal
       keys.push(param);
 
       return '([^\\/]+)';
-    })}`;
+    });
 
   if (path.endsWith('*')) {
     keys.push('*' as K);

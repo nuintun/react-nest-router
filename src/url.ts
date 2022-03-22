@@ -47,8 +47,8 @@ export function parseURL(path: string): URLSchema {
  * @param query Query to normalize.
  * @param symbol Query symbol.
  */
-export function normalizeQuery(query: string, symbol: string): string {
-  return query !== '' && query !== symbol ? prefix(query, symbol) : '';
+export function normalizeQuery(query: string | undefined, symbol: string): string {
+  return query && query !== symbol ? prefix(query, symbol) : '';
 }
 
 /**
@@ -58,24 +58,27 @@ export function normalizeQuery(query: string, symbol: string): string {
  * @param to URL to.
  * @param basename URL basename.
  */
-export function resolveURL(
-  from: string,
-  { pathname, search, hash }: Omit<URLSchema, 'origin'>,
-  basename: string = '/'
-): string {
-  hash = normalizeQuery(hash, '#');
-  search = normalizeQuery(search, '?');
+export function resolveURL(from: string, to: Partial<Omit<URLSchema, 'origin'>> = {}, basename: string = '/'): string {
+  const { pathname } = to;
 
-  const to = normalize(pathname);
-  const query = `${search}${hash}`;
+  const hash = normalizeQuery(to.hash, '#');
+  const search = normalizeQuery(to.search, '?');
 
-  if (to === '') return `${from}${query}`;
+  const query = search + hash;
 
-  if (to === '/') return `${basename}${query}`;
-
-  if (isAbsolute(to)) {
-    return normalize(`${basename}/${to}${query}`);
+  if (!pathname) {
+    return normalize(from) + query;
   }
 
-  return `${normalize(`${from}/${to}`)}${query}`;
+  const path = normalize(pathname);
+
+  if (path === '/') {
+    return normalize(basename) + query;
+  }
+
+  if (isAbsolute(path)) {
+    return normalize(basename + '/' + path) + query;
+  }
+
+  return normalize(from + '/' + path) + query;
 }

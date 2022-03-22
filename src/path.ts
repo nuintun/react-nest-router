@@ -40,11 +40,15 @@ export function normalize(path: string): string {
  * @param to The path to end.
  */
 export function resolve(from: string, to?: string): string {
-  if (!to) return normalize(from);
+  if (!to) {
+    return normalize(from);
+  }
 
-  if (isAbsolute(to)) return normalize(to);
+  if (isAbsolute(to)) {
+    return normalize(to);
+  }
 
-  return normalize(`${from}/${to}`);
+  return normalize(from + '/' + to);
 }
 
 /**
@@ -54,7 +58,7 @@ export function resolve(from: string, to?: string): string {
  * @param symbol Prefix symbol.
  */
 export function prefix(path: string, symbol: string): string {
-  return path.startsWith(symbol) ? path : `${symbol}${path}`;
+  return path.startsWith(symbol) ? path : symbol + path;
 }
 
 /**
@@ -64,7 +68,7 @@ export function prefix(path: string, symbol: string): string {
  * @param symbol Suffix symbol.
  */
 export function suffix(path: string, symbol: string): string {
-  return path.endsWith(symbol) ? path : `${path}${symbol}`;
+  return path.endsWith(symbol) ? path : path + symbol;
 }
 
 /**
