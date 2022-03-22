@@ -8,7 +8,7 @@ import treeShake from './plugins/tree-shake';
 import typescript from '@rollup/plugin-typescript';
 
 const banner = `/**
- * @module ${pkg.name}
+ * @package ${pkg.name}
  * @license ${pkg.license}
  * @version ${pkg.version}
  * @author ${pkg.author.name} <${pkg.author.email}>
