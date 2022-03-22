@@ -2,9 +2,20 @@
  * @module rollup.base
  */
 
+import pkg from '../package.json';
 import replace from '@rollup/plugin-replace';
 import treeShake from './plugins/tree-shake';
 import typescript from '@rollup/plugin-typescript';
+
+const banner = `/**
+ * @module ${pkg.name}
+ * @license ${pkg.license}
+ * @version ${pkg.version}
+ * @author ${pkg.author.name} <${pkg.author.email}>
+ * @description ${pkg.description}
+ * @see ${pkg.homepage}
+ */
+`;
 
 /**
  * @function env
@@ -29,6 +40,7 @@ export default function rollup(esnext) {
     input: 'src/index.ts',
     preserveModules: true,
     output: {
+      banner,
       interop: false,
       exports: 'auto',
       esModule: false,

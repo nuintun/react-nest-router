@@ -1,6 +1,6 @@
 {
   "name": "react-nest-router",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Declarative routing for React.",
   "main": "cjs/index.js",
   "module": "esm/index.js",
@@ -20,7 +20,10 @@
     "router",
     "history"
   ],
-  "author": "nuintun",
+  "author": {
+    "name": "nuintun",
+    "email": "nuintun@qq.com"
+  },
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/nuintun/react-nest-router/issues"
