@@ -25,6 +25,7 @@ export const RouteContext = createContext<RouteContext | null>(null);
 export interface OutletContext {
   readonly context: unknown;
 }
+
 // Outlet context.
 export const OutletContext = createContext<OutletContext | null>(null);
 

@@ -43,6 +43,7 @@ export function compile<K extends string>(path: string, sensitive: boolean = fal
       return '([^\\/]+)';
     });
 
+  // If ends with *.
   if (path.endsWith('*')) {
     keys.push('*' as K);
 
