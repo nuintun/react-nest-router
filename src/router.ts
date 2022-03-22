@@ -233,10 +233,10 @@ export function match<M, K extends string>(
   }
 
   for (const { meta: metadata, matcher, guard } of routes) {
-    const { path, match } = matcher;
-    const params = match(pathname);
+    const params = matcher.match(pathname);
 
     if (params) {
+      const { path } = matcher;
       const meta = metadata.map(({ route }) => route);
       const match = { path, meta, params, basename, pathname };
 
