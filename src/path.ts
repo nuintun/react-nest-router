@@ -23,6 +23,8 @@ export function normalize(path: string, allowAboveRoot?: boolean) {
 
   for (const segment of parts) {
     switch (segment) {
+      case '.':
+        break;
       case '..':
         const { length } = segments;
 
@@ -31,14 +33,9 @@ export function normalize(path: string, allowAboveRoot?: boolean) {
         } else if (allowAboveRoot) {
           segments.push('..');
         }
-
         break;
       default:
-        // Ignore empty parts.
-        if (segment && segment !== '.') {
-          segments.push(segment);
-        }
-
+        segments.push(segment);
         break;
     }
   }
