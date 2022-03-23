@@ -15,22 +15,35 @@ export function isAbsolute(path: string): boolean {
  * @function normalize
  * @description Normalize the path.
  * @param path The path to normalize.
+ * @param allowAboveRoot Is allow above root path.
  */
-export function normalize(path: string): string {
+export function normalize(path: string, allowAboveRoot?: boolean) {
   const segments: string[] = [];
-  const paths = path.replace(/\\+|\/{2,}/, '/').split('/');
+  const parts = path.replace(/\\+|\/{2,}/, '/').split('/');
 
-  for (const segment of paths) {
-    if (segment === '..') {
-      if (segments.length > 1 || segments[0]) {
-        segments.pop();
-      }
-    } else if (segment !== '.') {
-      segments.push(segment);
+  for (const segment of parts) {
+    switch (segment) {
+      case '..':
+        const { length } = segments;
+
+        if (length && segments[length - 1] !== '..') {
+          segments.pop();
+        } else if (allowAboveRoot) {
+          segments.push('..');
+        }
+
+        break;
+      default:
+        // Ignore empty parts.
+        if (segment && segment !== '.') {
+          segments.push(segment);
+        }
+
+        break;
     }
   }
 
-  return segments.join('/');
+  return segments.join('/') || '/';
 }
 
 /**
@@ -72,19 +85,19 @@ export function suffix(path: string, symbol: string): string {
 }
 
 /**
- * @function isOutBounds
- * @description Is the path out of bounds.
- * @param from The bounds path.
- * @param to The path to check.
+ * @function isAboveRoot
+ * @description Is the path above root.
+ * @param root The root path.
+ * @param path The path to check.
  * @param sensitive Is case sensitive.
  */
-export function isOutBounds(from: string, to: string, sensitive?: boolean): boolean {
-  from = suffix(from, '/');
+export function isAboveRoot(root: string, path: string, sensitive?: boolean): boolean {
+  root = suffix(root, '/');
 
   if (!sensitive) {
-    from = from.toLowerCase();
-    to = to.toLowerCase();
+    root = root.toLowerCase();
+    path = path.toLowerCase();
   }
 
-  return !to.startsWith(from);
+  return !path.startsWith(root);
 }

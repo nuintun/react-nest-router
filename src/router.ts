@@ -5,7 +5,7 @@
 import { Tree } from './Tree';
 import { assert } from './utils';
 import { compile } from './pattern';
-import { isAbsolute, isOutBounds, prefix, resolve, suffix } from './path';
+import { isAboveRoot, isAbsolute, prefix, resolve, suffix } from './path';
 import { BranchMeta, IRoute, Route, RouteBranch, RouteMatch } from './types';
 
 /**
@@ -169,7 +169,7 @@ export function flatten<M, K extends string>(routes: Route<M, K>[]): RouteBranch
         );
 
         assert(
-          !(to && isAbsolute(to) && isOutBounds(from, to, isLayout ? false : item.sensitive)),
+          !(to && isAbsolute(to) && isAboveRoot(from, to, isLayout ? false : item.sensitive)),
           `Absolute route path "${to}" nested under path "${from}" is not valid. An absolute child route path must start with the combined path of all its parent routes.`
         );
       }
