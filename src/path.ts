@@ -15,9 +15,8 @@ export function isAbsolute(path: string): boolean {
  * @function normalize
  * @description Normalize the path.
  * @param path The path to normalize.
- * @param allowAboveRoot Is allow above root path.
  */
-export function normalize(path: string, allowAboveRoot?: boolean) {
+export function normalize(path: string) {
   const segments: string[] = [];
   const parts = path.replace(/\\+|\/{2,}/, '/').split('/');
 
@@ -30,8 +29,6 @@ export function normalize(path: string, allowAboveRoot?: boolean) {
 
         if (length && segments[length - 1] !== '..') {
           segments.pop();
-        } else if (allowAboveRoot) {
-          segments.push('..');
         }
         break;
       default:
