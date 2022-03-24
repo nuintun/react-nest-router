@@ -41,10 +41,6 @@ export function useRouter<M = unknown, K extends string = string, C = unknown>(
     return flatten(routes);
   }, [routes]);
 
-  const outletContext = useMemo(() => {
-    return { context };
-  }, [context]);
-
   const matched = useMemo(() => {
     return match(branches, pathname, basename);
   }, [pathname, basename, branches]);
@@ -63,5 +59,11 @@ export function useRouter<M = unknown, K extends string = string, C = unknown>(
     return null;
   }, [matched]);
 
-  return element ? <OutletContext.Provider value={outletContext}>{element}</OutletContext.Provider> : element;
+  return useMemo(() => {
+    if (element) {
+      return <OutletContext.Provider value={{ context }}>{element}</OutletContext.Provider>;
+    }
+
+    return element;
+  }, [element, context]);
 }
