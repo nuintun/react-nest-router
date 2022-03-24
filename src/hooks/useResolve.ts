@@ -3,6 +3,7 @@
  */
 
 import { To } from 'history';
+import { useMemo } from 'react';
 import { assert, isString } from '../utils';
 import { parseURL, resolveURL } from '../url';
 import { useLocationContext } from './useLocationContext';
@@ -24,23 +25,27 @@ export function useResolve(): (to: To) => string {
   const { basename } = navigationContext!;
   const { pathname: from } = locationContext!.location;
 
-  return usePersistCallback(to => {
-    let hash = '';
-    let search = '';
-    let pathname = '';
+  const resolve = useMemo(() => {
+    return (to: To): string => {
+      let hash = '';
+      let search = '';
+      let pathname = '';
 
-    if (isString(to)) {
-      const parts = parseURL(to);
+      if (isString(to)) {
+        const parts = parseURL(to);
 
-      if (__DEV__) {
-        assert(parts.origin === '', `The path to be resolved cannot have a protocol.`);
+        if (__DEV__) {
+          assert(parts.origin === '', `The path to be resolved cannot have a protocol.`);
+        }
+
+        ({ pathname, search, hash } = parts);
+      } else {
+        ({ pathname = '/', search = '', hash = '' } = to);
       }
 
-      ({ pathname, search, hash } = parts);
-    } else {
-      ({ pathname = '/', search = '', hash = '' } = to);
-    }
+      return resolveURL(from, { pathname, search, hash }, basename);
+    };
+  }, [from, basename]);
 
-    return resolveURL(from, { pathname, search, hash }, basename);
-  });
+  return usePersistCallback(resolve);
 }

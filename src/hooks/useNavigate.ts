@@ -3,6 +3,7 @@
  */
 
 import { To } from 'history';
+import { useMemo } from 'react';
 import { useResolve } from './useResolve';
 import { assert, isNumber } from '../utils';
 import { Navigate, NavigateOptions } from '../types';
@@ -25,18 +26,22 @@ export function useNavigate(): Navigate {
   const resolve = useResolve();
   const { navigator } = navigationContext!;
 
-  return usePersistCallback(<S = unknown>(to: To | number, options: NavigateOptions<S> = {}) => {
-    if (isNumber(to)) {
-      return navigator.go(to);
-    }
+  const navigate = useMemo(() => {
+    return <S = unknown>(to: To | number, options: NavigateOptions<S> = {}) => {
+      if (isNumber(to)) {
+        return navigator.go(to);
+      }
 
-    const path = resolve(to);
-    const { replace, state } = options;
+      const path = resolve(to);
+      const { replace, state } = options;
 
-    if (replace) {
-      navigator.replace(path, state);
-    } else {
-      navigator.push(path, state);
-    }
-  });
+      if (replace) {
+        navigator.replace(path, state);
+      } else {
+        navigator.push(path, state);
+      }
+    };
+  }, [navigator]);
+
+  return usePersistCallback(navigate);
 }
