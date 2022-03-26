@@ -25,7 +25,7 @@ export const Navigate = memo(function Navigate({ to, state, replace }) {
 
   useEffect(() => {
     navigate(to, { state, replace });
-  }, []);
+  }, [to, state, replace]);
 
   return null;
 }) as <S = unknown>(props: NavigateProps<S>) => null;
