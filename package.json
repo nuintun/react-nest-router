@@ -1,15 +1,10 @@
 {
   "name": "react-nest-router",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "description": "Declarative routing for React.",
   "main": "cjs/index.js",
   "module": "esm/index.js",
   "typings": "typings/index.d.ts",
-  "files": [
-    "cjs",
-    "esm",
-    "typings"
-  ],
   "sideEffects": false,
   "repository": {
     "type": "git",
@@ -36,8 +31,8 @@
     "prepublishOnly": "npm run build",
     "build:cjs": "rollup -c tools/rollup.cjs.js",
     "build:esm": "rollup -c tools/rollup.esm.js",
-    "format": "prettier --write tools src cjs esm tests typings",
     "build": "npm run clean && npm run build:main && npm run format",
+    "format": "prettier --write tools src cjs esm tests typings global.d.ts",
     "build:main": "npm run build:cjs && npm run build:esm && npm run build:typings",
     "build:typings": "tsc --declaration --emitDeclarationOnly --declarationDir typings"
   },
