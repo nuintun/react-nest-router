@@ -6,6 +6,11 @@
   "module": "esm/index.js",
   "typings": "typings/index.d.ts",
   "sideEffects": false,
+  "files": [
+    "cjs",
+    "esm",
+    "typings"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/nuintun/react-nest-router.git"
