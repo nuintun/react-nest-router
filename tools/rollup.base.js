@@ -45,7 +45,9 @@ export default function rollup(esnext) {
       exports: 'auto',
       esModule: false,
       dir: esnext ? 'esm' : 'cjs',
-      format: esnext ? 'esm' : 'cjs'
+      format: esnext ? 'esm' : 'cjs',
+      entryFileNames: `[name].${esnext ? 'js' : 'cjs'}`,
+      chunkFileNames: `[name].${esnext ? 'js' : 'cjs'}`
     },
     plugins: [env(), typescript(), treeShake()],
     onwarn(error, warn) {

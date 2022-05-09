@@ -2,7 +2,7 @@
  * @module index
  */
 
-const { flatten, match } = require('../cjs/router');
+import { flatten, match } from '../esm/router.js';
 
 const routes = [
   { path: '/login', meta: { id: 1 }, element: '<Login />' },
