@@ -82,16 +82,13 @@ export interface Matcher<K extends string = string> {
   readonly path: string;
   readonly pattern: RegExp;
   readonly sensitive: boolean;
-  readonly match: (pathname: string) => Params<K> | null;
+  readonly match: (path: string) => Params<K> | null;
 }
 
 /**
  * A RouteMatch contains info about how a route matched a URL.
  */
 export interface RouteMatch<M = unknown, K extends string = string> {
-  /**
-   * The route path that was used to match.
-   */
   readonly path: string;
   readonly basename: string;
   readonly pathname: string;
@@ -112,6 +109,7 @@ export interface BranchMeta<M = unknown, K extends string = string> {
  */
 export interface RouteBranch<M = unknown, K extends string = string> {
   readonly score: number;
+  readonly basename: string;
   readonly matcher: Matcher<K>;
   readonly meta: BranchMeta<M, K>[];
   readonly guard: (match: RouteMatch<M, K>) => boolean;

@@ -60,8 +60,8 @@ export function compile<K extends string>(path: string, sensitive: boolean = fal
 
   const pattern = new RegExp(source, sensitive ? '' : 'i');
 
-  const match = (pathname: string): Params<K> | null => {
-    const matched = pathname.match(pattern);
+  const match = (path: string): Params<K> | null => {
+    const matched = path.match(pattern);
 
     if (matched) {
       return keys.reduce((params, key, index) => {

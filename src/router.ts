@@ -5,7 +5,7 @@
 import { Tree } from './Tree';
 import { assert } from './utils';
 import { compile } from './pattern';
-import { isAboveRoot, isAbsolute, prefix, resolve, suffix } from './path';
+import { isAboveRoot, isAbsolute, join, prefix, resolve } from './path';
 import { BranchMeta, IRoute, Route, RouteBranch, RouteMatch } from './types';
 
 /**
@@ -110,8 +110,9 @@ function sortRouteBranches<M, K extends string>(branches: RouteBranch<M, K>[]): 
  * @function flatten
  * @description Flatten user routes.
  * @param routes User routes.
+ * @param basename The basename.
  */
-export function flatten<M, K extends string>(routes: Route<M, K>[]): RouteBranch<M, K>[] {
+export function flatten<M, K extends string>(routes: Route<M, K>[], basename: string): RouteBranch<M, K>[] {
   const defaultGuard = () => true;
   const branches: RouteBranch<M, K>[] = [];
 
@@ -187,12 +188,13 @@ export function flatten<M, K extends string>(routes: Route<M, K>[]): RouteBranch
         paths.push(to);
       } else {
         const { guard, sensitive } = item;
-        const path = resolve(from, isIndex ? './' : to);
+        const path = join(basename, resolve(from, isIndex ? './' : to));
 
         // Routes with children is layout routes,
         // otherwise is page routes or index routes,
         // only page page routes or index routes will add to branches.
         branches.push({
+          basename,
           meta: [...meta, metadata],
           guard: guard || defaultGuard,
           matcher: compile(path, sensitive),
@@ -211,32 +213,16 @@ export function flatten<M, K extends string>(routes: Route<M, K>[]): RouteBranch
  * @description Match route branch.
  * @param routes The flatten routes.
  * @param pathname The pathname to match.
- * @param basename The basename to match.
  */
-export function match<M, K extends string>(
-  routes: RouteBranch<M, K>[],
-  pathname: string,
-  basename: string = '/'
-): RouteMatch<M, K> | null {
-  if (pathname === basename) {
-    pathname = '/';
-  } else if (isAbsolute(pathname)) {
-    const base = suffix(basename, '/');
+export function match<M, K extends string>(routes: RouteBranch<M, K>[], pathname: string): RouteMatch<M, K> | null {
+  const path = prefix(pathname, '/');
 
-    if (!pathname.toLowerCase().startsWith(base.toLowerCase())) {
-      return null;
-    }
-
-    pathname = pathname.slice(base.length - 1);
-  } else {
-    pathname = prefix(pathname, '/');
-  }
-
-  for (const { meta: metadata, matcher, guard } of routes) {
-    const params = matcher.match(pathname);
+  // Match route branches.
+  for (const { meta: metadata, matcher, guard, basename } of routes) {
+    const params = matcher.match(path);
 
     if (params) {
-      const { path } = matcher;
+      const pathname = path.slice(basename.length);
       const meta = metadata.map(({ route }) => route);
       const match = { path, meta, params, basename, pathname };
 

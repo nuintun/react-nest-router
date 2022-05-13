@@ -33,17 +33,21 @@ export function useRouter<M = unknown, K extends string = string, C = unknown>(
     return normalize(basename);
   }, [basename]);
 
+  if (__DEV__) {
+    assert(basename.startsWith('/'), 'Router basename must start with /.');
+  }
+
   pathname = useMemo(() => {
     return normalize(pathname);
   }, [pathname]);
 
   const branches = useMemo(() => {
-    return flatten(routes);
-  }, [routes]);
+    return flatten(routes, basename);
+  }, [basename, routes]);
 
   const matched = useMemo(() => {
-    return match(branches, pathname, basename);
-  }, [pathname, basename, branches]);
+    return match(branches, pathname);
+  }, [pathname, branches]);
 
   const element = useMemo(() => {
     if (matched) {

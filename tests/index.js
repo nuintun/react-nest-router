@@ -33,13 +33,13 @@ for (let i = 0; i < 100; i++) {
 console.timeEnd('benchmark');
 
 console.time('flatten');
-const branches = flatten(routes);
+const branches = flatten(routes, '/zh');
 console.timeEnd('flatten');
 
 console.log('branches:', branches);
 
 console.time('match');
-const matched = match(branches, '/courses/1');
+const matched = match(branches, '/zh/courses/1');
 console.timeEnd('match');
 
 console.log('matched:', matched);

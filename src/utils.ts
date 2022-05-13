@@ -8,7 +8,9 @@
  * @param message Assert error message.
  */
 export function assert<T>(cond: T, message: string): asserts cond {
-  if (!cond) throw new Error(message);
+  if (!cond) {
+    throw new Error(message);
+  }
 }
 
 /**

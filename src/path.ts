@@ -41,6 +41,20 @@ export function normalize(path: string) {
 }
 
 /**
+ * @function join
+ * @description Join the path.
+ * @param base The base path.
+ * @param path The path to join.
+ */
+export function join(base: string, path: string): string {
+  if (!base) {
+    return normalize(path);
+  }
+
+  return normalize(base + '/' + path);
+}
+
+/**
  * @function resolve
  * @description Resolve the path.
  * @param from The path to start.

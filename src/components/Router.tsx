@@ -33,10 +33,6 @@ export const Router = memo(function Router({ navigator: history, routes, context
     return normalize(basename);
   }, [basename]);
 
-  if (__DEV__) {
-    assert(basename.startsWith('/'), 'Router basename must start with /.');
-  }
-
   const navigator = useMemo<Navigator>(() => {
     return history ?? createBrowserHistory();
   }, [history]);
