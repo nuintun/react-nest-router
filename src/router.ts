@@ -223,8 +223,9 @@ export function match<M, K extends string>(routes: RouteBranch<M, K>[], pathname
     const params = matcher.match(path);
 
     if (params) {
-      const pathname = path.slice(basename.length);
+      const { length } = basename;
       const meta = metadata.map(({ route }) => route);
+      const pathname = prefix(path.slice(length), '/');
       const match = { path, meta, params, basename, pathname };
 
       if (guard(match)) {
