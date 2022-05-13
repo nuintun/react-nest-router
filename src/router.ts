@@ -114,6 +114,7 @@ function sortRouteBranches<M, K extends string>(branches: RouteBranch<M, K>[]): 
  */
 export function flatten<M, K extends string>(routes: Route<M, K>[], basename: string): RouteBranch<M, K>[] {
   const defaultGuard = () => true;
+  const base = prefix(basename, '/');
   const branches: RouteBranch<M, K>[] = [];
 
   // Traversal routes.
@@ -188,13 +189,13 @@ export function flatten<M, K extends string>(routes: Route<M, K>[], basename: st
         paths.push(to);
       } else {
         const { guard, sensitive } = item;
-        const path = join(basename, resolve(from, isIndex ? './' : to));
+        const path = join(base, resolve(from, isIndex ? './' : to));
 
         // Routes with children is layout routes,
         // otherwise is page routes or index routes,
         // only page page routes or index routes will add to branches.
         branches.push({
-          basename,
+          basename: base,
           meta: [...meta, metadata],
           guard: guard || defaultGuard,
           matcher: compile(path, sensitive),

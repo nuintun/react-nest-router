@@ -28,7 +28,7 @@ const routes = [
 
 console.time('benchmark');
 for (let i = 0; i < 100; i++) {
-  flatten(routes);
+  flatten(routes, '/zh');
 }
 console.timeEnd('benchmark');
 

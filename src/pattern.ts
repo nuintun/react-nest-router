@@ -27,9 +27,7 @@ export function compile<K extends string>(path: string, sensitive: boolean = fal
   // Add path source string.
   source += path
     // Ignore trailing / and /*, we'll handle it below.
-    .replace(/\/*\*?$/, '')
-    // Make sure it has a leading /.
-    .replace(/^\/*/, '/')
+    .replace(/\/+\*?$/, '')
     // Escape special regex chars.
     .replace(/[\\.*+^$?{}|()[\]]/g, '\\$&')
     // Collect params and create match group.
@@ -47,13 +45,7 @@ export function compile<K extends string>(path: string, sensitive: boolean = fal
   if (path.endsWith('*')) {
     keys.push('*' as K);
 
-    // Already matched the initial /, just match the rest.
-    if (path === '*' || path === '/*') {
-      source += '(.*)$';
-    } else {
-      // Don't include the / in params["*"].
-      source += '(?:\\/(.+)|\\/*)$';
-    }
+    source += '\\/(.*)$';
   } else {
     source += '\\/*$';
   }
