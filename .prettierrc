@@ -6,7 +6,8 @@
   "overrides": [
     {
       "files": [
-        "*.json"
+        "*.json",
+        ".prettierrc"
       ],
       "options": {
         "parser": "json-stringify"
