@@ -6,6 +6,14 @@
   "overrides": [
     {
       "files": [
+        "*.json"
+      ],
+      "options": {
+        "parser": "json-stringify"
+      }
+    },
+    {
+      "files": [
         "*.css",
         "*.less",
         "*.scss"
