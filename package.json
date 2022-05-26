@@ -60,13 +60,13 @@
     "@rollup/plugin-replace": "^4.0.0",
     "@rollup/plugin-typescript": "^8.3.2",
     "@types/react": "^18.0.9",
-    "@types/react-dom": "^18.0.4",
+    "@types/react-dom": "^18.0.5",
     "magic-string": "^0.26.2",
     "prettier": "^2.6.2",
     "react": "^18.1.0",
     "react-dom": "^18.1.0",
     "rimraf": "^3.0.2",
     "rollup": "^2.74.1",
-    "typescript": "^4.6.4"
+    "typescript": "^4.7.2"
   }
 }
