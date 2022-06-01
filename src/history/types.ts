@@ -1,5 +1,6 @@
 /**
- * @types
+ * @module types
+ * @see https://github.com/remix-run/history
  */
 
 import { Action } from './utils';
@@ -29,17 +30,10 @@ export interface Path {
 }
 
 /**
- * A unique string associated with a location. May be used to safely store
- * and retrieve data in some other storage API, like `localStorage`.
- */
-export type Key = string;
-
-/**
  * An entry in a history stack. A location contains information about the
  * URL path, as well as possibly some arbitrary state and a key.
  */
 export interface Location<S = unknown> extends Path {
-  key: Key;
   state: S;
 }
 
@@ -51,6 +45,11 @@ export interface Update<S = unknown> {
   location: Location<S>;
 }
 
+export interface HistoryState<S = unknown> {
+  usr: S;
+  idx: number;
+}
+
 /**
  * A function that receives notifications about location changes.
  */
@@ -59,18 +58,10 @@ export interface Listener<S = unknown> {
 }
 
 /**
- * A change to the current location that was blocked. May be retried
- * after obtaining user confirmation.
- */
-export interface Transition<S = unknown> extends Update<S> {
-  retry(): void;
-}
-
-/**
  * A function that receives transitions when navigation is blocked.
  */
-export interface Blocker {
-  (transition: Transition): void;
+export interface Blocker<S = unknown> {
+  (update: Update<S>, retry: () => void): void;
 }
 
 /**
@@ -81,49 +72,49 @@ export interface Blocker {
 export type To = string | Partial<Path>;
 
 /**
- * A history is an interface to the navigation stack. The history serves as the
+ * A history is an interface to the navigation stack. The navigator serves as the
  * source of truth for the current location, as well as provides a set of
  * methods that may be used to change it.
  *
  * It is similar to the DOM's `window.history` object, but with a smaller, more
  * focused API.
  */
-export interface Navigator {
+export interface History {
   readonly action: Action;
-  readonly location: Location;
+  readonly location: Location<unknown>;
   /**
-   * @description Navigates to the previous entry in the stack. Identical to go(-1).
+   * @description Goes back one entry in the history stack. Alias for history.go(-1).
    */
   back(): void;
   /**
-   * @description Navigates to the next entry in the stack. Identical to go(1).
+   * @description Goes forward one entry in the history stack. Alias for history.go(1).
    */
   forward(): void;
   /**
-   * @description Navigates `n` entries backward/forward in the history stack relative to the current index.
-   * @param delta The delta in the stack index
+   * @description Navigates back/forward by delta entries in the stack.
+   * @param delta The delta in the stack index.
    */
   go(delta: number): void;
   /**
-   *
-   * @param to
-   * @param state
+   * @description Pushes a new entry onto the stack.
+   * @param to The new URL.
+   * @param state Data to associate with the new location.
    */
-  push(to: To, state?: any): void;
+  push<S = unknown>(to: To, state?: S): void;
   /**
-   *
-   * @param to
-   * @param state
+   * @description Replaces the current entry in the stack with a new one.
+   * @param to The new URL.
+   * @param state Data to associate with the new location.
    */
-  replace(to: To, state?: any): void;
+  replace<S = unknown>(to: To, state?: S): void;
   /**
-   *
-   * @param blocker
+   * @description Prevents changes to the history stack from happening and return unlisten function.
+   * @param blocker A function that will be called when a transition is blocked.
    */
-  block(blocker: Blocker): () => void;
+  block<S = unknown>(blocker: Blocker<S>): () => void;
   /**
-   *
-   * @param listener
+   * @description Sets up a listener that will be called whenever the current location changes and return unlisten function.
+   * @param listener A function that will be called when the location changes.
    */
-  listen(listener: Listener): () => void;
+  listen<S = unknown>(listener: Listener<S>): () => void;
 }
