@@ -37,6 +37,10 @@ export function readOnly<T>(value: T): Readonly<T> {
   return value;
 }
 
+export function isFunction(value: unknown): value is Function {
+  return typeof value === 'function';
+}
+
 export function warning(cond: boolean, message: string): void {
   if (!cond) {
     if (typeof console.warn === 'function') {

@@ -2,28 +2,50 @@
  * @module events
  */
 
-export interface Events<C> {
-  length: number;
-  call: (args: unknown) => void;
-  push: (callback: C) => () => void;
+import { isFunction } from './utils';
+
+export interface Callback<E = unknown> {
+  (event: E): void;
 }
 
-export function createEvents<C extends Function>(): Events<C> {
-  let callbacks: C[] = [];
+export interface Events<E> {
+  length: number;
+  emit: (event: E) => void;
+  listen: (callback: Callback<E>) => () => void;
+}
+
+export function createEvents<E = unknown>(): Events<E> {
+  let callbacks: Callback<E>[] = [];
 
   return {
     get length() {
       return callbacks.length;
     },
-    push(callback: C) {
+    listen(callback) {
       callbacks.push(callback);
 
       return () => {
-        callbacks = callbacks.filter(item => item !== callback);
+        let removed = false;
+
+        callbacks = callbacks.reduce<Callback<E>[]>((callbacks, item) => {
+          const kept = item !== callback;
+
+          if (kept || removed) {
+            callbacks.push(item);
+          } else if (!kept && !removed) {
+            removed = true;
+          }
+
+          return callbacks;
+        }, []);
       };
     },
-    call(args) {
-      callbacks.forEach(fn => fn && fn(args));
+    emit(event) {
+      for (const callback of callbacks) {
+        if (isFunction(callback)) {
+          callback(event);
+        }
+      }
     }
   };
 }
