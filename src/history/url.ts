@@ -2,8 +2,6 @@
  * @module url
  */
 
-import { normalize } from './path';
-
 export interface URLSchema {
   readonly hash: string;
   readonly origin: string;
