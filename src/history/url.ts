@@ -22,7 +22,7 @@ export function parse(url: string): URLSchema {
   if (matched) {
     const [, origin = '', pathname, search = '', hash = ''] = matched;
 
-    return { origin, pathname: normalize(pathname), search, hash };
+    return { origin, pathname, search, hash };
   }
 
   return { origin: '', pathname: '', search: '', hash: '' };
