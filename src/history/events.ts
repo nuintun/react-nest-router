@@ -22,6 +22,12 @@ export function createEvents<E = unknown>(): Events<E> {
       return callbacks.length;
     },
     listen(callback) {
+      if (__DEV__) {
+        if (!isFunction(callback)) {
+          throw new SyntaxError('The callback must be a function');
+        }
+      }
+
       callbacks.push(callback);
 
       return () => {
@@ -42,9 +48,7 @@ export function createEvents<E = unknown>(): Events<E> {
     },
     emit(event) {
       for (const callback of callbacks) {
-        if (isFunction(callback)) {
-          callback(event);
-        }
+        callback(event);
       }
     }
   };

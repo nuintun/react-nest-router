@@ -4,37 +4,34 @@
 
 import { isFunction } from './utils';
 
-export interface Options<T = unknown> {
-  onBlock?: (reason: T) => void;
-  onUnblock?: (reason: T) => void;
+export interface Inspect<T = unknown> {
+  (blocked: boolean, reason?: T): void;
 }
 
 export interface Blocker<T = unknown> {
-  blocked: boolean;
-  block(reason: T): () => void;
+  unblock(): void;
+  block(reason: T): void;
+  inspect: (inspect: Inspect<T>) => void;
 }
 
-export default function createBlocker<T = unknown>({ onBlock, onUnblock }: Options<T>): Blocker<T> {
-  let blocked = false;
+export default function createBlocker<T = unknown>(): Blocker<T> {
+  let blocker: [blocked: boolean, reason?: T] = [false];
 
   return {
-    get blocked() {
-      return blocked;
+    unblock() {
+      blocker = [false];
     },
-    block(reason) {
-      blocked = true;
-
-      if (isFunction(onBlock)) {
-        onBlock(reason);
+    inspect(inspect) {
+      if (__DEV__) {
+        if (!isFunction(inspect)) {
+          throw new SyntaxError('The inspect must be a function');
+        }
       }
 
-      return () => {
-        blocked = false;
-
-        if (isFunction(onUnblock)) {
-          onUnblock(reason);
-        }
-      };
+      inspect(...blocker);
+    },
+    block(reason) {
+      blocker = [true, reason];
     }
   };
 }
