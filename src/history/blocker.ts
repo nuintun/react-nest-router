@@ -11,7 +11,7 @@ export interface Inspect<T = unknown> {
 export interface Blocker<T = unknown> {
   unblock(): void;
   block(reason: T): void;
-  inspect: (inspect: Inspect<T>) => void;
+  inspect(inspect: Inspect<T>): void;
 }
 
 export default function createBlocker<T = unknown>(): Blocker<T> {
