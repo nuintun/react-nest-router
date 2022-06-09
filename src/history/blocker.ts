@@ -2,36 +2,50 @@
  * @module blocker
  */
 
-import { isFunction } from './utils';
+import { assert, isFunction } from './utils';
 
-export interface Inspect<T = unknown> {
-  (blocked: boolean, reason?: T): void;
+export interface Resolver<T = void> {
+  (): Promise<T> | T;
 }
 
-export interface Blocker<T = unknown> {
+export interface Inspect<T = void> {
+  (blocked: boolean, resolver: Resolver<T>): Promise<void> | void;
+}
+
+export interface Blocker<T = void> {
   unblock(): void;
-  block(reason: T): void;
-  inspect(inspect: Inspect<T>): void;
+  block(resolver: Resolver<T>): void;
+  inspect(inspect: Inspect<T>): Promise<void>;
 }
 
-export default function createBlocker<T = unknown>(): Blocker<T> {
-  let blocker: [blocked: boolean, reason?: T] = [false];
+export default function createBlocker<T = void>(resolver: Resolver<T>): Blocker<T> {
+  let blocked = false;
+  let blocking = false;
+  let action = resolver;
 
-  return {
-    unblock() {
-      blocker = [false];
-    },
-    inspect(inspect) {
-      if (__DEV__) {
-        if (!isFunction(inspect)) {
-          throw new SyntaxError('The inspect must be a function');
-        }
-      }
+  const unblock = () => {
+    blocked = false;
+    action = resolver;
+  };
 
-      inspect(...blocker);
-    },
-    block(reason) {
-      blocker = [true, reason];
+  const block = (resolver: Resolver<T>) => {
+    blocked = true;
+    action = resolver;
+  };
+
+  const inspect = async (inspect: Inspect<T>) => {
+    if (__DEV__) {
+      assert(isFunction(inspect), 'The inspect must be a function');
+    }
+
+    if (!blocking) {
+      blocking = true;
+
+      await inspect(blocked, action);
+
+      blocking = false;
     }
   };
+
+  return { block, unblock, inspect };
 }

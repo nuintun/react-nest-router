@@ -4,6 +4,7 @@
  */
 
 import { Action } from './utils';
+import { Callback } from './events';
 
 /**
  * A URL pathname, beginning with a /.
@@ -60,8 +61,8 @@ export interface Listener<S = unknown> {
 /**
  * A function that receives transitions when navigation is blocked.
  */
-export interface Blocker<S = unknown> {
-  (update: Update<S>, retry: () => void): void;
+export interface Resolver<S = unknown> {
+  (update: Update<S>): Promise<boolean> | boolean;
 }
 
 /**
@@ -81,7 +82,7 @@ export type To = string | Partial<Path>;
  */
 export interface History {
   readonly action: Action;
-  readonly location: Location<unknown>;
+  readonly location: Location;
   /**
    * @description Goes back one entry in the history stack. Alias for history.go(-1).
    */
@@ -111,7 +112,7 @@ export interface History {
    * @description Prevents changes to the history stack from happening and return unlisten function.
    * @param blocker A function that will be called when a transition is blocked.
    */
-  block<S = unknown>(blocker: Blocker<S>): () => void;
+  block<S = unknown>(resolver: Resolver<S>): () => void;
   /**
    * @description Sets up a listener that will be called whenever the current location changes and return unlisten function.
    * @param listener A function that will be called when the location changes.

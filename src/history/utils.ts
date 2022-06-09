@@ -41,22 +41,30 @@ export function isFunction(value: unknown): value is Function {
   return typeof value === 'function';
 }
 
-export function warning(cond: boolean, message: string): void {
+/**
+ * @function assert
+ * @param cond Assert flags.
+ * @param message Assert error message.
+ */
+export function assert<T>(cond: T, message: string): asserts cond {
   if (!cond) {
-    if (typeof console.warn === 'function') {
-      console.warn(message);
-    }
-
-    try {
-      // Welcome to debugging history!
-      //
-      // This error is thrown as a convenience so you can more easily
-      // find the source for a warning that appears in the console by
-      // enabling "pause on exceptions" in your JavaScript debugger.
-      throw new Error(message);
-      // eslint-disable-next-line no-empty
-    } catch {}
+    throw new Error(message);
   }
+}
+
+export function warning(message: string): void {
+  if (isFunction(console.warn)) {
+    console.warn(message);
+  }
+
+  try {
+    // Welcome to debugging history!
+    //
+    // This error is thrown as a convenience so you can more easily
+    // find the source for a warning that appears in the console by
+    // enabling "pause on exceptions" in your JavaScript debugger.
+    throw new Error(message);
+  } catch {}
 }
 
 export function promptBeforeUnload(event: BeforeUnloadEvent): void {
