@@ -16,7 +16,7 @@ export interface Events<E> {
 }
 
 export function createEvents<E = unknown>(): Events<E> {
-  let callbacks: Callback<E>[] = [];
+  const callbacks: Callback<E>[] = [];
 
   return {
     get length() {
@@ -35,21 +35,11 @@ export function createEvents<E = unknown>(): Events<E> {
       callbacks.push(callback);
     },
     unlisten(callback) {
-      return () => {
-        let removed = false;
+      const index = callbacks.indexOf(callback);
 
-        callbacks = callbacks.reduce<Callback<E>[]>((callbacks, item) => {
-          const kept = item !== callback;
-
-          if (kept || removed) {
-            callbacks.push(item);
-          } else if (!kept && !removed) {
-            removed = true;
-          }
-
-          return callbacks;
-        }, []);
-      };
+      if (index >= 0) {
+        callbacks.splice(index, 1);
+      }
     }
   };
 }
