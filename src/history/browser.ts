@@ -5,7 +5,7 @@
 import createBlocker from './blocker';
 import { createEvents } from './events';
 import { History, HistoryState, Location, Update } from './types';
-import { Action, PopStateEventType, readOnly, warning } from './utils';
+import { Action, PopStateEventType, preventBeforeUnload, readOnly, warning } from './utils';
 
 export function createBrowserHistory(): History {
   let index: number;
@@ -13,7 +13,13 @@ export function createBrowserHistory(): History {
   let location: Location<any>;
 
   const events = createEvents<Update<any>>();
-  const blocker = createBlocker<boolean>(() => true);
+  const blocker = createBlocker(blocked => {
+    if (blocked) {
+      window.addEventListener('beforeunload', preventBeforeUnload);
+    } else {
+      window.removeEventListener('beforeunload', preventBeforeUnload);
+    }
+  });
 
   const globalHistory = window.history;
   const globalLocation = window.location;
@@ -50,11 +56,15 @@ export function createBrowserHistory(): History {
 
       if (idx != null) {
         if (blocked) {
-          go(index! - idx);
+          const delta = index - idx;
 
-          if (await action()) {
-            blocker.unblock();
+          if (delta !== 0) {
+            go(delta);
           }
+
+          await action();
+
+          blocker.unblock();
         } else {
           events.emit({ action: Action.Pop, location });
         }

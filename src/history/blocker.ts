@@ -4,36 +4,54 @@
 
 import { assert, isFunction } from './utils';
 
-export interface Resolver<T = void> {
-  (): Promise<T> | T;
+const defaultResolver = () => {};
+
+export interface Resolver {
+  (): Promise<void> | void;
 }
 
-export interface Inspect<T = void> {
-  (blocked: boolean, resolver: Resolver<T>): Promise<void> | void;
+export interface onChange {
+  (blocked: boolean): void;
 }
 
-export interface Blocker<T = void> {
+export interface Inspect {
+  (blocked: boolean, resolver: Resolver): Promise<void>;
+}
+
+export interface Blocker {
   unblock(): void;
-  block(resolver: Resolver<T>): void;
-  inspect(inspect: Inspect<T>): Promise<void>;
+  block(resolver: Resolver): void;
+  inspect(inspect: Inspect): Promise<void>;
 }
 
-export default function createBlocker<T = void>(resolver: Resolver<T>): Blocker<T> {
+export default function createBlocker(onChange: onChange): Blocker {
   let blocked = false;
   let blocking = false;
-  let action = resolver;
+  let action = defaultResolver;
 
   const unblock = () => {
+    const changed = blocked !== false;
+
     blocked = false;
-    action = resolver;
+    action = defaultResolver;
+
+    if (changed) {
+      onChange(blocked);
+    }
   };
 
-  const block = (resolver: Resolver<T>) => {
+  const block = (resolver: Resolver) => {
+    const changed = blocked !== true;
+
     blocked = true;
     action = resolver;
+
+    if (changed) {
+      onChange(blocked);
+    }
   };
 
-  const inspect = async (inspect: Inspect<T>) => {
+  const inspect = async (inspect: Inspect) => {
     if (__DEV__) {
       assert(isFunction(inspect), 'The inspect must be a function');
     }

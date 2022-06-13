@@ -67,7 +67,7 @@ export function warning(message: string): void {
   } catch {}
 }
 
-export function promptBeforeUnload(event: BeforeUnloadEvent): void {
+export function preventBeforeUnload(event: BeforeUnloadEvent): void {
   // Cancel the event.
   event.preventDefault();
 

@@ -4,7 +4,6 @@
  */
 
 import { Action } from './utils';
-import { Callback } from './events';
 
 /**
  * A URL pathname, beginning with a /.
@@ -62,7 +61,7 @@ export interface Listener<S = unknown> {
  * A function that receives transitions when navigation is blocked.
  */
 export interface Resolver<S = unknown> {
-  (update: Update<S>): Promise<boolean> | boolean;
+  (update: Update<S>): Promise<void> | void;
 }
 
 /**
