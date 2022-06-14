@@ -37,6 +37,10 @@ export function readOnly<T>(value: T): Readonly<T> {
   return value;
 }
 
+export function isString(value: unknown): value is string {
+  return Object.prototype.toString.call(value) === '[object String]';
+}
+
 export function isFunction(value: unknown): value is Function {
   return typeof value === 'function';
 }

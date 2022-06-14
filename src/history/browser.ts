@@ -4,32 +4,38 @@
 
 import createBlocker from './blocker';
 import { createEvents } from './events';
-import { History, HistoryState, Location, Update } from './types';
-import { Action, PopStateEventType, readOnly, warning } from './utils';
+import { History, HistoryState, Location, To, Update } from './types';
+import { parse } from './url';
+import { Action, isString, PopStateEventType, readOnly, warning } from './utils';
 
 export function createBrowserHistory(): History {
   let index: number;
   let action: Action;
   let location: Location<any>;
 
-  const blocker = createBlocker();
-  const events = createEvents<Update<any>>();
-
   const globalHistory = window.history;
   const globalLocation = window.location;
 
-  const getIndexAndLocation = (): [number | null, Location] => {
-    const { pathname, search, hash } = globalLocation;
-    const globalState: HistoryState | null = globalHistory.state;
+  const blocker = createBlocker();
+  const events = createEvents<Update<any>>();
 
-    const idx = globalState?.idx || null;
-    const state = globalState?.usr || null;
+  // The state defaults to `null` because `window.history.state` does
+  const getNextLocation = <S>(to: To, state: S | null = null): Location<S | null> => {
+    const { pathname } = location;
 
-    return [idx, readOnly<Location>({ pathname, search, hash, state })];
+    to = isString(to) ? parse(to) : to;
+
+    return readOnly({ pathname, hash: '', search: '', ...to, state });
   };
 
-  const go: History['go'] = delta => {
-    globalHistory.go(delta);
+  const getIndexAndLocation = <S>(): [index: number | null, location: Location<S | null>] => {
+    const { pathname, search, hash } = globalLocation;
+    const globalState: HistoryState<S> | null = globalHistory.state;
+
+    const index = globalState?.idx || null;
+    const state = globalState?.usr || null;
+
+    return [index, readOnly({ pathname, search, hash, state })];
   };
 
   const bootstrap = (): [index: number, location: Location] => {
@@ -42,17 +48,41 @@ export function createBrowserHistory(): History {
     return [index, location];
   };
 
-  [index, location] = bootstrap();
+  const go: History['go'] = delta => {
+    globalHistory.go(delta);
+  };
+
+  const push: History['push'] = (to, state) => {
+    blocker.inspect(async (blocked, resolver) => {
+      getNextLocation(to, state);
+
+      if (blocked) {
+        await resolver();
+      } else {
+        // globalHistory.pushState();
+      }
+    });
+  };
+
+  const back: History['back'] = () => {
+    go(-1);
+  };
+
+  const forward: History['forward'] = () => {
+    go(1);
+  };
+
+  const replace: History['replace'] = () => {};
 
   window.addEventListener(PopStateEventType, () => {
     const [idx, location] = getIndexAndLocation();
 
     if (idx != null) {
-      const redirect = () => {
+      const redirect = (revert: boolean = false) => {
         const delta = index - idx;
 
         if (delta !== 0) {
-          go(delta);
+          go(revert ? delta * -1 : delta);
         }
       };
 
@@ -62,7 +92,7 @@ export function createBrowserHistory(): History {
 
           await resolver();
 
-          blocker.unblock(resolver);
+          redirect(true);
         } else {
           events.emit({ action: Action.Pop, location });
         }
@@ -80,7 +110,7 @@ export function createBrowserHistory(): History {
     }
   });
 
-  console.log(events, getIndexAndLocation);
+  [index, location] = bootstrap();
 
   return {
     get action() {
@@ -89,31 +119,29 @@ export function createBrowserHistory(): History {
     get location() {
       return location;
     },
+    go,
+    back,
+    push,
+    forward,
+    replace,
+    listen(callback) {
+      events.listen(callback);
+
+      return () => events.unlisten(callback);
+    },
     block(resolver) {
-      const callback = () => {
-        return resolver({
+      const callback = async () => {
+        await resolver({
           action,
           location
         });
+
+        blocker.unblock(callback);
       };
 
       blocker.block(callback);
 
-      return () => {
-        blocker.unblock(callback);
-      };
-    },
-    back() {},
-    forward() {},
-    go() {},
-    push() {},
-    replace() {},
-    listen(callback) {
-      events.listen(callback);
-
-      return () => {
-        events.unlisten(callback);
-      };
+      return () => blocker.unblock(callback);
     }
   };
 }
