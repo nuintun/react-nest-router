@@ -48,30 +48,25 @@ export function createBrowserHistory(): History {
     const [idx, location] = getIndexAndLocation();
 
     if (idx != null) {
-      blocker.inspect(
-        async (blocked, resolver) => {
-          if (blocked) {
-            const delta = index - idx;
+      const redirect = () => {
+        const delta = index - idx;
 
-            if (delta !== 0) {
-              go(delta);
-            }
-
-            await resolver();
-
-            blocker.unblock(resolver);
-          } else {
-            events.emit({ action: Action.Pop, location });
-          }
-        },
-        () => {
-          const delta = index - idx;
-
-          if (delta !== 0) {
-            go(delta);
-          }
+        if (delta !== 0) {
+          go(delta);
         }
-      );
+      };
+
+      blocker.inspect(async (blocked, resolver) => {
+        if (blocked) {
+          redirect();
+
+          await resolver();
+
+          blocker.unblock(resolver);
+        } else {
+          events.emit({ action: Action.Pop, location });
+        }
+      }, redirect);
     } else if (__DEV__) {
       // Trying to POP to a location with no index. We did not create
       // this location, so we can't effectively block the navigation.

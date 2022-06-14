@@ -27,33 +27,31 @@ export default function createBlocker(): Blocker {
 
   const resolvers: Resolver[] = [];
 
-  const block = (resolver: Resolver) => {
-    if (__DEV__) {
-      assert(isFunction(resolver), 'The inspect must be a function');
-    }
-
-    resolvers.push(resolver);
-  };
-
-  const unblock = (resolver: Resolver) => {
-    removeFromArray(resolvers, resolver);
-  };
-
-  const inspect = async (inspect: Inspect, onBlocking?: onBlocking) => {
-    if (blocking) {
-      if (onBlocking) {
-        onBlocking();
+  return {
+    block(resolver: Resolver) {
+      if (__DEV__) {
+        assert(isFunction(resolver), 'The inspect must be a function');
       }
-    } else {
-      blocking = true;
 
-      const [action = () => {}] = resolvers;
+      resolvers.push(resolver);
+    },
+    unblock(resolver: Resolver) {
+      removeFromArray(resolvers, resolver);
+    },
+    async inspect(inspect: Inspect, onBlocking?: onBlocking) {
+      if (blocking) {
+        if (onBlocking) {
+          onBlocking();
+        }
+      } else {
+        blocking = true;
 
-      await inspect(resolvers.length > 0, action);
+        const [action = () => {}] = resolvers;
 
-      blocking = false;
+        await inspect(resolvers.length > 0, action);
+
+        blocking = false;
+      }
     }
   };
-
-  return { block, unblock, inspect };
 }
