@@ -5,21 +5,15 @@
 import createBlocker from './blocker';
 import { createEvents } from './events';
 import { History, HistoryState, Location, Update } from './types';
-import { Action, PopStateEventType, preventBeforeUnload, readOnly, warning } from './utils';
+import { Action, PopStateEventType, readOnly, warning } from './utils';
 
 export function createBrowserHistory(): History {
   let index: number;
   let action: Action;
   let location: Location<any>;
 
+  const blocker = createBlocker();
   const events = createEvents<Update<any>>();
-  const blocker = createBlocker(blocked => {
-    if (blocked) {
-      window.addEventListener('beforeunload', preventBeforeUnload);
-    } else {
-      window.removeEventListener('beforeunload', preventBeforeUnload);
-    }
-  });
 
   const globalHistory = window.history;
   const globalLocation = window.location;
@@ -51,35 +45,44 @@ export function createBrowserHistory(): History {
   [index, location] = bootstrap();
 
   window.addEventListener(PopStateEventType, () => {
-    blocker.inspect(async (blocked, action) => {
-      const [idx, location] = getIndexAndLocation();
+    const [idx, location] = getIndexAndLocation();
 
-      if (idx != null) {
-        if (blocked) {
+    if (idx != null) {
+      blocker.inspect(
+        async (blocked, resolver) => {
+          if (blocked) {
+            const delta = index - idx;
+
+            if (delta !== 0) {
+              go(delta);
+            }
+
+            await resolver();
+
+            blocker.unblock(resolver);
+          } else {
+            events.emit({ action: Action.Pop, location });
+          }
+        },
+        () => {
           const delta = index - idx;
 
           if (delta !== 0) {
             go(delta);
           }
-
-          await action();
-
-          blocker.unblock();
-        } else {
-          events.emit({ action: Action.Pop, location });
         }
-      } else if (__DEV__) {
-        // Trying to POP to a location with no index. We did not create
-        // this location, so we can't effectively block the navigation.
-        warning(
-          `You are trying to block a POP navigation to a location that was not ` +
-            `created by the history library. The block will fail silently in ` +
-            `production, but in general you should do all navigation with the ` +
-            `history library (instead of using window.history.pushState directly) ` +
-            `to avoid this situation.`
-        );
-      }
-    });
+      );
+    } else if (__DEV__) {
+      // Trying to POP to a location with no index. We did not create
+      // this location, so we can't effectively block the navigation.
+      warning(
+        `You are trying to block a POP navigation to a location that was not ` +
+          `created by the history library. The block will fail silently in ` +
+          `production, but in general you should do all navigation with the ` +
+          `history library (instead of using window.history.pushState directly) ` +
+          `to avoid this situation.`
+      );
+    }
   });
 
   console.log(events, getIndexAndLocation);
@@ -92,11 +95,18 @@ export function createBrowserHistory(): History {
       return location;
     },
     block(resolver) {
-      blocker.block(() => {
-        return resolver({ action, location });
-      });
+      const callback = () => {
+        return resolver({
+          action,
+          location
+        });
+      };
 
-      return blocker.unblock;
+      blocker.block(callback);
+
+      return () => {
+        blocker.unblock(callback);
+      };
     },
     back() {},
     forward() {},

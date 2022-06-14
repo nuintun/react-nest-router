@@ -78,3 +78,11 @@ export function preventBeforeUnload(event: BeforeUnloadEvent): void {
 export function clamp(value: number, minimum: number, maximum: number): number {
   return Math.min(Math.max(value, minimum), maximum);
 }
+
+export function removeFromArray<T>(array: T[], item: T): void {
+  const index = array.indexOf(item);
+
+  if (index >= 0) {
+    array.splice(index, 1);
+  }
+}
