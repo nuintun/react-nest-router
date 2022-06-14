@@ -40,7 +40,11 @@ export default function createBlocker(): Blocker {
   };
 
   const inspect = async (inspect: Inspect, onBlocking?: onBlocking) => {
-    if (!blocking) {
+    if (blocking) {
+      if (onBlocking) {
+        onBlocking();
+      }
+    } else {
       blocking = true;
 
       const [action = () => {}] = resolvers;
@@ -48,8 +52,6 @@ export default function createBlocker(): Blocker {
       await inspect(resolvers.length > 0, action);
 
       blocking = false;
-    } else if (onBlocking) {
-      onBlocking();
     }
   };
 
