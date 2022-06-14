@@ -4,8 +4,8 @@
 
 import createBlocker from './blocker';
 import { createEvents } from './events';
+import { parse, stringify } from './url';
 import { History, HistoryState, Location, To, Update } from './types';
-import { parse } from './url';
 import { Action, isString, PopStateEventType, readOnly, warning } from './utils';
 
 export function createBrowserHistory(): History {
@@ -38,30 +38,12 @@ export function createBrowserHistory(): History {
     return [index, readOnly({ pathname, search, hash, state })];
   };
 
-  const bootstrap = (): [index: number, location: Location] => {
-    const [index, location] = getIndexAndLocation();
-
-    if (index == null) {
-      return [0, location];
-    }
-
-    return [index, location];
+  const getURLAndState = <S>(index: number, location: Location<S>): [url: string, state: HistoryState<S>] => {
+    return [stringify(location), { idx: index, usr: location.state }];
   };
 
   const go: History['go'] = delta => {
     globalHistory.go(delta);
-  };
-
-  const push: History['push'] = (to, state) => {
-    blocker.inspect(async (blocked, resolver) => {
-      getNextLocation(to, state);
-
-      if (blocked) {
-        await resolver();
-      } else {
-        // globalHistory.pushState();
-      }
-    });
   };
 
   const back: History['back'] = () => {
@@ -72,7 +54,31 @@ export function createBrowserHistory(): History {
     go(1);
   };
 
-  const replace: History['replace'] = () => {};
+  const push: History['push'] = (to, state) => {
+    blocker.inspect(async (blocked, resolver) => {
+      if (blocked) {
+        await resolver();
+      }
+
+      const location = getNextLocation(to, state);
+      const [url, historyState] = getURLAndState(index++, location);
+
+      globalHistory.pushState(historyState, '', url);
+    });
+  };
+
+  const replace: History['replace'] = (to, state) => {
+    blocker.inspect(async (blocked, resolver) => {
+      if (blocked) {
+        await resolver();
+      }
+
+      const location = getNextLocation(to, state);
+      const [url, historyState] = getURLAndState(index, location);
+
+      globalHistory.replaceState(historyState, '', url);
+    });
+  };
 
   window.addEventListener(PopStateEventType, () => {
     const [idx, location] = getIndexAndLocation();
@@ -110,20 +116,30 @@ export function createBrowserHistory(): History {
     }
   });
 
+  const bootstrap = (): [index: number, location: Location] => {
+    const [index, location] = getIndexAndLocation();
+
+    if (index == null) {
+      return [0, location];
+    }
+
+    return [index, location];
+  };
+
   [index, location] = bootstrap();
 
   return {
+    go,
+    back,
+    push,
+    forward,
+    replace,
     get action() {
       return action;
     },
     get location() {
       return location;
     },
-    go,
-    back,
-    push,
-    forward,
-    replace,
     listen(callback) {
       events.listen(callback);
 

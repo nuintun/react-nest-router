@@ -2,28 +2,23 @@
  * @module url
  */
 
-export interface URLSchema {
-  readonly hash: string;
-  readonly origin: string;
-  readonly search: string;
-  readonly pathname: string;
-}
+import { Path } from './types';
 
 /**
  * @function parse
  * @description Parse URL.
  * @param path URL path.
  */
-export function parse(url: string): URLSchema {
-  const matched = url.match(/^((?:[a-z0-9.+-]+:)?\/\/[^/]+)?([^?#]*)(\?[^#]*)?(#.*)?$/i);
+export function parse(url: string): Path {
+  const matched = url.match(/^([^?#]*)(\?[^#]*)?(#.*)?$/i);
 
   if (matched) {
-    const [, origin = '', pathname, search = '', hash = ''] = matched;
+    const [, pathname, search = '', hash = ''] = matched;
 
-    return { origin, pathname, search, hash };
+    return { pathname, search, hash };
   }
 
-  return { origin: '', pathname: '', search: '', hash: '' };
+  return { pathname: '', search: '', hash: '' };
 }
 
 /**
@@ -31,6 +26,6 @@ export function parse(url: string): URLSchema {
  * @description Stringify URL scheme.
  * @param scheme URL scheme.
  */
-export function stringify({ origin, pathname, search, hash }: URLSchema): string {
+export function stringify({ pathname = '', search = '', hash = '' }: Partial<Path>): string {
   return origin + pathname + search + hash;
 }
