@@ -61,7 +61,7 @@ export interface Listener<S = unknown> {
  * A function that receives transitions when navigation is blocked.
  */
 export interface Resolver<S = unknown> {
-  (update: Update<S>): Promise<void> | void;
+  (update: Update<S>): Promise<boolean> | boolean;
 }
 
 /**

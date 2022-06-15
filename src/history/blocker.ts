@@ -4,41 +4,41 @@
 
 import { assert, isFunction, removeFromArray } from './utils';
 
-export interface Resolver {
-  (): Promise<void> | void;
+export interface Resolver<T = unknown> {
+  (): Promise<T> | T;
 }
 
-export interface Inspect {
-  (blocked: boolean, resolver: Resolver): Promise<void>;
+export interface Inspect<T = unknown> {
+  (blocked: boolean, resolver: Resolver<T>): Promise<void>;
 }
 
 export interface onBlocking {
   (): void;
 }
 
-export interface Blocker {
-  block(resolver: Resolver): void;
-  unblock(resolver: Resolver): void;
-  inspect(inspect: Inspect, onBlocking?: onBlocking): Promise<void>;
+export interface Blocker<T = unknown> {
+  block(resolver: Resolver<T>): void;
+  unblock(resolver: Resolver<T>): void;
+  inspect(inspect: Inspect<T>, onBlocking?: onBlocking): Promise<void>;
 }
 
-export default function createBlocker(): Blocker {
+export default function createBlocker<T = unknown>(resolver: Resolver<T>): Blocker<T> {
   let blocking = false;
 
-  const resolvers: Resolver[] = [];
+  const resolvers: Resolver<T>[] = [];
 
   return {
-    block(resolver: Resolver) {
+    block(resolver: Resolver<T>) {
       if (__DEV__) {
         assert(isFunction(resolver), 'The inspect must be a function');
       }
 
       resolvers.push(resolver);
     },
-    unblock(resolver: Resolver) {
+    unblock(resolver: Resolver<T>) {
       removeFromArray(resolvers, resolver);
     },
-    async inspect(inspect: Inspect, onBlocking?: onBlocking) {
+    async inspect(inspect: Inspect<T>, onBlocking?: onBlocking) {
       if (blocking) {
         if (onBlocking) {
           onBlocking();
@@ -46,9 +46,9 @@ export default function createBlocker(): Blocker {
       } else {
         blocking = true;
 
-        const [action = () => {}] = resolvers;
+        const blocked = resolvers.length > 0;
 
-        await inspect(resolvers.length > 0, action);
+        await inspect(blocked, blocked ? resolvers[0] : resolver);
 
         blocking = false;
       }

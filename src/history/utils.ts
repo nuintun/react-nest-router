@@ -76,7 +76,7 @@ export function preventBeforeUnload(event: BeforeUnloadEvent): void {
   event.preventDefault();
 
   // Chrome (and legacy IE) requires returnValue to be set.
-  event.returnValue = false;
+  event.returnValue = '';
 }
 
 export function clamp(value: number, minimum: number, maximum: number): number {

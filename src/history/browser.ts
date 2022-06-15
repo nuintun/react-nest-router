@@ -9,15 +9,38 @@ import { History, HistoryState, Location, To, Update } from './types';
 import { Action, isString, PopStateEventType, readOnly, warning } from './utils';
 
 export function createBrowserHistory(): History {
-  let index: number;
-  let action: Action;
-  let location: Location<any>;
-
   const globalHistory = window.history;
   const globalLocation = window.location;
 
-  const blocker = createBlocker();
   const events = createEvents<Update<any>>();
+  const blocker = createBlocker<boolean>(() => true);
+
+  const getIndexAndLocation = <S>(): [index: number | null, location: Location<S | null>] => {
+    const { pathname, search, hash } = globalLocation;
+    const globalState: HistoryState<S> | null = globalHistory.state;
+
+    const index = globalState?.idx ?? null;
+    const state = globalState?.usr ?? null;
+
+    return [index, readOnly({ pathname, search, hash, state })];
+  };
+
+  const bootstrap = <S>(): [index: number, location: Location<S | null>] => {
+    const [index, location] = getIndexAndLocation<S>();
+
+    if (index == null) {
+      const { state } = globalHistory;
+
+      globalHistory.replaceState({ ...state, idx: 0 }, '');
+
+      return [0, location];
+    }
+
+    return [index, location];
+  };
+
+  let action: Action = Action.Pop;
+  let [index, location] = bootstrap<any>();
 
   // The state defaults to `null` because `window.history.state` does
   const getNextLocation = <S>(to: To, state: S | null = null): Location<S | null> => {
@@ -26,16 +49,6 @@ export function createBrowserHistory(): History {
     to = isString(to) ? parse(to) : to;
 
     return readOnly({ pathname, hash: '', search: '', ...to, state });
-  };
-
-  const getIndexAndLocation = <S>(): [index: number | null, location: Location<S | null>] => {
-    const { pathname, search, hash } = globalLocation;
-    const globalState: HistoryState<S> | null = globalHistory.state;
-
-    const index = globalState?.idx || null;
-    const state = globalState?.usr || null;
-
-    return [index, readOnly({ pathname, search, hash, state })];
   };
 
   const getURLAndState = <S>(index: number, location: Location<S>): [url: string, state: HistoryState<S>] => {
@@ -56,36 +69,40 @@ export function createBrowserHistory(): History {
 
   const push: History['push'] = (to, state) => {
     blocker.inspect(async (blocked, resolver) => {
-      if (blocked) {
-        await resolver();
+      if (!blocked || (await resolver())) {
+        action = Action.Push;
+        location = getNextLocation(to, state);
+
+        const [url, historyState] = getURLAndState(++index, location);
+
+        globalHistory.pushState(historyState, '', url);
+
+        events.emit({ action, location });
       }
-
-      const location = getNextLocation(to, state);
-      const [url, historyState] = getURLAndState(index++, location);
-
-      globalHistory.pushState(historyState, '', url);
     });
   };
 
   const replace: History['replace'] = (to, state) => {
     blocker.inspect(async (blocked, resolver) => {
-      if (blocked) {
-        await resolver();
+      if (!blocked || (await resolver())) {
+        action = Action.Replace;
+        location = getNextLocation(to, state);
+
+        const [url, historyState] = getURLAndState(index, location);
+
+        globalHistory.replaceState(historyState, '', url);
+
+        events.emit({ action, location });
       }
-
-      const location = getNextLocation(to, state);
-      const [url, historyState] = getURLAndState(index, location);
-
-      globalHistory.replaceState(historyState, '', url);
     });
   };
 
   window.addEventListener(PopStateEventType, () => {
-    const [idx, location] = getIndexAndLocation();
+    const [nextIndex, nextLocation] = getIndexAndLocation();
 
-    if (idx != null) {
+    if (nextIndex != null) {
       const redirect = (revert: boolean = false) => {
-        const delta = index - idx;
+        const delta = index - nextIndex;
 
         if (delta !== 0) {
           go(revert ? delta * -1 : delta);
@@ -96,11 +113,14 @@ export function createBrowserHistory(): History {
         if (blocked) {
           redirect();
 
-          await resolver();
-
-          redirect(true);
+          if (await resolver()) {
+            redirect(true);
+          }
         } else {
-          events.emit({ action: Action.Pop, location });
+          action = Action.Pop;
+          location = nextLocation;
+
+          events.emit({ action, location });
         }
       }, redirect);
     } else if (__DEV__) {
@@ -115,18 +135,6 @@ export function createBrowserHistory(): History {
       );
     }
   });
-
-  const bootstrap = (): [index: number, location: Location] => {
-    const [index, location] = getIndexAndLocation();
-
-    if (index == null) {
-      return [0, location];
-    }
-
-    return [index, location];
-  };
-
-  [index, location] = bootstrap();
 
   return {
     go,
@@ -147,12 +155,13 @@ export function createBrowserHistory(): History {
     },
     block(resolver) {
       const callback = async () => {
-        await resolver({
-          action,
-          location
-        });
+        if (await resolver({ action, location })) {
+          blocker.unblock(callback);
 
-        blocker.unblock(callback);
+          return true;
+        }
+
+        return false;
       };
 
       blocker.block(callback);
