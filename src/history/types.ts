@@ -3,7 +3,7 @@
  * @see https://github.com/remix-run/history
  */
 
-import { Action } from './utils';
+import { Action } from './enum';
 
 /**
  * A URL pathname, beginning with a /.
@@ -43,11 +43,6 @@ export interface Location<S = unknown> extends Path {
 export interface Update<S = unknown> {
   action: Action;
   location: Location<S>;
-}
-
-export interface HistoryState<S = unknown> {
-  usr: S;
-  idx: number;
 }
 
 /**
@@ -107,11 +102,6 @@ export interface History {
    * @param state Data to associate with the new location.
    */
   replace<S = unknown>(to: To, state?: S): void;
-  /**
-   * @description Prevents changes to the history stack from happening and return unlisten function.
-   * @param blocker A function that will be called when a transition is blocked.
-   */
-  block<S = unknown>(resolver: Resolver<S>): () => void;
   /**
    * @description Sets up a listener that will be called whenever the current location changes and return unlisten function.
    * @param listener A function that will be called when the location changes.
