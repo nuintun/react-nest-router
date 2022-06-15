@@ -2,7 +2,8 @@
  * @module url
  */
 
-import { isAbsolute, normalize, prefix } from './path';
+import { isAbsolute, normalize } from './path';
+import { normalizeQuery } from './navigator/url';
 
 export interface URLSchema {
   readonly hash: string;
@@ -39,16 +40,6 @@ export function parseURL(path: string): URLSchema {
   }
 
   return { origin: '', pathname: '', search: '', hash: '' };
-}
-
-/**
- * @function normalizeQuery
- * @description Normalize query.
- * @param query Query to normalize.
- * @param symbol Query symbol.
- */
-export function normalizeQuery(query: string | undefined, symbol: string): string {
-  return query && query !== symbol ? prefix(query, symbol) : '';
 }
 
 /**

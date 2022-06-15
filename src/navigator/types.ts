@@ -53,13 +53,6 @@ export interface Listener<S = unknown> {
 }
 
 /**
- * A function that receives transitions when navigation is blocked.
- */
-export interface Resolver<S = unknown> {
-  (update: Update<S>): Promise<boolean> | boolean;
-}
-
-/**
  * Describes a location that is the destination of some navigation, either via
  * `history.push` or `history.replace`. May be either a URL or the pieces of a
  * URL path.
@@ -67,16 +60,23 @@ export interface Resolver<S = unknown> {
 export type To = string | Partial<Path>;
 
 /**
- * A history is an interface to the navigation stack. The navigator serves as the
+ * A navigator is an interface to the navigation stack. The navigator serves as the
  * source of truth for the current location, as well as provides a set of
  * methods that may be used to change it.
  *
  * It is similar to the DOM's `window.history` object, but with a smaller, more
  * focused API.
  */
-export interface History {
-  readonly action: Action;
-  readonly location: Location;
+export interface Navigator {
+  /**
+   * @description Navigator action type.
+   */
+  readonly action: Readonly<Action>;
+  /**
+   * @description Navigator location object.
+   */
+  readonly location: Readonly<Location>;
+
   /**
    * @description Goes back one entry in the history stack. Alias for history.go(-1).
    */

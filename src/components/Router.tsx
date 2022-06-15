@@ -5,8 +5,8 @@
 import { assert } from '../utils';
 import { normalize } from '../path';
 import { useRouter } from '../hooks/useRouter';
-import { createBrowserHistory } from 'history';
 import { Navigator, RouterProps } from '../types';
+import { createBrowserNavigator } from '../navigator';
 import { useRouteContext } from '../hooks/useRouteContext';
 import { LocationContext, NavigationContext } from '../context';
 import { useLocationContext } from '../hooks/useLocationContext';
@@ -34,7 +34,7 @@ export const Router = memo(function Router({ navigator: history, routes, context
   }, [basename]);
 
   const navigator = useMemo<Navigator>(() => {
-    return history ?? createBrowserHistory();
+    return history ?? createBrowserNavigator();
   }, [history]);
 
   const [state, setState] = useState(() => {

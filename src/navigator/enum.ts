@@ -7,7 +7,7 @@ export const enum Event {
   HashChange = 'hashchange'
 }
 
-export const enum Action {
+export enum Action {
   /**
    * A POP indicates a change to an arbitrary index in the history stack, such
    * as a back or forward navigation. It does not describe the direction of the

@@ -2,7 +2,7 @@
  * @module useNavigate
  */
 
-import { To } from 'history';
+import { To } from '../types';
 import { useMemo } from 'react';
 import { useResolve } from './useResolve';
 import { assert, isNumber } from '../utils';

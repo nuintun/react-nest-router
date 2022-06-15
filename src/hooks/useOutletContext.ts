@@ -2,9 +2,9 @@
  * @module useOutletContext
  */
 
-import { assert } from '../utils';
 import { useContext } from 'react';
 import { OutletContext } from '../context';
+import { assert, readOnly } from '../utils';
 
 /**
  * @function useOutletContext
@@ -17,5 +17,5 @@ export function useOutletContext<C = unknown>(): Readonly<C> {
     assert(outletContext, `The hook useOutletContext can only be used inside a route element.`);
   }
 
-  return outletContext!.context as Readonly<C>;
+  return readOnly(outletContext!.context as Readonly<C>);
 }

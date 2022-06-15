@@ -3,6 +3,17 @@
  */
 
 import { Path } from './types';
+import { prefix } from '../utils';
+
+/**
+ * @function normalizeQuery
+ * @description Normalize query.
+ * @param query Query to normalize.
+ * @param symbol Query symbol.
+ */
+export function normalizeQuery(query: string | undefined, symbol: string): string {
+  return query && query !== symbol ? prefix(query, symbol) : '';
+}
 
 /**
  * @function parse
@@ -27,5 +38,5 @@ export function parse(url: string): Path {
  * @param scheme URL scheme.
  */
 export function stringify({ pathname = '', search = '', hash = '' }: Partial<Path>): string {
-  return origin + pathname + search + hash;
+  return pathname + normalizeQuery(search, '?') + normalizeQuery(hash, '#');
 }

@@ -2,7 +2,7 @@
  * @module events
  */
 
-import { assert, isFunction, removeFromArray } from './utils';
+import { assert, isFunction } from '../utils';
 
 export interface Callback<E = unknown> {
   (event: E): void;
@@ -35,7 +35,11 @@ export function createEvents<E = unknown>(): Events<E> {
       callbacks.push(callback);
     },
     unlisten(callback) {
-      removeFromArray(callbacks, callback);
+      const index = callbacks.indexOf(callback);
+
+      if (index >= 0) {
+        callbacks.splice(index, 1);
+      }
     }
   };
 }

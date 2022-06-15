@@ -2,7 +2,7 @@
  * @module useResolve
  */
 
-import { To } from 'history';
+import { To } from '../types';
 import { useMemo } from 'react';
 import { assert, isString } from '../utils';
 import { parseURL, resolveURL } from '../url';

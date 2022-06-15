@@ -36,47 +36,25 @@ function env() {
  * @param development
  */
 export default function rollup(esnext) {
-  return [
-    {
-      input: 'src/index.ts',
-      preserveModules: true,
-      output: {
-        banner,
-        interop: false,
-        exports: 'auto',
-        esModule: false,
-        dir: esnext ? 'esm' : 'cjs',
-        format: esnext ? 'esm' : 'cjs',
-        entryFileNames: `[name].${esnext ? 'js' : 'cjs'}`,
-        chunkFileNames: `[name].${esnext ? 'js' : 'cjs'}`
-      },
-      plugins: [env(), typescript(), treeShake()],
-      onwarn(error, warn) {
-        if (error.code !== 'CIRCULAR_DEPENDENCY') {
-          warn(error);
-        }
-      },
-      external: ['tslib', 'react', 'history', 'react/jsx-runtime', 'react/jsx-dev-runtime']
+  return {
+    input: 'src/index.ts',
+    preserveModules: true,
+    output: {
+      banner,
+      interop: false,
+      exports: 'auto',
+      esModule: false,
+      dir: esnext ? 'esm' : 'cjs',
+      format: esnext ? 'esm' : 'cjs',
+      entryFileNames: `[name].${esnext ? 'js' : 'cjs'}`,
+      chunkFileNames: `[name].${esnext ? 'js' : 'cjs'}`
     },
-    {
-      input: 'src/history/index.ts',
-      output: {
-        banner,
-        interop: false,
-        exports: 'auto',
-        esModule: false,
-        dir: esnext ? 'esm' : 'cjs',
-        format: esnext ? 'esm' : 'cjs',
-        entryFileNames: `history.${esnext ? 'js' : 'cjs'}`,
-        chunkFileNames: `history.${esnext ? 'js' : 'cjs'}`
-      },
-      plugins: [env(), typescript(), treeShake()],
-      onwarn(error, warn) {
-        if (error.code !== 'CIRCULAR_DEPENDENCY') {
-          warn(error);
-        }
-      },
-      external: ['tslib', 'react']
-    }
-  ];
+    plugins: [env(), typescript(), treeShake()],
+    onwarn(error, warn) {
+      if (error.code !== 'CIRCULAR_DEPENDENCY') {
+        warn(error);
+      }
+    },
+    external: ['tslib', 'react', 'history', 'react/jsx-runtime', 'react/jsx-dev-runtime']
+  };
 }

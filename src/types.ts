@@ -3,7 +3,12 @@
  */
 
 import React from 'react';
-import { Action, Location as ILocation, To } from 'history';
+import { Navigator, To } from './navigator';
+
+/**
+ * Reexport history types.
+ */
+export { Action, Location, Navigator, To } from './navigator';
 
 /**
  * Set object mutable
@@ -115,40 +120,6 @@ export interface RouteBranch<M = unknown, K extends string = string> {
   readonly guard: (match: RouteMatch<M, K>) => boolean;
 }
 
-/**
- * Location.
- */
-export interface Location<S = unknown> extends Readonly<ILocation> {
-  readonly state: S;
-}
-
-/**
- * Navigator update.
- */
-export interface NavigatorUpdate<S = unknown> {
-  readonly action: Action;
-  readonly location: Location<S>;
-}
-
-/**
- * Navigator listener.
- */
-export interface NavigatorListener {
-  <S = unknown>(update: NavigatorUpdate<S>): void;
-}
-
-/**
- * Navigator.
- */
-export interface Navigator {
-  action: Action;
-  location: Location;
-  go(delta: number): void;
-  push<S = unknown>(to: To, state?: S): void;
-  replace<S = unknown>(to: To, state?: S): void;
-  listen(listener: NavigatorListener): () => void;
-}
-
 export interface NavigateOptions<S> {
   state?: S;
   replace?: boolean;
@@ -165,8 +136,8 @@ export interface Navigate {
 export interface RouterProps<M = unknown, K extends string = string, C = unknown> {
   context?: C;
   basename?: string;
-  routes: Route<M, K>[];
   navigator?: Navigator;
+  routes: Route<M, K>[];
   children?: React.ReactNode;
 }
 

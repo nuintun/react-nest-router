@@ -2,6 +2,8 @@
  * @module path
  */
 
+import { suffix } from './utils';
+
 /**
  * @function isAbsolute
  * @description Check if the path is absolute.
@@ -70,26 +72,6 @@ export function resolve(from: string, to?: string): string {
   }
 
   return normalize(from + '/' + to);
-}
-
-/**
- * @function prefix
- * @description Prefix the path with symbol.
- * @param path The path to prefix.
- * @param symbol Prefix symbol.
- */
-export function prefix(path: string, symbol: string): string {
-  return path.startsWith(symbol) ? path : symbol + path;
-}
-
-/**
- * @function suffix
- * @description Suffix the path with symbol.
- * @param path The path to suffix.
- * @param symbol Suffix symbol.
- */
-export function suffix(path: string, symbol: string): string {
-  return path.endsWith(symbol) ? path : path + symbol;
 }
 
 /**

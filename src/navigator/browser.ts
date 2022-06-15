@@ -5,10 +5,10 @@
 import { Action, Event } from './enum';
 import { createEvents } from './events';
 import { parse, stringify } from './url';
-import { isString, readOnly } from './utils';
-import { History, Location, To, Update } from './types';
+import { isString, readOnly } from '../utils';
+import { Location, Navigator, To, Update } from './types';
 
-function getLocation<S>(window: Window): Location<S> {
+function getLocation<S>(window: Window): Readonly<Location<S>> {
   const state: S = window.history.state;
   const { pathname, search, hash } = window.location;
 
@@ -22,7 +22,7 @@ function getNextURL<S>(from: Location<S>, to: To): string {
   return stringify({ pathname, ...location });
 }
 
-export function createBrowserHistory(window: Window = document.defaultView!): History {
+export function createBrowserNavigator(window: Window = document.defaultView!): Navigator {
   let action: Action = Action.Pop;
   let location = getLocation(window);
 
@@ -30,19 +30,19 @@ export function createBrowserHistory(window: Window = document.defaultView!): Hi
   const globalLocation = window.location;
   const events = createEvents<Update<any>>();
 
-  const go: History['go'] = delta => {
+  const go: Navigator['go'] = delta => {
     globalHistory.go(delta);
   };
 
-  const back: History['back'] = () => {
+  const back: Navigator['back'] = () => {
     globalHistory.back();
   };
 
-  const forward: History['forward'] = () => {
+  const forward: Navigator['forward'] = () => {
     globalHistory.forward();
   };
 
-  const push: History['push'] = (to, state) => {
+  const push: Navigator['push'] = (to, state) => {
     const url = getNextURL(location, to);
 
     try {
@@ -57,7 +57,7 @@ export function createBrowserHistory(window: Window = document.defaultView!): Hi
     }
   };
 
-  const replace: History['replace'] = (to, state) => {
+  const replace: Navigator['replace'] = (to, state) => {
     const url = getNextURL(location, to);
 
     try {

@@ -3,18 +3,19 @@
  */
 
 export type {
+  Action,
   IRoute,
   Location,
   Navigate,
   NavigateOptions,
   NavigateProps,
   Navigator,
-  NavigatorListener,
   OutletProps,
   Params,
   Route,
   RouteMatch,
-  RouterProps
+  RouterProps,
+  To
 } from './types';
 export * from './hooks/useMatch';
 export * from './hooks/useRouter';

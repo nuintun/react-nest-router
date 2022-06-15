@@ -3,9 +3,9 @@
  */
 
 import { Tree } from './Tree';
-import { assert } from './utils';
 import { compile } from './pattern';
-import { isAboveRoot, isAbsolute, join, prefix, resolve } from './path';
+import { assert, isFunction, prefix } from './utils';
+import { isAboveRoot, isAbsolute, join, resolve } from './path';
 import { BranchMeta, IRoute, Route, RouteBranch, RouteMatch } from './types';
 
 /**
@@ -166,7 +166,7 @@ export function flatten<M, K extends string>(routes: Route<M, K>[], basename: st
         );
 
         assert(
-          !('guard' in item && typeof guard !== 'function'),
+          !('guard' in item && isFunction(guard)),
           `The guard of the route path "${path}" must be a function. If the route has guard, the guard property must be a function.`
         );
 
