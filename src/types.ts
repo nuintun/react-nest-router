@@ -21,9 +21,9 @@ export type Mutable<T> = {
  * Interface Route.
  */
 export interface IRoute<M = unknown, K extends string = string> {
+  readonly meta?: M;
   readonly index?: true;
   readonly path?: string;
-  readonly meta?: Readonly<M>;
   readonly sensitive?: boolean;
   readonly element?: React.ReactNode;
   readonly children?: IRoute<M, K>[];
