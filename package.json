@@ -1,6 +1,6 @@
 {
   "name": "react-nest-router",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "description": "Declarative routing for React.",
   "type": "module",
   "main": "cjs/index.cjs",
@@ -61,7 +61,7 @@
     "@types/react": "^18.0.12",
     "@types/react-dom": "^18.0.5",
     "magic-string": "^0.26.2",
-    "prettier": "^2.7.0",
+    "prettier": "^2.7.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "rimraf": "^3.0.2",
