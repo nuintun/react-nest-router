@@ -34,7 +34,7 @@ export const Router = memo(function Router({ navigator: history, routes, context
   }, [basename]);
 
   const navigator = useMemo<Navigator>(() => {
-    return history ?? createNavigator();
+    return history ?? createNavigator(self);
   }, [history]);
 
   const [state, setState] = useState(() => {

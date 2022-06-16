@@ -22,7 +22,7 @@ function getNextURL<S>(from: Location<S>, to: To): string {
   return stringify({ pathname, ...location });
 }
 
-export function createNavigator(window: Window = self): Navigator {
+export function createNavigator(window: Window): Navigator {
   let action: Action = Action.Pop;
   let location = getLocation(window);
 
