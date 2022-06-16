@@ -4,4 +4,4 @@
 
 export * from './types';
 export { Action } from './enum';
-export { createBrowserNavigator } from './browser';
+export { createNavigator } from './navigator';

@@ -78,14 +78,6 @@ export interface Navigator {
   readonly location: Readonly<Location>;
 
   /**
-   * @description Goes back one entry in the history stack. Alias for history.go(-1).
-   */
-  back(): void;
-  /**
-   * @description Goes forward one entry in the history stack. Alias for history.go(1).
-   */
-  forward(): void;
-  /**
    * @description Navigates back/forward by delta entries in the stack.
    * @param delta The delta in the stack index.
    */

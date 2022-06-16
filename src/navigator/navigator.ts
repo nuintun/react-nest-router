@@ -1,5 +1,5 @@
 /**
- * @module browser
+ * @module navigator
  */
 
 import { Action, Event } from './enum';
@@ -22,7 +22,7 @@ function getNextURL<S>(from: Location<S>, to: To): string {
   return stringify({ pathname, ...location });
 }
 
-export function createBrowserNavigator(window: Window = document.defaultView!): Navigator {
+export function createNavigator(window: Window = self): Navigator {
   let action: Action = Action.Pop;
   let location = getLocation(window);
 
@@ -30,16 +30,15 @@ export function createBrowserNavigator(window: Window = document.defaultView!): 
   const globalLocation = window.location;
   const events = createEvents<Update<any>>();
 
+  window.addEventListener(Event.PopState, () => {
+    action = Action.Pop;
+    location = getLocation(window);
+
+    events.emit({ action, location });
+  });
+
   const go: Navigator['go'] = delta => {
     globalHistory.go(delta);
-  };
-
-  const back: Navigator['back'] = () => {
-    globalHistory.back();
-  };
-
-  const forward: Navigator['forward'] = () => {
-    globalHistory.forward();
   };
 
   const push: Navigator['push'] = (to, state) => {
@@ -72,19 +71,10 @@ export function createBrowserNavigator(window: Window = document.defaultView!): 
     }
   };
 
-  window.addEventListener(Event.PopState, () => {
-    action = Action.Pop;
-    location = getLocation(window);
-
-    events.emit({ action, location });
-  });
-
   return {
     go,
-    back,
     push,
     replace,
-    forward,
     get action() {
       return action;
     },
