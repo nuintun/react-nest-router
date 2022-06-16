@@ -6,7 +6,7 @@ import { Action, Event } from './enum';
 import { createEvents } from './events';
 import { parse, stringify } from './url';
 import { isString, readOnly } from '../utils';
-import { Location, Navigator, To, Update } from './types';
+import { Location, Navigator, NavigatorEvent, To } from './types';
 
 function getLocation<S>(window: Window): Readonly<Location<S>> {
   const state: S = window.history.state;
@@ -28,7 +28,7 @@ export function createNavigator(window: Window = self): Navigator {
 
   const globalHistory = window.history;
   const globalLocation = window.location;
-  const events = createEvents<Update<any>>();
+  const events = createEvents<NavigatorEvent<any>>();
 
   window.addEventListener(Event.PopState, () => {
     action = Action.Pop;

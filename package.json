@@ -49,7 +49,6 @@
     "build:types": "tsc --declaration --emitDeclarationOnly --declarationDir types"
   },
   "dependencies": {
-    "history": "^5.3.0",
     "tslib": "^2.4.0"
   },
   "peerDependencies": {

@@ -10,6 +10,7 @@ export type {
   NavigateOptions,
   NavigateProps,
   Navigator,
+  NavigatorEvent,
   OutletProps,
   Params,
   Route,

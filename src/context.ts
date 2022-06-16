@@ -3,9 +3,8 @@
  */
 
 import React from 'react';
-import { Action } from 'history';
 import { createContext } from 'react';
-import { IRoute, Location, Navigator, RouteMatch } from './types';
+import { Action, IRoute, Location, Navigator, RouteMatch } from './types';
 
 /**
  * Route context.

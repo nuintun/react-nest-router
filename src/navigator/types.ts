@@ -40,7 +40,7 @@ export interface Location<S = unknown> extends Path {
 /**
  * A change to the current location.
  */
-export interface Update<S = unknown> {
+export interface NavigatorEvent<S = unknown> {
   action: Action;
   location: Location<S>;
 }
@@ -49,7 +49,7 @@ export interface Update<S = unknown> {
  * A function that receives notifications about location changes.
  */
 export interface Listener<S = unknown> {
-  (update: Update<S>): void;
+  (event: NavigatorEvent<S>): void;
 }
 
 /**
@@ -76,7 +76,6 @@ export interface Navigator {
    * @description Navigator location object.
    */
   readonly location: Readonly<Location>;
-
   /**
    * @description Navigates back/forward by delta entries in the stack.
    * @param delta The delta in the stack index.

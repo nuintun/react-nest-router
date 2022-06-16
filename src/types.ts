@@ -8,7 +8,7 @@ import { Navigator, To } from './navigator';
 /**
  * Reexport history types.
  */
-export { Action, Location, Navigator, To } from './navigator';
+export { Action, Location, Navigator, NavigatorEvent, To } from './navigator';
 
 /**
  * Set object mutable
