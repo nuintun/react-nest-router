@@ -3,8 +3,7 @@
  */
 
 export const enum Event {
-  PopState = 'popstate',
-  HashChange = 'hashchange'
+  PopState = 'popstate'
 }
 
 export enum Action {
