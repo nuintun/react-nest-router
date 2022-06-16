@@ -6,6 +6,11 @@
 import { Action } from './enum';
 
 /**
+ * A URL origin, beginning with a protocol.
+ */
+export type Origin = string;
+
+/**
  * A URL pathname, beginning with a /.
  */
 export type Pathname = string;
@@ -23,7 +28,8 @@ export type Hash = string;
 /**
  * The pathname, search, and hash values of a URL.
  */
-export interface Path {
+export interface URL {
+  origin: Origin;
   pathname: Pathname;
   search: Search;
   hash: Hash;
@@ -33,7 +39,7 @@ export interface Path {
  * An entry in a history stack. A location contains information about the
  * URL path, as well as possibly some arbitrary state and a key.
  */
-export interface Location<S = unknown> extends Path {
+export interface Location<S = unknown> extends Omit<URL, 'origin'> {
   state: S;
 }
 
@@ -57,7 +63,7 @@ export interface Listener<S = unknown> {
  * `history.push` or `history.replace`. May be either a URL or the pieces of a
  * URL path.
  */
-export type To = string | Partial<Path>;
+export type To = string | Partial<URL>;
 
 /**
  * A navigator is an interface to the navigation stack. The navigator serves as the

@@ -2,8 +2,8 @@
  * @module url
  */
 
-import { Path } from './types';
-import { prefix } from '../utils';
+import { URL } from './types';
+import { endsWith, prefix, startsWith } from '../utils';
 
 /**
  * @function normalizeQuery
@@ -20,16 +20,16 @@ export function normalizeQuery(query: string | undefined, symbol: string): strin
  * @description Parse URL.
  * @param path URL path.
  */
-export function parse(url: string): Path {
-  const matched = url.match(/^([^?#]*)(\?[^#]*)?(#.*)?$/i);
+export function parse(url: string): URL {
+  const matched = url.match(/^((?:[a-z0-9.+-]+:)?\/\/[^/]+)?([^?#]*)(\?[^#]*)?(#.*)?$/i);
 
   if (matched) {
-    const [, pathname, search = '', hash = ''] = matched;
+    const [, origin = '', pathname, search = '', hash = ''] = matched;
 
-    return { pathname, search, hash };
+    return { origin, pathname, search, hash };
   }
 
-  return { pathname: '', search: '', hash: '' };
+  return { origin: '', pathname: '', search: '', hash: '' };
 }
 
 /**
@@ -37,6 +37,9 @@ export function parse(url: string): Path {
  * @description Stringify URL scheme.
  * @param scheme URL scheme.
  */
-export function stringify({ pathname = '', search = '', hash = '' }: Partial<Path>): string {
-  return pathname + normalizeQuery(search, '?') + normalizeQuery(hash, '#');
+export function stringify({ origin = '', pathname = '', search = '', hash = '' }: Partial<URL>): string {
+  const hasSlash = endsWith(origin, '/') || startsWith(pathname, '/');
+  const query = normalizeQuery(search, '?') + normalizeQuery(hash, '#');
+
+  return origin + (hasSlash ? '' : '/') + pathname + query;
 }

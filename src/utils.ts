@@ -48,13 +48,33 @@ export function assert<T>(cond: T, message: string): asserts cond {
 }
 
 /**
+ * @function startsWith
+ * @description Check if string starts with symbol.
+ * @param string The string to check.
+ * @param symbol The symbol to check for.
+ */
+export function startsWith(string: string, symbol: string): boolean {
+  return string.charAt(0) === symbol;
+}
+
+/**
+ * @function endsWith
+ * @description Check if string ends with symbol.
+ * @param string The string to check.
+ * @param symbol The symbol to check for.
+ */
+export function endsWith(string: string, symbol: string): boolean {
+  return string.charAt(string.length - 1) === symbol;
+}
+
+/**
  * @function prefix
  * @description Prefix the string with symbol.
  * @param string The string to prefix.
  * @param symbol Prefix symbol.
  */
 export function prefix(string: string, symbol: string): string {
-  return string.charAt(0) === symbol ? string : symbol + string;
+  return startsWith(string, symbol) ? string : symbol + string;
 }
 
 /**
@@ -64,5 +84,5 @@ export function prefix(string: string, symbol: string): string {
  * @param symbol Suffix symbol.
  */
 export function suffix(string: string, symbol: string): string {
-  return string.charAt(string.length - 1) === symbol ? string : string + symbol;
+  return endsWith(string, symbol) ? string : string + symbol;
 }

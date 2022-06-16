@@ -29,5 +29,4 @@ export * from './components/Outlet';
 export * from './hooks/useNavigate';
 export * from './hooks/useLocation';
 export * from './hooks/useOutletContext';
-export { parseURL, resolveURL } from './url';
 export { join, normalize, resolve } from './path';

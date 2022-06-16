@@ -2,15 +2,10 @@
  * @module url
  */
 
+import { To } from './navigator';
+import { isString } from './utils';
 import { isAbsolute, normalize } from './path';
-import { normalizeQuery } from './navigator/url';
-
-export interface URLSchema {
-  readonly hash: string;
-  readonly origin: string;
-  readonly search: string;
-  readonly pathname: string;
-}
+import { parse, stringify } from './navigator/url';
 
 /**
  * @function safelyDecodeURIComponent
@@ -26,50 +21,29 @@ export function safelyDecodeURIComponent(value: string): string {
 }
 
 /**
- * @function parseURL
- * @description Parse URL.
- * @param path URL path.
- */
-export function parseURL(path: string): URLSchema {
-  const matched = path.match(/^((?:[a-z0-9.+-]+:)?\/\/[^/]+)?([^?#]*)(\?[^#]*)?(#.*)?$/i);
-
-  if (matched) {
-    const [, origin = '', pathname, search = '', hash = ''] = matched;
-
-    return { origin, pathname, search, hash };
-  }
-
-  return { origin: '', pathname: '', search: '', hash: '' };
-}
-
-/**
- * @function resolveURL
+ * @function resolve
  * @description Resolve URL.
  * @param from URL from.
  * @param to URL to.
  * @param basename URL basename.
  */
-export function resolveURL(from: string, to: Partial<Omit<URLSchema, 'origin'>> = {}, basename: string = '/'): string {
-  const { pathname } = to;
+export function resolve(from: string, to: To, basename: string = '/'): string {
+  let pathname: string | undefined;
 
-  const hash = normalizeQuery(to.hash, '#');
-  const search = normalizeQuery(to.search, '?');
+  const location = isString(to) ? parse(to) : to;
+  const { pathname: path, origin, search, hash } = location;
 
-  const query = search + hash;
-
-  if (!pathname) {
-    return normalize(from) + query;
+  if (origin) {
+    pathname = path ? normalize(path) : path;
+  } else if (path) {
+    if (isAbsolute(path)) {
+      pathname = normalize(basename + '/' + path);
+    } else {
+      pathname = normalize(from + '/' + path);
+    }
+  } else {
+    pathname = normalize(from);
   }
 
-  const path = normalize(pathname);
-
-  if (path === '/') {
-    return normalize(basename) + query;
-  }
-
-  if (isAbsolute(path)) {
-    return normalize(basename + '/' + path) + query;
-  }
-
-  return normalize(from + '/' + path) + query;
+  return stringify({ origin, pathname, search, hash });
 }
