@@ -2,32 +2,38 @@
  * @module utils
  */
 
-const { toString } = Object.prototype;
-
-/**
- * @function isNumber
- * @param value The value to check.
- */
-export function isNumber(value: unknown): value is number {
-  return toString.call(value) === '[object Number]';
-}
-
-/**
- * @function isString
- * @param value The value to check.
- */
-export function isString(value: unknown): value is string {
-  return toString.call(value) === '[object String]';
-}
-
 /**
  * @function isFunction
+ * @description Check the value is a function.
  * @param value The value to check.
  */
 export function isFunction(value: unknown): value is Function {
   return typeof value === 'function';
 }
 
+/**
+ * @function isNumber
+ * @description Check the value is a number.
+ * @param value The value to check.
+ */
+export function isNumber(value: unknown): value is number {
+  return Object.prototype.toString.call(value) === '[object Number]';
+}
+
+/**
+ * @function isString
+ * @description Check that value is a string.
+ * @param value The value to check.
+ */
+export function isString(value: unknown): value is string {
+  return Object.prototype.toString.call(value) === '[object String]';
+}
+
+/**
+ * @function readOnly
+ * @description Set the value to read-only.
+ * @param value The value to freeze.
+ */
 export function readOnly<T>(value: T): Readonly<T> {
   if (__DEV__) {
     return Object.freeze(value);
@@ -38,6 +44,7 @@ export function readOnly<T>(value: T): Readonly<T> {
 
 /**
  * @function assert
+ * @description Assert the condition.
  * @param cond Assert flags.
  * @param message Assert error message.
  */
