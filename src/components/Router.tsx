@@ -10,8 +10,8 @@ import { Navigator, RouterProps } from '../types';
 import { useRouteContext } from '../hooks/useRouteContext';
 import { LocationContext, NavigationContext } from '../context';
 import { useLocationContext } from '../hooks/useLocationContext';
+import React, { memo, useEffect, useMemo, useState } from 'react';
 import { useNavigationContext } from '../hooks/useNavigationContext';
-import React, { memo, useLayoutEffect, useMemo, useState } from 'react';
 
 /**
  * @function Router
@@ -48,7 +48,7 @@ export const Router = memo(function Router({ navigator: history, routes, context
     return { basename, navigator };
   }, [basename, navigator]);
 
-  useLayoutEffect(() => navigator.listen(setState), [navigator]);
+  useEffect(() => navigator.listen(setState), [navigator]);
 
   const element = useRouter(routes, state.location.pathname, basename, context);
 
