@@ -136,8 +136,8 @@ export interface Navigate {
 export interface RouterProps<M = unknown, K extends string = string, C = unknown> {
   context?: C;
   basename?: string;
-  navigator?: Navigator;
   routes: Route<M, K>[];
+  navigator?: Navigator;
   children?: React.ReactNode;
 }
 
