@@ -28,5 +28,6 @@ export * from './components/Router';
 export * from './components/Outlet';
 export * from './hooks/useNavigate';
 export * from './hooks/useLocation';
+export * from './hooks/useMatchIndex';
 export * from './hooks/useOutletContext';
 export { join, normalize, resolve } from './path';
