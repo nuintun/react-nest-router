@@ -98,7 +98,7 @@ export interface RouteMatch<M = unknown, K extends string = string> {
   readonly basename: string;
   readonly pathname: string;
   readonly params: Params<K>;
-  readonly meta: IRoute<M, K>[];
+  readonly matches: IRoute<M, K>[];
 }
 
 /**

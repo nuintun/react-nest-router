@@ -121,7 +121,7 @@ export function flatten<M, K extends string>(routes: Route<M, K>[], basename: st
   for (const route of routes) {
     const meta: BranchMeta<M, K>[] = [];
     const paths: (string | undefined)[] = [];
-    const items = new Tree<IRoute<M, K>>(route, route => route.children).dfs(() => {
+    const items = new Tree<IRoute<M, K>>(route, ({ children }) => children).dfs(() => {
       meta.pop();
       paths.pop();
     });
@@ -219,14 +219,14 @@ export function match<M, K extends string>(routes: RouteBranch<M, K>[], pathname
   const path = prefix(pathname, '/');
 
   // Match route branches.
-  for (const { meta: metadata, matcher, guard, basename } of routes) {
+  for (const { meta, matcher, guard, basename } of routes) {
     const params = matcher.match(path);
 
     if (params) {
       const { length } = basename;
-      const meta = metadata.map(({ route }) => route);
+      const matches = meta.map(({ route }) => route);
       const pathname = prefix(path.slice(length), '/');
-      const match = { path, meta, params, basename, pathname };
+      const match = { path, basename, pathname, params, matches };
 
       if (guard(match)) {
         return match;

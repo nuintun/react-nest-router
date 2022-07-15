@@ -4,13 +4,13 @@
 
 import React from 'react';
 import { createContext } from 'react';
-import { Action, IRoute, Location, Navigator, RouteMatch } from './types';
+import { Action, Location, Navigator, RouteMatch } from './types';
 
 /**
  * Route context.
  */
 export interface RouteContext {
-  readonly current: IRoute<unknown, string>;
+  readonly index: number;
   readonly outlet: React.ReactElement | null;
   readonly match: RouteMatch<unknown, string>;
 }

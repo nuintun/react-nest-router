@@ -17,5 +17,7 @@ export function useMatch<M = unknown, K extends string = string>(): Readonly<IRo
     assert(routeContext, `The hook useMatch can only be used inside a route element.`);
   }
 
-  return readOnly(routeContext!.current as IRoute<M, K>);
+  const { index, match } = routeContext!;
+
+  return readOnly(match.matches[index] as IRoute<M, K>);
 }

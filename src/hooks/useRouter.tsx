@@ -51,10 +51,10 @@ export function useRouter<M = unknown, K extends string = string, C = unknown>(
 
   const element = useMemo(() => {
     if (matched) {
-      return matched.meta.reduceRight<React.ReactElement | null>((outlet, route) => {
+      return matched.matches.reduceRight<React.ReactElement | null>((outlet, match, index) => {
         return (
-          <RouteContext.Provider value={{ outlet, match: matched, current: route }}>
-            {'element' in route ? route.element : outlet}
+          <RouteContext.Provider value={{ index, outlet, match: matched }}>
+            {'element' in match ? match.element : outlet}
           </RouteContext.Provider>
         );
       }, null);

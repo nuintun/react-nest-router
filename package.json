@@ -1,6 +1,6 @@
 {
   "name": "react-nest-router",
-  "version": "0.6.1",
+  "version": "0.7.0",
   "description": "Declarative routing for React.",
   "type": "module",
   "main": "cjs/index.cjs",
