@@ -131,17 +131,6 @@ export interface Navigate {
 }
 
 /**
- * Route props.
- */
-export interface RouterProps<M = unknown, K extends string = string, C = unknown> {
-  context?: C;
-  basename?: string;
-  routes: Route<M, K>[];
-  navigator?: Navigator;
-  children?: React.ReactNode;
-}
-
-/**
  * Outlet props.
  */
 export interface OutletProps<C = unknown> {
@@ -151,8 +140,17 @@ export interface OutletProps<C = unknown> {
 /**
  * Navigate props.
  */
-export interface NavigateProps<S = unknown> {
+export interface NavigateProps<S = unknown> extends NavigateOptions<S> {
   to: To;
-  state?: S;
-  replace?: boolean;
+}
+
+/**
+ * Route props.
+ */
+export interface RouterProps<M = unknown, K extends string = string, C = unknown> {
+  context?: C;
+  basename?: string;
+  routes: Route<M, K>[];
+  navigator?: Navigator;
+  children?: React.ReactNode;
 }
