@@ -7,7 +7,6 @@ export type {
   Action,
   IRoute,
   Location,
-  Navigate,
   NavigateOptions,
   NavigateProps,
   Navigator,
