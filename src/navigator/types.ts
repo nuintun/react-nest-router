@@ -29,10 +29,10 @@ export type Hash = string;
  * The pathname, search, and hash values of a URL.
  */
 export interface URL {
-  origin: Origin;
-  pathname: Pathname;
-  search: Search;
-  hash: Hash;
+  readonly origin: Origin;
+  readonly pathname: Pathname;
+  readonly search: Search;
+  readonly hash: Hash;
 }
 
 /**
@@ -47,8 +47,8 @@ export interface Location<S = unknown> extends Omit<URL, 'origin'> {
  * A change to the current location.
  */
 export interface NavigatorEvent<S = unknown> {
-  action: Action;
-  location: Location<S>;
+  readonly action: Action;
+  readonly location: Location<S>;
 }
 
 /**
