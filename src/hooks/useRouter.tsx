@@ -1,5 +1,5 @@
 /**
- * @module hooks
+ * @module useRouter
  */
 
 import { Route } from '../types';

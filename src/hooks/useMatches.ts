@@ -10,7 +10,7 @@ import { useRouteContext } from './useRouteContext';
  * @function useMatches
  * @description Get all match routes.
  */
-export function useMatches<M = unknown, K extends string = string>(): Readonly<IRoute<M, K>[]> {
+export function useMatches<M = unknown, K extends string = string>(): readonly IRoute<M, K>[] {
   const routeContext = useRouteContext();
 
   if (__DEV__) {
