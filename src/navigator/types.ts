@@ -29,10 +29,10 @@ export type Hash = string;
  * The pathname, search, and hash values of a URL.
  */
 export interface URL {
-  origin: Origin;
-  pathname: Pathname;
-  search: Search;
   hash: Hash;
+  origin: Origin;
+  search: Search;
+  pathname: Pathname;
 }
 
 /**
