@@ -2,17 +2,22 @@
  * @module navigator
  */
 
+import { isString } from '../utils';
 import { Action, Event } from './enum';
 import { createEvents } from './events';
 import { parse, stringify } from './url';
-import { isString, readOnly } from '../utils';
 import { Location, Navigator, NavigatorEvent, To } from './types';
 
 function getLocation<S>(window: Window): Readonly<Location<S>> {
   const state: S = window.history.state;
   const { pathname, search, hash } = window.location;
+  const location: Location<S> = { pathname, search, hash, state };
 
-  return readOnly({ pathname, search, hash, state });
+  if (__DEV__) {
+    return Object.freeze(location);
+  }
+
+  return location;
 }
 
 function getNextURL<S>(from: Location<S>, to: To): string {

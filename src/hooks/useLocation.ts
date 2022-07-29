@@ -2,8 +2,8 @@
  * @module useLocation
  */
 
+import { assert } from '../utils';
 import { Location } from '../types';
-import { assert, readOnly } from '../utils';
 import { useLocationContext } from './useLocationContext';
 
 /**
@@ -17,5 +17,11 @@ export function useLocation<S = unknown>(): Location<S> {
     assert(locationContext, `The hook useLocation can only be used inside a <Router> component.`);
   }
 
-  return readOnly(locationContext!.location as Location<S>);
+  const { location } = locationContext!;
+
+  if (__DEV__) {
+    return Object.freeze(location) as Location<S>;
+  }
+
+  return location as Location<S>;
 }

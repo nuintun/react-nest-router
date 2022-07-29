@@ -2,8 +2,8 @@
  * @module useParams
  */
 
+import { assert } from '../utils';
 import { Params } from '../types';
-import { assert, readOnly } from '../utils';
 import { useRouteContext } from './useRouteContext';
 
 /**
@@ -17,5 +17,11 @@ export function useParams<K extends string = string>(): Params<K> {
     assert(routeContext, `The hook useParams can only be used inside a route element.`);
   }
 
-  return readOnly(routeContext!.match.params as Params<K>);
+  const { params } = routeContext!.match;
+
+  if (__DEV__) {
+    return Object.freeze(params) as Params<K>;
+  }
+
+  return params as Params<K>;
 }

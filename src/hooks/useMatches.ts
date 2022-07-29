@@ -2,8 +2,8 @@
  * @module useMatches
  */
 
+import { assert } from '../utils';
 import { IRoute } from '../types';
-import { assert, readOnly } from '../utils';
 import { useRouteContext } from './useRouteContext';
 
 /**
@@ -17,7 +17,11 @@ export function useMatches<M = unknown, K extends string = string>(): readonly I
     assert(routeContext, `The hook useMatches can only be used inside a route element.`);
   }
 
-  const { match } = routeContext!;
+  const { matches } = routeContext!.match;
 
-  return readOnly(match.matches as IRoute<M, K>[]);
+  if (__DEV__) {
+    return Object.freeze(matches) as IRoute<M, K>[];
+  }
+
+  return matches as IRoute<M, K>[];
 }

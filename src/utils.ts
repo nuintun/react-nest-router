@@ -30,19 +30,6 @@ export function isString(value: unknown): value is string {
 }
 
 /**
- * @function readOnly
- * @description Set the value to read-only.
- * @param value The value to freeze.
- */
-export function readOnly<T>(value: T): Readonly<T> {
-  if (__DEV__) {
-    return Object.freeze(value);
-  }
-
-  return value;
-}
-
-/**
  * @function assert
  * @description Assert the condition.
  * @param cond Assert flags.
