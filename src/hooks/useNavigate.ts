@@ -29,16 +29,16 @@ export function useNavigate(): Navigate {
   const navigate = useMemo(() => {
     return <S = unknown>(to: To | number, options: NavigateOptions<S> = {}) => {
       if (isNumber(to)) {
-        return navigator.go(to);
-      }
-
-      const path = resolve(to);
-      const { replace, state } = options;
-
-      if (replace) {
-        navigator.replace(path, state);
+        navigator.go(to);
       } else {
-        navigator.push(path, state);
+        const path = resolve(to);
+        const { replace, state } = options;
+
+        if (replace) {
+          navigator.replace(path, state);
+        } else {
+          navigator.push(path, state);
+        }
       }
     };
   }, [navigator]);
