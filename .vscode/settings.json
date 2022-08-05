@@ -1,5 +1,4 @@
 {
-  "prettier.withNodeModules": true,
   "[javascript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
