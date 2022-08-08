@@ -86,22 +86,22 @@ export interface Navigator {
    * @description Navigates back/forward by delta entries in the stack.
    * @param delta The delta in the stack index.
    */
-  go(delta: number): void;
+  readonly go: (delta: number) => void;
   /**
    * @description Pushes a new entry onto the stack.
    * @param to The new URL.
    * @param state Data to associate with the new location.
    */
-  push<S = unknown>(to: To, state?: S): void;
+  readonly push: <S = unknown>(to: To, state?: S) => void;
   /**
    * @description Replaces the current entry in the stack with a new one.
    * @param to The new URL.
    * @param state Data to associate with the new location.
    */
-  replace<S = unknown>(to: To, state?: S): void;
+  readonly replace: <S = unknown>(to: To, state?: S) => void;
   /**
    * @description Sets up a listener that will be called whenever the current location changes and return unlisten function.
    * @param listener A function that will be called when the location changes.
    */
-  listen<S = unknown>(listener: Listener<S>): () => void;
+  readonly listen: <S = unknown>(listener: Listener<S>) => () => void;
 }

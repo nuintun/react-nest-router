@@ -34,36 +34,36 @@ export interface IRoute<M = unknown, K extends string = string> {
  * Index route.
  */
 export interface IndexRoute<M = unknown, K extends string = string> {
-  meta?: M;
-  index: true;
-  sensitive?: boolean;
-  children?: undefined;
-  element?: React.ReactNode;
-  guard?: (match: RouteMatch<M, K>) => boolean;
+  readonly meta?: M;
+  readonly index: true;
+  readonly sensitive?: boolean;
+  readonly children?: undefined;
+  readonly element?: React.ReactNode;
+  readonly guard?: (match: RouteMatch<M, K>) => boolean;
 }
 
 /**
  * Page route.
  */
 export interface PageRoute<M = unknown, K extends string = string> {
-  meta?: M;
-  path: string;
-  index?: undefined;
-  sensitive?: boolean;
-  children?: undefined;
-  element?: React.ReactNode;
-  guard?: (match: RouteMatch<M, K>) => boolean;
+  readonly meta?: M;
+  readonly path: string;
+  readonly index?: undefined;
+  readonly sensitive?: boolean;
+  readonly children?: undefined;
+  readonly element?: React.ReactNode;
+  readonly guard?: (match: RouteMatch<M, K>) => boolean;
 }
 
 /**
  * Layout route.
  */
 export interface LayoutRoute<M = unknown, K extends string = string> {
-  meta?: M;
-  path?: string;
-  index?: undefined;
-  children: Route<M, K>[];
-  element?: React.ReactNode;
+  readonly meta?: M;
+  readonly path?: string;
+  readonly index?: undefined;
+  readonly children: Route<M, K>[];
+  readonly element?: React.ReactNode;
 }
 
 /**
@@ -121,8 +121,8 @@ export interface RouteBranch<M = unknown, K extends string = string> {
 }
 
 export interface NavigateOptions<S> {
-  state?: S;
-  replace?: boolean;
+  readonly state?: S;
+  readonly replace?: boolean;
 }
 
 export interface Navigate {
@@ -134,23 +134,23 @@ export interface Navigate {
  * Outlet props.
  */
 export interface OutletProps<C = unknown> {
-  context?: C;
+  readonly context?: C;
 }
 
 /**
  * Navigate props.
  */
 export interface NavigateProps<S = unknown> extends NavigateOptions<S> {
-  to: To;
+  readonly to: To;
 }
 
 /**
  * Route props.
  */
 export interface RouterProps<M = unknown, K extends string = string, C = unknown> {
-  context?: C;
-  basename?: string;
-  routes: Route<M, K>[];
-  navigator?: Navigator;
-  children?: React.ReactNode;
+  readonly context?: C;
+  readonly basename?: string;
+  readonly routes: Route<M, K>[];
+  readonly navigator?: Navigator;
+  readonly children?: React.ReactNode;
 }
