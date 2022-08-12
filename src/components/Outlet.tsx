@@ -16,7 +16,7 @@ export const Outlet = memo(function Outlet(props) {
   const routeContext = useRouteContext();
 
   if (__DEV__) {
-    assert(routeContext, `The component <Outlet> can only be used inside a route element.`);
+    assert(routeContext, 'The component <Outlet> can only be used inside a route element.');
   }
 
   return useOutlet(props);

@@ -26,7 +26,7 @@ export function useRouter<M = unknown, K extends string = string, C = unknown>(
   const routeContext = useRouteContext();
 
   if (__DEV__) {
-    assert(!routeContext, `The hook useRouter cannot use inside a route element.`);
+    assert(!routeContext, 'The hook useRouter cannot use inside a route element.');
   }
 
   basename = useMemo(() => {
@@ -65,7 +65,7 @@ export function useRouter<M = unknown, K extends string = string, C = unknown>(
 
   return useMemo(() => {
     if (element) {
-      return <OutletContext.Provider value={{ context }}>{element}</OutletContext.Provider>;
+      return <OutletContext.Provider value={context}>{element}</OutletContext.Provider>;
     }
 
     return element;

@@ -25,7 +25,7 @@ export const Router = memo(function Router({ navigator: history, routes, context
   if (__DEV__) {
     assert(
       !navigationContext && !locateContext && !routeContext,
-      `The component <Router> cannot render inside another <Router> component.`
+      'The component <Router> cannot render inside another <Router> component.'
     );
   }
 

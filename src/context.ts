@@ -6,6 +6,9 @@ import React from 'react';
 import { createContext } from 'react';
 import { Action, Location, Navigator, RouteMatch } from './types';
 
+// Outlet context.
+export const OutletContext = createContext<unknown>(null);
+
 /**
  * Route context.
  */
@@ -17,16 +20,6 @@ export interface RouteContext {
 
 // Route context.
 export const RouteContext = createContext<RouteContext | null>(null);
-
-/**
- * Outlet context.
- */
-export interface OutletContext {
-  readonly context: unknown;
-}
-
-// Outlet context.
-export const OutletContext = createContext<OutletContext | null>(null);
 
 /**
  * Locate context.

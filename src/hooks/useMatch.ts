@@ -14,7 +14,7 @@ export function useMatch<M = unknown, K extends string = string>(): IRoute<M, K>
   const routeContext = useRouteContext();
 
   if (__DEV__) {
-    assert(routeContext, `The hook useMatch can only be used inside a route element.`);
+    assert(routeContext, 'The hook useMatch can only be used inside a route element.');
   }
 
   const match = routeContext!.match.matches[routeContext!.index];
