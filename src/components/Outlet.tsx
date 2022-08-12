@@ -10,7 +10,7 @@ import { useRouteContext } from '../hooks/useRouteContext';
 
 /**
  * @function Outlet
- * @param props
+ * @param props Outlet props.
  */
 export const Outlet = memo(function Outlet(props) {
   const routeContext = useRouteContext();

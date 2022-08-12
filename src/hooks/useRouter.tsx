@@ -2,72 +2,55 @@
  * @module useRouter
  */
 
-import { Route } from '../types';
-import { assert } from '../utils';
 import { normalize } from '../path';
-import React, { useMemo } from 'react';
-import { flatten, match } from '../router';
-import { useRouteContext } from './useRouteContext';
-import { OutletContext, RouteContext } from '../context';
+import { useRoutes } from './useRoutes';
+import { createNavigator } from '../navigator';
+import { Navigator, RouterProps } from '../types';
+import React, { useEffect, useMemo, useState } from 'react';
+import { LocateContext, NavigationContext } from '../context';
 
 /**
  * @function useRouter
- * @description Get the element of the route that matched the current location.
- * @param routes User routes.
- * @param pathname The pathname to match.
- * @param basename The basename of the route.
+ * @description Get router element.
+ * @param props Router props.
  */
-export function useRouter<M = unknown, K extends string = string, C = unknown>(
-  routes: Route<M, K>[],
-  pathname: string,
-  basename: string = '/',
-  context?: C
-): React.ReactElement | null {
-  const routeContext = useRouteContext();
-
-  if (__DEV__) {
-    assert(!routeContext, 'The hook useRouter cannot use inside a route element.');
-  }
-
+export function useRouter<M = unknown, K extends string = string, C = unknown>({
+  routes,
+  context,
+  basename = '/',
+  children = '404',
+  navigator: history
+}: RouterProps<M, K, C>): React.ReactElement {
   basename = useMemo(() => {
     return normalize(basename);
   }, [basename]);
 
-  if (__DEV__) {
-    assert(basename.startsWith('/'), 'Router basename must start with /.');
-  }
+  const navigator = useMemo<Navigator>(() => {
+    return history ?? createNavigator(self);
+  }, [history]);
 
-  pathname = useMemo(() => {
-    return normalize(pathname);
-  }, [pathname]);
+  const navigation = useMemo<NavigationContext>(() => {
+    return { basename, navigator };
+  }, [basename, navigator]);
 
-  const branches = useMemo(() => {
-    return flatten(routes, basename);
-  }, [basename, routes]);
+  const [locate, setLocate] = useState<LocateContext>(() => {
+    return {
+      action: navigator.action,
+      location: navigator.location
+    };
+  });
 
-  const matched = useMemo(() => {
-    return match(branches, pathname);
-  }, [pathname, branches]);
+  useEffect(() => {
+    return navigator.listen(({ action, location }) => {
+      setLocate({ action, location });
+    });
+  }, [navigator]);
 
-  const element = useMemo(() => {
-    if (matched) {
-      return matched.matches.reduceRight<React.ReactElement | null>((outlet, match, index) => {
-        return (
-          <RouteContext.Provider value={{ index, outlet, match: matched }}>
-            {'element' in match ? match.element : outlet}
-          </RouteContext.Provider>
-        );
-      }, null);
-    }
+  const element = useRoutes(routes, locate.location.pathname, basename, context);
 
-    return null;
-  }, [matched]);
-
-  return useMemo(() => {
-    if (element) {
-      return <OutletContext.Provider value={context}>{element}</OutletContext.Provider>;
-    }
-
-    return element;
-  }, [element, context]);
+  return (
+    <NavigationContext.Provider value={navigation}>
+      <LocateContext.Provider value={locate}>{element ? element : children}</LocateContext.Provider>
+    </NavigationContext.Provider>
+  );
 }

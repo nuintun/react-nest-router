@@ -11,14 +11,14 @@ import { useNavigationContext } from '../hooks/useNavigationContext';
 
 /**
  * @function Navigate
- * @param props
+ * @param props Navigate props.
  */
 export const Navigate = memo(function Navigate({ to, state, replace }) {
   const locateContext = useLocateContext();
   const navigationContext = useNavigationContext();
 
   if (__DEV__) {
-    assert(navigationContext && locateContext, 'The component <Navigate> can only be used inside a <Router> component.');
+    assert(navigationContext && locateContext, 'The component <Navigate> can only be used inside a route element.');
   }
 
   const navigate = useNavigate();

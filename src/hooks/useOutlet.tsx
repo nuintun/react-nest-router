@@ -11,7 +11,7 @@ import { useRouteContext } from './useRouteContext';
 /**
  * @function useOutlet
  * @description Get outlet element.
- * @param context Outlet context.
+ * @param props Outlet props.
  */
 export function useOutlet<C = unknown>(props: OutletProps<C> = {}): React.ReactElement | null {
   const routeContext = useRouteContext();
