@@ -8,8 +8,8 @@ import { useRouter } from '../hooks/useRouter';
 import { createNavigator } from '../navigator';
 import { Navigator, RouterProps } from '../types';
 import { useRouteContext } from '../hooks/useRouteContext';
-import { LocationContext, NavigationContext } from '../context';
-import { useLocationContext } from '../hooks/useLocationContext';
+import { useLocateContext } from '../hooks/useLocateContext';
+import { LocateContext, NavigationContext } from '../context';
 import React, { memo, useEffect, useMemo, useState } from 'react';
 import { useNavigationContext } from '../hooks/useNavigationContext';
 
@@ -19,12 +19,12 @@ import { useNavigationContext } from '../hooks/useNavigationContext';
  */
 export const Router = memo(function Router({ navigator: history, routes, context, basename = '/', children = '404' }) {
   const routeContext = useRouteContext();
-  const locationContext = useLocationContext();
+  const locateContext = useLocateContext();
   const navigationContext = useNavigationContext();
 
   if (__DEV__) {
     assert(
-      !navigationContext && !locationContext && !routeContext,
+      !navigationContext && !locateContext && !routeContext,
       `The component <Router> cannot render inside another <Router> component.`
     );
   }
@@ -41,7 +41,7 @@ export const Router = memo(function Router({ navigator: history, routes, context
     return { basename, navigator };
   }, [basename, navigator]);
 
-  const [state, setState] = useState<LocationContext>(() => {
+  const [locate, setLocate] = useState<LocateContext>(() => {
     return {
       action: navigator.action,
       location: navigator.location
@@ -50,15 +50,15 @@ export const Router = memo(function Router({ navigator: history, routes, context
 
   useEffect(() => {
     return navigator.listen(({ action, location }) => {
-      setState({ action, location });
+      setLocate({ action, location });
     });
   }, [navigator]);
 
-  const element = useRouter(routes, state.location.pathname, basename, context);
+  const element = useRouter(routes, locate.location.pathname, basename, context);
 
   return (
     <NavigationContext.Provider value={navigation}>
-      <LocationContext.Provider value={state}>{element ? element : children}</LocationContext.Provider>
+      <LocateContext.Provider value={locate}>{element ? element : children}</LocateContext.Provider>
     </NavigationContext.Provider>
   );
 }) as <M = unknown, K extends string = string, C = unknown>(props: RouterProps<M, K, C>) => React.ReactElement;

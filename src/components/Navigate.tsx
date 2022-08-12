@@ -6,7 +6,7 @@ import { assert } from '../utils';
 import { memo, useEffect } from 'react';
 import { NavigateProps } from '../types';
 import { useNavigate } from '../hooks/useNavigate';
-import { useLocationContext } from '../hooks/useLocationContext';
+import { useLocateContext } from '../hooks/useLocateContext';
 import { useNavigationContext } from '../hooks/useNavigationContext';
 
 /**
@@ -14,11 +14,11 @@ import { useNavigationContext } from '../hooks/useNavigationContext';
  * @param props
  */
 export const Navigate = memo(function Navigate({ to, state, replace }) {
-  const locationContext = useLocationContext();
+  const locateContext = useLocateContext();
   const navigationContext = useNavigationContext();
 
   if (__DEV__) {
-    assert(navigationContext && locationContext, `The component <Navigate> can only be used inside a <Router> component.`);
+    assert(navigationContext && locateContext, `The component <Navigate> can only be used inside a <Router> component.`);
   }
 
   const navigate = useNavigate();

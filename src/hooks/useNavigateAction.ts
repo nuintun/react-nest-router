@@ -4,7 +4,7 @@
 
 import { assert } from '../utils';
 import { Action } from '../types';
-import { useLocationContext } from './useLocationContext';
+import { useLocateContext } from './useLocateContext';
 import { useNavigationContext } from './useNavigationContext';
 
 /**
@@ -12,12 +12,12 @@ import { useNavigationContext } from './useNavigationContext';
  * @description Get current navigate action.
  */
 export function useNavigateAction(): Action {
-  const locationContext = useLocationContext();
+  const locateContext = useLocateContext();
   const navigationContext = useNavigationContext();
 
   if (__DEV__) {
-    assert(navigationContext && locationContext, `The hook useNavigateAction can only be used inside a <Router> component.`);
+    assert(navigationContext && locateContext, `The hook useNavigateAction can only be used inside a <Router> component.`);
   }
 
-  return locationContext!.action;
+  return locateContext!.action;
 }

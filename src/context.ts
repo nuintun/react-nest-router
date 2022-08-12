@@ -29,15 +29,15 @@ export interface OutletContext {
 export const OutletContext = createContext<OutletContext | null>(null);
 
 /**
- * Location context.
+ * Locate context.
  */
-export interface LocationContext {
+export interface LocateContext {
   readonly action: Action;
   readonly location: Location<unknown>;
 }
 
-// Location context.
-export const LocationContext = createContext<LocationContext | null>(null);
+// Locate context.
+export const LocateContext = createContext<LocateContext | null>(null);
 
 /**
  * Navigation context.
@@ -54,6 +54,6 @@ export const NavigationContext = createContext<NavigationContext | null>(null);
 if (__DEV__) {
   RouteContext.displayName = 'RouteContext';
   OutletContext.displayName = 'OutletContext';
-  LocationContext.displayName = 'LocationContext';
+  LocateContext.displayName = 'LocateContext';
   NavigationContext.displayName = 'NavigationContext';
 }
