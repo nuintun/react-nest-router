@@ -37,18 +37,22 @@ export const Router = memo(function Router({ navigator: history, routes, context
     return history ?? createNavigator(self);
   }, [history]);
 
-  const [state, setState] = useState(() => {
+  const navigation = useMemo<NavigationContext>(() => {
+    return { basename, navigator };
+  }, [basename, navigator]);
+
+  const [state, setState] = useState<LocationContext>(() => {
     return {
       action: navigator.action,
       location: navigator.location
     };
   });
 
-  const navigation = useMemo<NavigationContext>(() => {
-    return { basename, navigator };
-  }, [basename, navigator]);
-
-  useEffect(() => navigator.listen(setState), [navigator]);
+  useEffect(() => {
+    return navigator.listen(({ action, location }) => {
+      setState({ action, location });
+    });
+  }, [navigator]);
 
   const element = useRouter(routes, state.location.pathname, basename, context);
 
