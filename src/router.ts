@@ -20,6 +20,7 @@ function computeScore(path: string, index?: boolean): number {
   const dynamicSegmentValue = 3;
   const staticSegmentValue = 10;
 
+  const paramKeyRe = /:\w+/;
   const segments = path.split('/');
 
   let initialScore = segments.length;
@@ -38,8 +39,6 @@ function computeScore(path: string, index?: boolean): number {
     if (segment === '') {
       return score + emptySegmentValue;
     }
-
-    const paramKeyRe = /^:\w+$/;
 
     if (paramKeyRe.test(segment)) {
       return score + dynamicSegmentValue;
