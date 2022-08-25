@@ -15,7 +15,7 @@ import { Matcher, Mutable, Params } from './types';
  */
 export function compile<K extends string>(path: string, sensitive: boolean = false): Matcher<K> {
   if (__DEV__) {
-    assert(!/[^/](?=\*$)/.test(path), `Trailing "*" in path "${path}" must follow "/".`);
+    assert(!/(^|[^/])(?=\*$)/.test(path), `Trailing "*" in path "${path}" must follow "/".`);
   }
 
   // Source string.
