@@ -2,7 +2,7 @@
  * @module pattern
  */
 
-import { assert } from './utils';
+import { assert, endsWith } from './utils';
 import { safelyDecodeURIComponent } from './url';
 import { Matcher, Mutable, Params } from './types';
 
@@ -16,6 +16,8 @@ import { Matcher, Mutable, Params } from './types';
 export function compile<K extends string>(path: string, sensitive: boolean = false): Matcher<K> {
   if (__DEV__) {
     assert(!/(?:^|[^/])(?=\*$)/.test(path), `Trailing "*" in path "${path}" must follow "/".`);
+
+    assert(!/(?::\w+){2,}/.test(path), `Cannot have directly adjacent param in path "${path}".`);
   }
 
   // Source string.
@@ -42,7 +44,7 @@ export function compile<K extends string>(path: string, sensitive: boolean = fal
     });
 
   // If ends with *.
-  if (path.endsWith('*')) {
+  if (endsWith(path, '*')) {
     keys.push('*' as K);
 
     source += '\\/(.*)$';

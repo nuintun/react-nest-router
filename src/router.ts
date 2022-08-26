@@ -4,7 +4,7 @@
 
 import { Tree } from './Tree';
 import { compile } from './pattern';
-import { assert, isFunction, prefix } from './utils';
+import { assert, endsWith, isFunction, prefix } from './utils';
 import { isAboveRoot, isAbsolute, join, resolve } from './path';
 import { BranchMeta, IRoute, Route, RouteBranch, RouteMatch } from './types';
 
@@ -15,36 +15,37 @@ import { BranchMeta, IRoute, Route, RouteBranch, RouteMatch } from './types';
  */
 function computeScore(path: string, index?: boolean): number {
   const indexRouteValue = 2;
-  const emptySegmentValue = 1;
   const splatPenaltyValue = -2;
-  const dynamicSegmentValue = 3;
   const staticSegmentValue = 10;
+  const dynamicSegmentValue = 3;
 
   const paramKeyRe = /:\w+/;
   const segments = path.split('/');
 
   let initialScore = segments.length;
 
-  if (segments[initialScore - 1] === '*') {
+  if (index) {
+    initialScore += indexRouteValue;
+  }
+
+  if (endsWith(path, '*')) {
     segments.pop();
 
     initialScore += splatPenaltyValue;
   }
 
-  if (index) {
-    initialScore += indexRouteValue;
-  }
-
   return segments.reduce((score, segment) => {
-    if (segment === '') {
-      return score + emptySegmentValue;
+    if (segment !== '') {
+      const segments = segment.split(paramKeyRe);
+
+      score += (segments.length - 1) * dynamicSegmentValue;
+
+      return segments.reduce((score, segment) => {
+        return segment === '' ? score : score + staticSegmentValue;
+      }, score);
     }
 
-    if (paramKeyRe.test(segment)) {
-      return score + dynamicSegmentValue;
-    }
-
-    return score + staticSegmentValue;
+    return score;
   }, initialScore);
 }
 
