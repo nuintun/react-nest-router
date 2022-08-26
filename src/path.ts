@@ -2,7 +2,7 @@
  * @module path
  */
 
-import { suffix } from './utils';
+import { startsWith, suffix } from './utils';
 
 /**
  * @function isAbsolute
@@ -89,5 +89,5 @@ export function isAboveRoot(root: string, path: string, sensitive?: boolean): bo
     path = path.toLowerCase();
   }
 
-  return !path.startsWith(root);
+  return !startsWith(path, root);
 }

@@ -3,10 +3,10 @@
  */
 
 import { Route } from '../types';
-import { assert } from '../utils';
 import { normalize } from '../path';
 import React, { useMemo } from 'react';
 import { flatten, match } from '../router';
+import { assert, startsWith } from '../utils';
 import { OutletContext, RouteContext } from '../context';
 
 /**
@@ -27,7 +27,7 @@ export function useRoutes<M = unknown, K extends string = string, C = unknown>(
   }, [basename]);
 
   if (__DEV__) {
-    assert(basename.startsWith('/'), 'Router basename must start with /.');
+    assert(startsWith(basename, '/'), 'Router basename must start with /.');
   }
 
   pathname = useMemo(() => {
