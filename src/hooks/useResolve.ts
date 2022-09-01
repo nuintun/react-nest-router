@@ -7,7 +7,7 @@ import { useMemo } from 'react';
 import { resolve } from '../url';
 import { assert } from '../utils';
 import { useLocateContext } from './useLocateContext';
-import { usePersistCallback } from './usePersistCallback';
+import { useStableCallback } from './useStableCallback';
 import { useNavigationContext } from './useNavigationContext';
 
 /**
@@ -29,5 +29,5 @@ export function useResolve(): (to: To) => string {
     return (to: To): string => resolve(from, to, basename);
   }, [from, basename]);
 
-  return usePersistCallback(resolveImpl);
+  return useStableCallback(resolveImpl);
 }

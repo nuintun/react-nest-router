@@ -8,7 +8,7 @@ import { useResolve } from './useResolve';
 import { assert, isNumber } from '../utils';
 import { Navigate, NavigateOptions } from '../types';
 import { useLocateContext } from './useLocateContext';
-import { usePersistCallback } from './usePersistCallback';
+import { useStableCallback } from './useStableCallback';
 import { useNavigationContext } from './useNavigationContext';
 
 /**
@@ -43,5 +43,5 @@ export function useNavigate(): Navigate {
     };
   }, [navigator]);
 
-  return usePersistCallback(navigate);
+  return useStableCallback(navigate);
 }
