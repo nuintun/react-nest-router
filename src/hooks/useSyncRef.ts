@@ -18,9 +18,7 @@ export function useSyncRef<T>(value: T): React.MutableRefObject<T>;
 export function useSyncRef<T = undefined>(value?: T): React.MutableRefObject<T | undefined> {
   const valueRef = useRef(value);
 
-  // https://github.com/reactjs/rfcs/pull/220
   // https://github.com/alibaba/hooks/issues/728
-  // https://github.com/facebook/react/issues/20394
   valueRef.current = useMemo(() => value, [value]);
 
   return valueRef;
