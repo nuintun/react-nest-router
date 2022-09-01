@@ -12,7 +12,7 @@ export function useSyncRef<T = undefined>(): React.MutableRefObject<T | undefine
 /**
  * @function useSyncRef
  * @description Create self sync ref.
- * @param value Ref value
+ * @param value Value.
  */
 export function useSyncRef<T>(value: T): React.MutableRefObject<T>;
 export function useSyncRef<T = undefined>(value?: T): React.MutableRefObject<T | undefined> {
