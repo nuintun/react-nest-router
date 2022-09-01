@@ -2,7 +2,8 @@
  * @module useStableCallback
  */
 
-import { useCallback, useMemo, useRef } from 'react';
+import { useCallback } from 'react';
+import { useSyncRef } from './useSyncRef';
 
 /**
  * @function useStableCallback
@@ -10,11 +11,7 @@ import { useCallback, useMemo, useRef } from 'react';
  * @param callback Callback.
  */
 export function useStableCallback<C extends (...args: any[]) => any = (...args: unknown[]) => unknown>(callback: C): C {
-  const callbackRef = useRef(callback);
-
-  // https://github.com/reactjs/rfcs/pull/220
-  // https://github.com/alibaba/hooks/issues/728
-  callbackRef.current = useMemo(() => callback, [callback]);
+  const callbackRef = useSyncRef(callback);
 
   return useCallback(((...args) => callbackRef.current(...args)) as C, []);
 }
