@@ -48,7 +48,7 @@ export function assert<T>(cond: T, message: string): asserts cond {
  * @param symbol The symbol to check for.
  */
 export function startsWith(string: string, symbol: string): boolean {
-  return string.slice(0, symbol.length) === symbol;
+  return symbol !== '' ? string.slice(0, symbol.length) === symbol : true;
 }
 
 /**
@@ -58,7 +58,7 @@ export function startsWith(string: string, symbol: string): boolean {
  * @param symbol The symbol to check for.
  */
 export function endsWith(string: string, symbol: string): boolean {
-  return string.slice(-symbol.length) === symbol;
+  return symbol !== '' ? string.slice(-symbol.length) === symbol : true;
 }
 
 /**
