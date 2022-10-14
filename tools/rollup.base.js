@@ -4,7 +4,7 @@
 
 import { createRequire } from 'module';
 import replace from '@rollup/plugin-replace';
-import treeShake from './plugins/tree-shake.mjs';
+import treeShake from './plugins/tree-shake.js';
 import typescript from '@rollup/plugin-typescript';
 
 const pkg = createRequire(import.meta.url)('../package.json');
