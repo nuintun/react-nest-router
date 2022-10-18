@@ -3,7 +3,7 @@
  */
 
 import { useCallback } from 'react';
-import { useSyncRef } from './useSyncRef';
+import { useLatestRef } from './useLatestRef';
 
 export interface Callback {
   (this: any, ...args: any[]): any;
@@ -19,7 +19,7 @@ interface CallbackFunction {
  * @param callback Callback.
  */
 export function useStableCallback<C extends Callback = CallbackFunction>(callback: C): C {
-  const callbackRef = useSyncRef(callback);
+  const callbackRef = useLatestRef(callback);
 
   return useCallback(((...args) => callbackRef.current(...args)) as C, []);
 }
