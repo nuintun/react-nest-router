@@ -22,9 +22,7 @@ export function useResolve(): (to: To) => string {
     assert(navigationContext && locateContext, 'The hook useResolve can only be used inside a route element.');
   }
 
-  const { basename } = navigationContext!;
-  const { pathname } = locateContext!.location;
-  const pathsRef = useLatestRef([basename, pathname]);
+  const pathsRef = useLatestRef([navigationContext!.basename, locateContext!.location.pathname]);
 
   return useCallback((to: To): string => {
     const [basename, pathname] = pathsRef.current;
