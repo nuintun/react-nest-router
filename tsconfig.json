@@ -1,15 +1,16 @@
 {
   "compilerOptions": {
-    "strict": true,
     "pretty": true,
+    "strict": true,
     "newLine": "lf",
     "jsx": "react-jsx",
-    "target": "ES2016",
     "module": "ESNext",
+    "target": "ES2016",
     "skipLibCheck": true,
     "importHelpers": true,
     "noUnusedLocals": true,
     "esModuleInterop": true,
+    "isolatedModules": true,
     "resolveJsonModule": true,
     "moduleResolution": "Node",
     "noUnusedParameters": true,
