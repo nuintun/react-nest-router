@@ -3,8 +3,8 @@
  */
 
 import { assert } from '../utils';
-import React, { useMemo } from 'react';
 import { OutletProps } from '../types';
+import React, { useMemo } from 'react';
 import { OutletContext } from '../context';
 import { useRouteContext } from './useRouteContext';
 

@@ -3,11 +3,11 @@
  */
 
 import { To } from '../types';
-import { useMemo } from 'react';
 import { resolve } from '../url';
 import { assert } from '../utils';
+import { useCallback } from 'react';
+import { useLatestRef } from './useLatestRef';
 import { useLocateContext } from './useLocateContext';
-import { useStableCallback } from './useStableCallback';
 import { useNavigationContext } from './useNavigationContext';
 
 /**
@@ -23,11 +23,12 @@ export function useResolve(): (to: To) => string {
   }
 
   const { basename } = navigationContext!;
-  const { pathname: from } = locateContext!.location;
+  const { pathname } = locateContext!.location;
+  const pathsRef = useLatestRef([basename, pathname]);
 
-  const resolveImpl = useMemo(() => {
-    return (to: To): string => resolve(from, to, basename);
-  }, [from, basename]);
+  return useCallback((to: To): string => {
+    const [basename, pathname] = pathsRef.current;
 
-  return useStableCallback(resolveImpl);
+    return resolve(pathname, to, basename);
+  }, []);
 }

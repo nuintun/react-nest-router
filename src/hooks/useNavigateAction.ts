@@ -2,8 +2,8 @@
  * @module useNavigateAction
  */
 
-import { assert } from '../utils';
 import { Action } from '../types';
+import { assert } from '../utils';
 import { useLocateContext } from './useLocateContext';
 import { useNavigationContext } from './useNavigationContext';
 

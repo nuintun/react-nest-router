@@ -3,12 +3,12 @@
  */
 
 import { To } from '../types';
-import { useMemo } from 'react';
+import { useCallback } from 'react';
 import { useResolve } from './useResolve';
 import { assert, isNumber } from '../utils';
+import { useLatestRef } from './useLatestRef';
 import { Navigate, NavigateOptions } from '../types';
 import { useLocateContext } from './useLocateContext';
-import { useStableCallback } from './useStableCallback';
 import { useNavigationContext } from './useNavigationContext';
 
 /**
@@ -24,24 +24,22 @@ export function useNavigate(): Navigate {
   }
 
   const resolve = useResolve();
-  const { navigator } = navigationContext!;
+  const navigationRef = useLatestRef(navigationContext!);
 
-  const navigate = useMemo(() => {
-    return <S = unknown>(to: To | number, options: NavigateOptions<S> = {}) => {
-      if (isNumber(to)) {
-        navigator.go(to);
+  return useCallback(<S = unknown>(to: To | number, options: NavigateOptions<S> = {}): void => {
+    const { navigator } = navigationRef.current;
+
+    if (isNumber(to)) {
+      navigator.go(to);
+    } else {
+      const path = resolve(to);
+      const { replace, state } = options;
+
+      if (replace) {
+        navigator.replace(path, state);
       } else {
-        const path = resolve(to);
-        const { replace, state } = options;
-
-        if (replace) {
-          navigator.replace(path, state);
-        } else {
-          navigator.push(path, state);
-        }
+        navigator.push(path, state);
       }
-    };
-  }, [navigator]);
-
-  return useStableCallback(navigate);
+    }
+  }, []);
 }
