@@ -3,7 +3,7 @@
  */
 
 // Types
-export {
+export type {
   Action,
   IRoute,
   Location,

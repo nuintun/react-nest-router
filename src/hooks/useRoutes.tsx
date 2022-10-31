@@ -4,8 +4,8 @@
 
 import { Route } from '../types';
 import { normalize } from '../path';
-import React, { useMemo } from 'react';
 import { flatten, match } from '../router';
+import { ReactElement, useMemo } from 'react';
 import { assert, startsWith } from '../utils';
 import { OutletContext, RouteContext } from '../context';
 
@@ -21,7 +21,7 @@ export function useRoutes<M = unknown, K extends string = string, C = unknown>(
   pathname: string,
   basename: string = '/',
   context?: C
-): React.ReactElement | null {
+): ReactElement | null {
   basename = useMemo(() => {
     return normalize(basename);
   }, [basename]);
@@ -44,7 +44,7 @@ export function useRoutes<M = unknown, K extends string = string, C = unknown>(
 
   const element = useMemo(() => {
     if (matched) {
-      return matched.matches.reduceRight<React.ReactElement | null>((outlet, match, index) => {
+      return matched.matches.reduceRight<ReactElement | null>((outlet, match, index) => {
         return (
           <RouteContext.Provider value={{ index, outlet, match: matched }}>
             {'element' in match ? match.element : outlet}

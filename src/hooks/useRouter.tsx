@@ -6,8 +6,8 @@ import { normalize } from '../path';
 import { useRoutes } from './useRoutes';
 import { createNavigator } from '../navigator';
 import { Navigator, RouterProps } from '../types';
-import React, { useEffect, useMemo, useState } from 'react';
 import { LocateContext, NavigationContext } from '../context';
+import { ReactElement, useEffect, useMemo, useState } from 'react';
 
 /**
  * @function useRouter
@@ -20,7 +20,7 @@ export function useRouter<M = unknown, K extends string = string, C = unknown>({
   basename = '/',
   children = '404',
   navigator: history
-}: RouterProps<M, K, C>): React.ReactElement {
+}: RouterProps<M, K, C>): ReactElement {
   basename = useMemo(() => {
     return normalize(basename);
   }, [basename]);

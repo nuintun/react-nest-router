@@ -4,8 +4,8 @@
 
 import { assert } from '../utils';
 import { OutletProps } from '../types';
-import React, { useMemo } from 'react';
 import { OutletContext } from '../context';
+import { ReactElement, useMemo } from 'react';
 import { useRouteContext } from './useRouteContext';
 
 /**
@@ -13,7 +13,7 @@ import { useRouteContext } from './useRouteContext';
  * @description Get outlet element.
  * @param props Outlet props.
  */
-export function useOutlet<C = unknown>(props: OutletProps<C> = {}): React.ReactElement | null {
+export function useOutlet<C = unknown>(props: OutletProps<C> = {}): ReactElement | null {
   const routeContext = useRouteContext();
 
   if (__DEV__) {

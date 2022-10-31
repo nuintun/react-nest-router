@@ -2,7 +2,7 @@
  * @module context
  */
 
-import React from 'react';
+import { ReactElement } from 'react';
 import { createContext } from 'react';
 import { Action, Location, Navigator, RouteMatch } from './types';
 
@@ -14,7 +14,7 @@ export const OutletContext = createContext<unknown>(null);
  */
 export interface RouteContext {
   readonly index: number;
-  readonly outlet: React.ReactElement | null;
+  readonly outlet: ReactElement | null;
   readonly match: RouteMatch<unknown, string>;
 }
 

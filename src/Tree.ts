@@ -2,11 +2,11 @@
  * @module Tree
  */
 
-type IteratorValue<T> = [index: number, node: T];
+export type IteratorValue<T> = [index: number, node: T];
 
-type Resolve<T> = (node: T, index: number) => T[] | void;
+export type Resolve<T> = (node: T, index: number) => T[] | void;
 
-type Waiting<T> = Iterator<[index: number, value: T], undefined>;
+export type Waiting<T> = Iterator<[index: number, value: T], undefined>;
 
 /**
  * @class Tree

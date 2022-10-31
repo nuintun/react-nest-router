@@ -2,8 +2,8 @@
  * @module useMatch
  */
 
-import { assert } from '../utils';
 import { IRoute } from '../types';
+import { assert } from '../utils';
 import { useRouteContext } from './useRouteContext';
 
 /**
