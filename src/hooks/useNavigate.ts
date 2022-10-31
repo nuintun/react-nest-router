@@ -24,10 +24,10 @@ export function useNavigate(): Navigate {
   }
 
   const resolve = useResolve();
-  const navigationRef = useLatestRef(navigationContext!);
+  const navigatorRef = useLatestRef(navigationContext!.navigator);
 
   return useCallback(<S = unknown>(to: To | number, options: NavigateOptions<S> = {}): void => {
-    const { navigator } = navigationRef.current;
+    const { current: navigator } = navigatorRef;
 
     if (isNumber(to)) {
       navigator.go(to);
