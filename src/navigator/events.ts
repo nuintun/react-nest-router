@@ -9,7 +9,6 @@ export interface Callback<E = unknown> {
 }
 
 export interface Events<E> {
-  readonly length: number;
   readonly emit: (event: E) => void;
   readonly listen: (callback: Callback<E>) => void;
   readonly unlisten: (callback: Callback<E>) => void;
@@ -19,9 +18,6 @@ export function createEvents<E = unknown>(): Events<E> {
   const callbacks: Callback<E>[] = [];
 
   return {
-    get length() {
-      return callbacks.length;
-    },
     emit(event) {
       for (const callback of callbacks) {
         callback(event);
