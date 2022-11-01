@@ -2,8 +2,8 @@
  * @module useResolve
  */
 
-import { To } from '../types';
 import { resolve } from '../url';
+import { To } from '../interface';
 import { assert } from '../utils';
 import { useCallback } from 'react';
 import { useLatestRef } from './useLatestRef';

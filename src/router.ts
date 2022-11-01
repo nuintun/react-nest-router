@@ -6,7 +6,7 @@ import { Tree } from './Tree';
 import { compile } from './pattern';
 import { assert, endsWith, isFunction, prefix } from './utils';
 import { isAboveRoot, isAbsolute, join, resolve } from './path';
-import { BranchMeta, IRoute, Route, RouteBranch, RouteMatch } from './types';
+import { BranchMeta, IRoute, Route, RouteBranch, RouteMatch } from './interface';
 
 /**
  * @function computeScore

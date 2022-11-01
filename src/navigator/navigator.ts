@@ -6,7 +6,7 @@ import { isString } from '../utils';
 import { Action, Event } from './enum';
 import { createEvents } from './events';
 import { parse, stringify } from './url';
-import { Location, Navigator, NavigatorEvent, To } from './types';
+import { Location, Navigator, NavigatorEvent, To } from './interface';
 
 function getLocation<S>(window: Window): Readonly<Location<S>> {
   const state: S = window.history.state;

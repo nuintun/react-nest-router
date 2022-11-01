@@ -2,7 +2,7 @@
  * @module url
  */
 
-import { URL } from './types';
+import { URL } from './interface';
 import { endsWith, prefix, startsWith } from '../utils';
 
 /**

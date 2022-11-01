@@ -3,7 +3,7 @@
  */
 
 import { assert } from '../utils';
-import { Location } from '../types';
+import { Location } from '../interface';
 import { useLocateContext } from './useLocateContext';
 
 /**
@@ -18,10 +18,6 @@ export function useLocation<S = unknown>(): Location<S> {
   }
 
   const { location } = locateContext!;
-
-  if (__DEV__) {
-    return Object.freeze(location) as Location<S>;
-  }
 
   return location as Location<S>;
 }

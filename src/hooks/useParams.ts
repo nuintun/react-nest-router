@@ -2,8 +2,8 @@
  * @module useParams
  */
 
-import { Params } from '../types';
 import { assert } from '../utils';
+import { Params } from '../interface';
 import { useRouteContext } from './useRouteContext';
 
 /**
@@ -18,10 +18,6 @@ export function useParams<K extends string = string>(): Params<K> {
   }
 
   const { params } = routeContext!.match;
-
-  if (__DEV__) {
-    return Object.freeze(params) as Params<K>;
-  }
 
   return params as Params<K>;
 }

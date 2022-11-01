@@ -4,7 +4,7 @@
 
 import { ReactElement } from 'react';
 import { createContext } from 'react';
-import { Action, Location, Navigator, RouteMatch } from './types';
+import { Action, Location, Navigator, RouteMatch } from './interface';
 
 // Outlet context.
 export const OutletContext = createContext<unknown>(null);

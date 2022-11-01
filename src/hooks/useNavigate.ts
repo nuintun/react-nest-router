@@ -2,13 +2,12 @@
  * @module useNavigate
  */
 
-import { To } from '../types';
 import { useCallback } from 'react';
 import { useResolve } from './useResolve';
 import { assert, isNumber } from '../utils';
 import { useLatestRef } from './useLatestRef';
-import { Navigate, NavigateOptions } from '../types';
 import { useLocateContext } from './useLocateContext';
+import { Navigate, NavigateOptions, To } from '../interface';
 import { useNavigationContext } from './useNavigationContext';
 
 /**

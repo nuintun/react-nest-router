@@ -2,8 +2,8 @@
  * @module useMatch
  */
 
-import { IRoute } from '../types';
 import { assert } from '../utils';
+import { IRoute } from '../interface';
 import { useRouteContext } from './useRouteContext';
 
 /**
@@ -18,10 +18,6 @@ export function useMatch<M = unknown, K extends string = string>(): IRoute<M, K>
   }
 
   const match = routeContext!.match.matches[routeContext!.index];
-
-  if (__DEV__) {
-    return Object.freeze(match) as IRoute<M, K>;
-  }
 
   return match as IRoute<M, K>;
 }

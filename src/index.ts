@@ -17,7 +17,7 @@ export type {
   RouteMatch,
   RouterProps,
   To
-} from './types';
+} from './interface';
 
 // Hooks
 export * from './hooks/useMatch';

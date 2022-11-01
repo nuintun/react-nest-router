@@ -4,7 +4,7 @@
 
 import { assert, endsWith } from './utils';
 import { safelyDecodeURIComponent } from './url';
-import { Matcher, Mutable, Params } from './types';
+import { Matcher, Mutable, Params } from './interface';
 
 /**
  * @function compile
@@ -63,7 +63,7 @@ export function compile<K extends string>(path: string, sensitive: boolean = fal
 
         params[key] = value ? safelyDecodeURIComponent(value) : value;
 
-        return params;
+        return __DEV__ ? Object.freeze(params) : params;
       }, {} as Mutable<Params<K>>);
     }
 

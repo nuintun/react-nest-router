@@ -4,7 +4,7 @@
 
 import { assert } from '../utils';
 import { memo, useEffect } from 'react';
-import { NavigateProps } from '../types';
+import { NavigateProps } from '../interface';
 import { useNavigate } from '../hooks/useNavigate';
 import { useLocateContext } from '../hooks/useLocateContext';
 import { useNavigationContext } from '../hooks/useNavigationContext';

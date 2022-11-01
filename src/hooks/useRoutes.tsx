@@ -2,8 +2,8 @@
  * @module useRoutes
  */
 
-import { Route } from '../types';
 import { normalize } from '../path';
+import { Route } from '../interface';
 import { flatten, match } from '../router';
 import { ReactElement, useMemo } from 'react';
 import { assert, startsWith } from '../utils';

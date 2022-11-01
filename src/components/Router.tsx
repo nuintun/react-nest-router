@@ -2,7 +2,7 @@
  * @module Router
  */
 
-import { RouterProps } from '../types';
+import { RouterProps } from '../interface';
 import { memo, ReactElement } from 'react';
 import { useRouter } from '../hooks/useRouter';
 
