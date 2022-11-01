@@ -1,6 +1,6 @@
 {
   "name": "react-nest-router",
-  "version": "0.13.0",
+  "version": "0.13.1",
   "description": "Declarative routing for React.",
   "type": "module",
   "main": "cjs/index.cjs",
@@ -65,7 +65,7 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "rimraf": "^3.0.2",
-    "rollup": "^3.2.4",
+    "rollup": "^3.2.5",
     "typescript": "^4.8.4"
   }
 }
