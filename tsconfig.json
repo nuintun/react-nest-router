@@ -10,7 +10,6 @@
     "importHelpers": true,
     "noUnusedLocals": true,
     "esModuleInterop": true,
-    "isolatedModules": true,
     "resolveJsonModule": true,
     "moduleResolution": "Node",
     "noUnusedParameters": true,
