@@ -3,6 +3,7 @@
   "version": "0.13.1",
   "description": "Declarative routing for React.",
   "type": "module",
+  "sideEffects": false,
   "main": "cjs/index.cjs",
   "module": "esm/index.js",
   "types": "types/index.d.ts",
@@ -10,7 +11,6 @@
     "import": "./esm/index.js",
     "require": "./cjs/index.cjs"
   },
-  "sideEffects": false,
   "files": [
     "cjs",
     "esm",
