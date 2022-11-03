@@ -5,20 +5,36 @@
 import { flatten, match } from '../esm/router.js';
 
 const routes = [
-  { path: '/login', meta: { id: 1 }, element: '<Login />' },
+  {
+    path: '/login',
+    meta: { id: 1 },
+    element: '<Login />'
+  },
   {
     path: '/',
     meta: { id: 2 },
     element: '<Layout />',
     children: [
-      { index: true, meta: { id: 6 }, element: '<Home />' },
       {
-        path: 'courses',
+        index: true,
+        meta: { id: 6 },
+        element: '<Home />'
+      },
+      {
         meta: { id: 3 },
+        path: 'courses',
         element: '<Courses />',
         children: [
-          { index: true, meta: { id: 4 }, element: '<CoursesIndex />' },
-          { path: '/courses/:id', meta: { id: 5 }, element: '<CoursesDetails />' }
+          {
+            index: true,
+            meta: { id: 4 },
+            element: '<CoursesIndex />'
+          },
+          {
+            meta: { id: 5 },
+            path: '/courses/:id',
+            element: '<CoursesDetails />'
+          }
         ]
       }
     ]
