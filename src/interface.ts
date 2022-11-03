@@ -18,16 +18,24 @@ export type Mutable<T> = {
 };
 
 /**
+ * Guard function.
+ */
+export interface Guard<M = unknown, K extends string = string> {
+  (match: RouteMatch<M, K>): boolean;
+}
+
+/**
  * Interface Route.
  */
 export interface IRoute<M = unknown, K extends string = string> {
   readonly meta?: M;
   readonly index?: true;
   readonly path?: string;
+  readonly available?: boolean;
+  readonly guard?: Guard<M, K>;
   readonly sensitive?: boolean;
-  readonly element?: React.ReactNode;
   readonly children?: IRoute<M, K>[];
-  readonly guard?: (match: RouteMatch<M, K>) => boolean;
+  readonly element?: React.ReactNode;
 }
 
 /**
@@ -36,10 +44,11 @@ export interface IRoute<M = unknown, K extends string = string> {
 export interface IndexRoute<M = unknown, K extends string = string> {
   readonly meta?: M;
   readonly index: true;
+  readonly guard?: Guard<M, K>;
   readonly sensitive?: boolean;
   readonly children?: undefined;
+  readonly available?: undefined;
   readonly element?: React.ReactNode;
-  readonly guard?: (match: RouteMatch<M, K>) => boolean;
 }
 
 /**
@@ -49,10 +58,11 @@ export interface PageRoute<M = unknown, K extends string = string> {
   readonly meta?: M;
   readonly path: string;
   readonly index?: undefined;
+  readonly guard?: Guard<M, K>;
   readonly sensitive?: boolean;
   readonly children?: undefined;
+  readonly available?: undefined;
   readonly element?: React.ReactNode;
-  readonly guard?: (match: RouteMatch<M, K>) => boolean;
 }
 
 /**
@@ -61,7 +71,24 @@ export interface PageRoute<M = unknown, K extends string = string> {
 export interface LayoutRoute<M = unknown, K extends string = string> {
   readonly meta?: M;
   readonly path?: string;
+  readonly guard?: undefined;
   readonly index?: undefined;
+  readonly available?: undefined;
+  readonly sensitive?: undefined;
+  readonly children: Route<M, K>[];
+  readonly element?: React.ReactNode;
+}
+
+/**
+ * Available layout route.
+ */
+export interface AvailableLayoutRoute<M = unknown, K extends string = string> {
+  readonly meta?: M;
+  readonly path?: string;
+  readonly available: true;
+  readonly index?: undefined;
+  readonly guard?: Guard<M, K>;
+  readonly sensitive?: boolean;
   readonly children: Route<M, K>[];
   readonly element?: React.ReactNode;
 }
@@ -70,7 +97,11 @@ export interface LayoutRoute<M = unknown, K extends string = string> {
  * A route object represents a logical route, with (optionally) its child
  * routes organized in a tree-like structure.
  */
-export type Route<M = unknown, K extends string = string> = LayoutRoute<M, K> | PageRoute<M, K> | IndexRoute<M, K>;
+export type Route<M = unknown, K extends string = string> =
+  | AvailableLayoutRoute<M, K>
+  | LayoutRoute<M, K>
+  | IndexRoute<M, K>
+  | PageRoute<M, K>;
 
 /**
  * The parameters that were parsed from the URL path.

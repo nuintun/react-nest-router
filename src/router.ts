@@ -128,12 +128,13 @@ export function flatten<M, K extends string>(routes: Route<M, K>[], basename: st
 
     // Traversal nested routes.
     for (const [index, item] of items) {
-      const { path: to, index: isIndex, children, guard } = item;
       const from = paths.reduce<string>((from, to) => resolve(from, to), '/');
+      const { path: to, index: isIndex, available, guard, children } = item;
+      const isLayout = children && children.length > 0;
+      const isUnavailable = !available && isLayout;
 
       if (__DEV__) {
         const path = resolve(from, to);
-        const isLayout = children && children.length > 0;
 
         assert(
           !(isIndex && 'path' in item),
@@ -151,13 +152,18 @@ export function flatten<M, K extends string>(routes: Route<M, K>[], basename: st
         );
 
         assert(
-          !(isLayout && 'guard' in item),
-          `Layout route must not have guard. Please remove guard property from route path "${path}".`
+          !(isUnavailable && 'guard' in item),
+          `Unavailable layout route must not have guard. Please remove guard property from route path "${path}".`
         );
 
         assert(
-          !(isLayout && 'sensitive' in item),
-          `Layout route must not have sensitive. Please remove sensitive property from route path "${path}".`
+          !(!isLayout && 'available' in item),
+          `Page or index route must not have available. Please remove available property from route path "${path}".`
+        );
+
+        assert(
+          !(isUnavailable && 'sensitive' in item),
+          `Unavailable layout route must not have sensitive. Please remove sensitive property from route path "${path}".`
         );
 
         assert(
@@ -166,12 +172,12 @@ export function flatten<M, K extends string>(routes: Route<M, K>[], basename: st
         );
 
         assert(
-          !('guard' in item && isFunction(guard)),
+          !('guard' in item && !isFunction(guard)),
           `The guard of the route path "${path}" must be a function. If the route has guard, the guard property must be a function.`
         );
 
         assert(
-          !(to && isAbsolute(to) && isAboveRoot(from, to, isLayout ? false : item.sensitive)),
+          !(to && isAbsolute(to) && isAboveRoot(from, to, isUnavailable ? false : item.sensitive)),
           `Absolute route path "${to}" nested under path "${from}" is not valid. An absolute child route path must start with the combined path of all its parent routes.`
         );
       }
@@ -181,25 +187,24 @@ export function flatten<M, K extends string>(routes: Route<M, K>[], basename: st
         route: item
       };
 
-      // Route is layout route.
-      if (children && children.length > 0) {
+      // Route is unavailable layout route.
+      if (isUnavailable) {
         // Cache meta.
         meta.push(metadata);
         // Cache paths.
         paths.push(to);
       } else {
-        const { guard, sensitive } = item;
-        const path = join(base, resolve(from, isIndex ? './' : to));
+        const path = join(base, resolve(from, isIndex || available ? './' : to));
 
         // Routes with children is layout routes,
         // otherwise is page routes or index routes,
-        // only page page routes or index routes will add to branches.
+        // only page, index and available layout routes will add to branches.
         branches.push({
           basename: base,
           meta: [...meta, metadata],
           guard: guard || defaultGuard,
-          matcher: compile(path, sensitive),
-          score: computeScore(path, isIndex)
+          score: computeScore(path, isIndex),
+          matcher: compile(path, item.sensitive)
         });
       }
     }
