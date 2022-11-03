@@ -1,5 +1,5 @@
 /**
- * @module types
+ * @module interface
  * @see https://github.com/remix-run/history
  */
 

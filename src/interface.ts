@@ -1,5 +1,5 @@
 /**
- * @module types
+ * @module interface
  */
 
 import React from 'react';
@@ -44,6 +44,7 @@ export interface IRoute<M = unknown, K extends string = string> {
 export interface IndexRoute<M = unknown, K extends string = string> {
   readonly meta?: M;
   readonly index: true;
+  readonly path?: undefined;
   readonly guard?: Guard<M, K>;
   readonly sensitive?: boolean;
   readonly children?: undefined;
@@ -98,10 +99,10 @@ export interface AvailableLayoutRoute<M = unknown, K extends string = string> {
  * routes organized in a tree-like structure.
  */
 export type Route<M = unknown, K extends string = string> =
-  | AvailableLayoutRoute<M, K>
   | LayoutRoute<M, K>
-  | IndexRoute<M, K>
-  | PageRoute<M, K>;
+  | AvailableLayoutRoute<M, K>
+  | PageRoute<M, K>
+  | IndexRoute<M, K>;
 
 /**
  * The parameters that were parsed from the URL path.
