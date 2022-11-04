@@ -131,10 +131,11 @@ export function flatten<M, K extends string>(routes: Route<M, K>[], basename: st
       const from = paths.reduce<string>((from, to) => resolve(from, to), '/');
       const { path: to, index: isIndex, available, guard, children } = item;
       const isLayout = children && children.length > 0;
-      const isUnavailable = !available && isLayout;
+      const isAvailable = !isLayout || available;
 
       if (__DEV__) {
         const path = resolve(from, to);
+        const isUnavailable = isLayout && !available;
 
         assert(
           !(isIndex && 'path' in item),
@@ -177,7 +178,7 @@ export function flatten<M, K extends string>(routes: Route<M, K>[], basename: st
         );
 
         assert(
-          !(to && isAbsolute(to) && isAboveRoot(from, to, isUnavailable ? false : item.sensitive)),
+          !(to && isAbsolute(to) && isAboveRoot(from, to, item.sensitive)),
           `Absolute route path "${to}" nested under path "${from}" is not valid. An absolute child route path must start with the combined path of all its parent routes.`
         );
       }
@@ -187,14 +188,8 @@ export function flatten<M, K extends string>(routes: Route<M, K>[], basename: st
         route: item
       };
 
-      // Route is unavailable layout route.
-      if (isUnavailable) {
-        // Cache meta.
-        meta.push(metadata);
-        // Cache paths.
-        paths.push(to);
-      } else {
-        const path = join(base, resolve(from, isIndex || available ? './' : to));
+      if (isAvailable) {
+        const path = join(base, resolve(from, to));
 
         // Routes with children is layout routes,
         // otherwise is page routes or index routes,
@@ -206,6 +201,14 @@ export function flatten<M, K extends string>(routes: Route<M, K>[], basename: st
           score: computeScore(path, isIndex),
           matcher: compile(path, item.sensitive)
         });
+      }
+
+      // Route is layout route.
+      if (isLayout) {
+        // Cache meta.
+        meta.push(metadata);
+        // Cache paths.
+        paths.push(to);
       }
     }
   }
