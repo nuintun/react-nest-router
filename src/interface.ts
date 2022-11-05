@@ -11,7 +11,7 @@ import { Navigator, To } from './navigator';
 export type { Action, Location, Navigator, NavigatorEvent, To } from './navigator';
 
 /**
- * Set object mutable
+ * Set object mutable.
  */
 export type Mutable<T> = {
   -readonly [P in keyof T]: T[P];
@@ -112,7 +112,7 @@ export type Params<K extends string = string> = {
 };
 
 /**
- * Patch matcher
+ * Patch matcher.
  */
 export interface Matcher<K extends string = string> {
   readonly keys: K[];
@@ -134,29 +134,45 @@ export interface RouteMatch<M = unknown, K extends string = string> {
 }
 
 /**
- * Route branch meta.
+ * Route branch.
  */
-export interface BranchMeta<M = unknown, K extends string = string> {
+export interface RouteBranch<M = unknown, K extends string = string> {
+  readonly basename: string;
+  readonly guard: Guard<M, K>;
+  readonly matcher: Matcher<K>;
+  readonly meta: IRoute<M, K>[];
+}
+
+/**
+ * Route sort branch meta.
+ */
+export interface SortBranchMeta<M = unknown, K extends string = string> {
   readonly index: number;
   readonly route: IRoute<M, K>;
 }
 
 /**
- * Route branch.
+ * Route sort branch.
  */
-export interface RouteBranch<M = unknown, K extends string = string> {
+export interface RouteSortBranch<M = unknown, K extends string = string> {
   readonly score: number;
   readonly basename: string;
+  readonly guard: Guard<M, K>;
   readonly matcher: Matcher<K>;
-  readonly meta: BranchMeta<M, K>[];
-  readonly guard: (match: RouteMatch<M, K>) => boolean;
+  readonly meta: SortBranchMeta<M, K>[];
 }
 
+/**
+ * Navigate options.
+ */
 export interface NavigateOptions<S> {
   readonly state?: S;
   readonly replace?: boolean;
 }
 
+/**
+ * Navigate.
+ */
 export interface Navigate {
   (delta: number): void;
   <S = unknown>(to: To, options?: NavigateOptions<S>): void;
