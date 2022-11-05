@@ -74,5 +74,9 @@ export function compile<K extends string>(path: string, sensitive: boolean = fal
     return matched;
   };
 
+  if (__DEV__) {
+    return Object.freeze({ path, keys, match, pattern, sensitive });
+  }
+
   return { path, keys, match, pattern, sensitive };
 }
