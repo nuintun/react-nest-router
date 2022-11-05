@@ -82,7 +82,8 @@ export function resolve(from: string, to?: string): string {
  * @param sensitive Is case sensitive.
  */
 export function isAboveRoot(root: string, path: string, sensitive?: boolean): boolean {
-  root = suffix(root, '/');
+  root = normalize(suffix(root, '/'));
+  path = normalize(path);
 
   if (!sensitive) {
     root = root.toLowerCase();
