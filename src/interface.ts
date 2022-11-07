@@ -115,10 +115,10 @@ export type Params<K extends string = string> = {
  * Patch matcher.
  */
 export interface Matcher<K extends string = string> {
-  readonly keys: K[];
   readonly path: string;
   readonly pattern: RegExp;
   readonly sensitive: boolean;
+  readonly keys: Readonly<K[]>;
   readonly match: (path: string) => Params<K> | null;
 }
 
@@ -130,7 +130,7 @@ export interface RouteMatch<M = unknown, K extends string = string> {
   readonly basename: string;
   readonly pathname: string;
   readonly params: Params<K>;
-  readonly matches: IRoute<M, K>[];
+  readonly matches: Readonly<IRoute<M, K>[]>;
 }
 
 /**
@@ -140,7 +140,7 @@ export interface RouteBranch<M = unknown, K extends string = string> {
   readonly basename: string;
   readonly guard: Guard<M, K>;
   readonly matcher: Matcher<K>;
-  readonly meta: IRoute<M, K>[];
+  readonly meta: Readonly<IRoute<M, K>[]>;
 }
 
 /**
@@ -159,7 +159,7 @@ export interface RouteSortBranch<M = unknown, K extends string = string> {
   readonly basename: string;
   readonly guard: Guard<M, K>;
   readonly matcher: Matcher<K>;
-  readonly meta: SortBranchMeta<M, K>[];
+  readonly meta: Readonly<SortBranchMeta<M, K>[]>;
 }
 
 /**
@@ -198,7 +198,7 @@ export interface NavigateProps<S = unknown> extends NavigateOptions<S> {
 export interface RouterProps<M = unknown, K extends string = string, C = unknown> {
   readonly context?: C;
   readonly basename?: string;
-  readonly routes: Route<M, K>[];
   readonly navigator?: Navigator;
+  readonly routes: Route<M, K>[];
   readonly children?: React.ReactNode;
 }

@@ -105,8 +105,10 @@ function sortRouteBranches<M, K extends string>(branches: RouteSortBranch<M, K>[
     .sort((prev, next) => {
       return prev.score !== next.score ? next.score - prev.score : compareBranchMeta(prev, next);
     })
-    .map(({ basename, meta, matcher, guard }) => {
-      return { basename, meta: meta.map(({ route }) => route), matcher, guard };
+    .map(({ basename, meta: metadata, matcher, guard }) => {
+      const meta = metadata.map(({ route }) => route);
+
+      return { basename, meta: __DEV__ ? Object.freeze(meta) : meta, matcher, guard };
     });
 }
 
