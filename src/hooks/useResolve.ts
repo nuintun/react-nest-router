@@ -7,20 +7,23 @@ import { To } from '../interface';
 import { assert } from '../utils';
 import { useCallback } from 'react';
 import { useLatestRef } from './useLatestRef';
-import { useRouteContext } from './useRouteContext';
+import { useLocateContext } from './useLocateContext';
+import { useNavigationContext } from './useNavigationContext';
 
 /**
  * @function useResolve
  * @description Get resolve method.
  */
 export function useResolve(): (to: To) => string {
-  const routeContext = useRouteContext();
+  const locateContext = useLocateContext();
+  const navigationContext = useNavigationContext();
 
   if (__DEV__) {
-    assert(routeContext, 'The hook useResolve can only be used inside a route element.');
+    assert(locateContext && navigationContext, 'The hook useResolve can only be used inside a route element.');
   }
 
-  const { basename, pathname } = routeContext!.match;
+  const { basename } = navigationContext!;
+  const { pathname } = locateContext!.location;
   const pathsRef = useLatestRef([basename, pathname]);
 
   return useCallback((to: To): string => {
