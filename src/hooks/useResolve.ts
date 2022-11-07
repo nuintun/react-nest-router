@@ -27,8 +27,8 @@ export function useResolve(): (to: To) => string {
   const pathsRef = useLatestRef([basename, pathname]);
 
   return useCallback((to: To): string => {
-    const [basename, pathname] = pathsRef.current;
+    const [basename, from] = pathsRef.current;
 
-    return resolve(pathname, to, basename);
+    return resolve(from, to, basename);
   }, []);
 }

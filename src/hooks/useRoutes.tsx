@@ -5,6 +5,7 @@
 import { Route } from '../interface';
 import { flatten, match } from '../router';
 import { ReactElement, useMemo } from 'react';
+import { assert, startsWith } from '../utils';
 import { isAbsolute, join, normalize } from '../path';
 import { OutletContext, RouteContext } from '../context';
 
@@ -22,14 +23,16 @@ export function useRoutes<M = unknown, K extends string = string, C = unknown>(
   context?: C
 ): ReactElement | null {
   basename = useMemo(() => {
+    if (__DEV__) {
+      assert(startsWith(basename, '/'), 'Router basename must start with /.');
+    }
+
     return normalize(basename);
   }, [basename]);
 
   pathname = useMemo(() => {
-    pathname = normalize(pathname);
-
     if (isAbsolute(pathname)) {
-      return pathname;
+      return normalize(pathname);
     }
 
     return join(basename, pathname);

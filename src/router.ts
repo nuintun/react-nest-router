@@ -5,7 +5,7 @@
 import { Tree } from './Tree';
 import { compile } from './pattern';
 import { isAboveRoot, join, resolve } from './path';
-import { assert, endsWith, isFunction, startsWith } from './utils';
+import { assert, endsWith, isFunction } from './utils';
 import { IRoute, Route, RouteBranch, RouteMatch, RouteSortBranch, SortBranchMeta } from './interface';
 
 /**
@@ -139,8 +139,6 @@ export function flatten<M, K extends string>(routes: Route<M, K>[], basename: st
       if (__DEV__) {
         const path = resolve(from, to);
         const isUnavailable = isLayout && !available;
-
-        assert(startsWith(basename, '/'), 'Router basename must start with /.');
 
         assert(
           !(isIndex && 'path' in item),

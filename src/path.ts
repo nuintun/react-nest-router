@@ -9,7 +9,7 @@ import { startsWith, suffix } from './utils';
  * @description Check if the path is absolute.
  * @param path The path to check.
  */
-export function isAbsolute(path: string): boolean {
+export function isAbsolute(path: string): path is `/${string}` {
   return /^\//.test(path);
 }
 
@@ -18,7 +18,7 @@ export function isAbsolute(path: string): boolean {
  * @description Normalize the path.
  * @param path The path to normalize.
  */
-export function normalize(path: string) {
+export function normalize(path: string): string {
   const segments: string[] = [];
   const parts = path.replace(/\\+|\/{2,}/, '/').split('/');
 
