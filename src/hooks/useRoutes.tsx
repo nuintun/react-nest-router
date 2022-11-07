@@ -6,7 +6,7 @@ import { Route } from '../interface';
 import { flatten, match } from '../router';
 import { ReactElement, useMemo } from 'react';
 import { assert, startsWith } from '../utils';
-import { isAbsolute, join, normalize } from '../path';
+import { isAbsolute, normalize } from '../path';
 import { OutletContext, RouteContext } from '../context';
 
 /**
@@ -31,12 +31,12 @@ export function useRoutes<M = unknown, K extends string = string, C = unknown>(
   }, [basename]);
 
   pathname = useMemo(() => {
-    if (isAbsolute(pathname)) {
-      return normalize(pathname);
+    if (__DEV__) {
+      assert(isAbsolute(pathname), 'Router pathname must be an absolute path starting with basename.');
     }
 
-    return join(basename, pathname);
-  }, [pathname, basename]);
+    return normalize(pathname);
+  }, [pathname]);
 
   const branches = useMemo(() => {
     return flatten(routes, basename);

@@ -35,16 +35,14 @@ export function resolve(from: string, to: To, basename: string = '/'): string {
 
   if (origin) {
     pathname = path ? normalize(path) : path;
-  } else if (path && isAbsolute(path)) {
-    pathname = normalize(basename + '/' + path);
-  } else {
-    from = isAbsolute(from) ? from : basename + '/' + from;
-
-    if (path) {
-      pathname = normalize(from + '/' + path);
+  } else if (path) {
+    if (isAbsolute(path)) {
+      pathname = normalize(basename + '/' + path);
     } else {
-      pathname = normalize(from);
+      pathname = normalize(from + '/' + path);
     }
+  } else {
+    pathname = normalize(from);
   }
 
   return stringify({ origin, pathname, search, hash });
