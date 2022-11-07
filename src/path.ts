@@ -53,6 +53,10 @@ export function join(base: string, path: string): string {
     return normalize(path);
   }
 
+  if (!path) {
+    return normalize(base);
+  }
+
   return normalize(base + '/' + path);
 }
 
@@ -67,7 +71,7 @@ export function resolve(from: string, to?: string): string {
     return normalize(from);
   }
 
-  if (isAbsolute(to)) {
+  if (!from || isAbsolute(to)) {
     return normalize(to);
   }
 

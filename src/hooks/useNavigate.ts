@@ -6,7 +6,7 @@ import { useCallback } from 'react';
 import { useResolve } from './useResolve';
 import { assert, isNumber } from '../utils';
 import { useLatestRef } from './useLatestRef';
-import { useLocateContext } from './useLocateContext';
+import { useRouteContext } from './useRouteContext';
 import { Navigate, NavigateOptions, To } from '../interface';
 import { useNavigationContext } from './useNavigationContext';
 
@@ -15,11 +15,11 @@ import { useNavigationContext } from './useNavigationContext';
  * @description Get navigate method.
  */
 export function useNavigate(): Navigate {
-  const locateContext = useLocateContext();
+  const routeContext = useRouteContext();
   const navigationContext = useNavigationContext();
 
   if (__DEV__) {
-    assert(navigationContext && locateContext, 'The hook useNavigate can only be used inside a route element.');
+    assert(routeContext && navigationContext, 'The hook useNavigate can only be used inside a route element.');
   }
 
   const resolve = useResolve();

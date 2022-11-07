@@ -5,7 +5,7 @@
 import { Tree } from './Tree';
 import { compile } from './pattern';
 import { isAboveRoot, join, resolve } from './path';
-import { assert, endsWith, isFunction, prefix } from './utils';
+import { assert, endsWith, isFunction, startsWith } from './utils';
 import { IRoute, Route, RouteBranch, RouteMatch, RouteSortBranch, SortBranchMeta } from './interface';
 
 /**
@@ -118,7 +118,6 @@ function sortRouteBranches<M, K extends string>(branches: RouteSortBranch<M, K>[
  */
 export function flatten<M, K extends string>(routes: Route<M, K>[], basename: string): RouteBranch<M, K>[] {
   const defaultGuard = () => true;
-  const base = prefix(basename, '/');
   const branches: RouteSortBranch<M, K>[] = [];
 
   // Traversal routes.
@@ -140,6 +139,8 @@ export function flatten<M, K extends string>(routes: Route<M, K>[], basename: st
       if (__DEV__) {
         const path = resolve(from, to);
         const isUnavailable = isLayout && !available;
+
+        assert(startsWith(basename, '/'), 'Router basename must start with /.');
 
         assert(
           !(isIndex && 'path' in item),
@@ -193,13 +194,13 @@ export function flatten<M, K extends string>(routes: Route<M, K>[], basename: st
       };
 
       if (isAvailable) {
-        const path = join(base, resolve(from, to));
+        const path = join(basename, resolve(from, to));
 
         // Routes with children is layout routes,
         // otherwise is page routes or index routes,
         // only page, index and available layout routes will add to branches.
         branches.push({
-          basename: base,
+          basename,
           meta: [...meta, metadata],
           guard: guard || defaultGuard,
           score: computeScore(path, isIndex),
@@ -228,18 +229,14 @@ export function flatten<M, K extends string>(routes: Route<M, K>[], basename: st
  * @param pathname The pathname to match.
  */
 export function match<M, K extends string>(routes: RouteBranch<M, K>[], pathname: string): RouteMatch<M, K> | null {
-  const path = prefix(pathname, '/');
-
   // Match route branches.
   for (const { basename, meta: matches, matcher, guard } of routes) {
-    const params = matcher.match(path);
+    const params = matcher.match(pathname);
 
     if (params) {
-      const { length } = basename;
-      const pathname = prefix(path.slice(length), '/');
-      const match = { path, basename, pathname, params, matches };
+      const match = { path: matcher.path, basename, pathname, params, matches };
 
-      if (guard(match)) {
+      if (guard(__DEV__ ? Object.freeze(match) : match)) {
         return match;
       }
     }

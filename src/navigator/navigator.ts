@@ -13,11 +13,7 @@ function getLocation<S>(window: Window): Readonly<Location<S>> {
   const { pathname, search, hash } = window.location;
   const location: Location<S> = { pathname, search, hash, state };
 
-  if (__DEV__) {
-    return Object.freeze(location);
-  }
-
-  return location;
+  return __DEV__ ? Object.freeze(location) : location;
 }
 
 function getNextURL<S>(from: Location<S>, to: To): string {

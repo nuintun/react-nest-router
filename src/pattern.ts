@@ -63,20 +63,12 @@ export function compile<K extends string>(path: string, sensitive: boolean = fal
 
         params[key] = value ? safelyDecodeURIComponent(value) : value;
 
-        if (__DEV__) {
-          return Object.freeze(params);
-        }
-
-        return params;
+        return __DEV__ ? Object.freeze(params) : params;
       }, {} as Mutable<Params<K>>);
     }
 
     return matched;
   };
-
-  if (__DEV__) {
-    return Object.freeze({ path, keys, match, pattern, sensitive });
-  }
 
   return { path, keys, match, pattern, sensitive };
 }
