@@ -18,6 +18,11 @@ export type Mutable<T> = {
 };
 
 /**
+ * Non empty array.
+ */
+export type NonEmptyArray<T> = [T, ...T[]];
+
+/**
  * Guard function.
  */
 export interface Guard<M = unknown, K extends string = string> {
@@ -34,8 +39,8 @@ export interface IRoute<M = unknown, K extends string = string> {
   readonly available?: boolean;
   readonly guard?: Guard<M, K>;
   readonly sensitive?: boolean;
-  readonly children?: IRoute<M, K>[];
   readonly element?: React.ReactNode;
+  readonly children?: NonEmptyArray<IRoute<M, K>>;
 }
 
 /**
@@ -76,8 +81,8 @@ export interface LayoutRoute<M = unknown, K extends string = string> {
   readonly index?: undefined;
   readonly available?: undefined;
   readonly sensitive?: undefined;
-  readonly children: Route<M, K>[];
   readonly element?: React.ReactNode;
+  readonly children: NonEmptyArray<Route<M, K>>;
 }
 
 /**
@@ -90,8 +95,8 @@ export interface AvailableLayoutRoute<M = unknown, K extends string = string> {
   readonly index?: undefined;
   readonly guard?: Guard<M, K>;
   readonly sensitive?: boolean;
-  readonly children: Route<M, K>[];
   readonly element: React.ReactNode;
+  readonly children: NonEmptyArray<Route<M, K>>;
 }
 
 /**
