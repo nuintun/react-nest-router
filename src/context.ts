@@ -14,8 +14,8 @@ export const OutletContext = createContext<unknown>(null);
  */
 export interface RouteContext {
   readonly index: number;
+  readonly match: RouteMatch;
   readonly outlet: ReactElement | null;
-  readonly match: RouteMatch<unknown, string>;
 }
 
 // Route context.
@@ -26,7 +26,7 @@ export const RouteContext = createContext<RouteContext | null>(null);
  */
 export interface LocateContext {
   readonly action: Action;
-  readonly location: Location<unknown>;
+  readonly location: Location;
 }
 
 // Locate context.
