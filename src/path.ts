@@ -10,7 +10,7 @@ import { startsWith, suffix } from './utils';
  * @param path The path to check.
  */
 export function isAbsolute(path: string): path is `/${string}` {
-  return /^\//.test(path);
+  return /^[\\/]/.test(path);
 }
 
 /**
@@ -20,7 +20,7 @@ export function isAbsolute(path: string): path is `/${string}` {
  */
 export function normalize(path: string): string {
   const segments: string[] = [];
-  const parts = path.replace(/\\+|\/{2,}/, '/').split('/');
+  const parts = path.split(/[\\/]+/);
 
   for (const segment of parts) {
     switch (segment) {
