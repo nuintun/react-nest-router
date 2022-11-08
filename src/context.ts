@@ -2,8 +2,7 @@
  * @module context
  */
 
-import { ReactElement } from 'react';
-import { createContext } from 'react';
+import { createContext, ReactElement } from 'react';
 import { Action, Location, Navigator, RouteMatch } from './interface';
 
 // Outlet context.
