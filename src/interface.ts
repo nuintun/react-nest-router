@@ -39,20 +39,6 @@ export interface IRoute<M = unknown, K extends string = string> {
 }
 
 /**
- * Index route.
- */
-export interface IndexRoute<M = unknown, K extends string = string> {
-  readonly meta?: M;
-  readonly index: true;
-  readonly path?: undefined;
-  readonly guard?: Guard<M, K>;
-  readonly sensitive?: boolean;
-  readonly children?: undefined;
-  readonly available?: undefined;
-  readonly element?: React.ReactNode;
-}
-
-/**
  * Page route.
  */
 export interface PageRoute<M = unknown, K extends string = string> {
@@ -63,7 +49,21 @@ export interface PageRoute<M = unknown, K extends string = string> {
   readonly sensitive?: boolean;
   readonly children?: undefined;
   readonly available?: undefined;
-  readonly element?: React.ReactNode;
+  readonly element: React.ReactNode;
+}
+
+/**
+ * Index route.
+ */
+export interface IndexRoute<M = unknown, K extends string = string> {
+  readonly meta?: M;
+  readonly index: true;
+  readonly path?: undefined;
+  readonly guard?: Guard<M, K>;
+  readonly sensitive?: boolean;
+  readonly children?: undefined;
+  readonly available?: undefined;
+  readonly element: React.ReactNode;
 }
 
 /**
@@ -91,7 +91,7 @@ export interface AvailableLayoutRoute<M = unknown, K extends string = string> {
   readonly guard?: Guard<M, K>;
   readonly sensitive?: boolean;
   readonly children: Route<M, K>[];
-  readonly element?: React.ReactNode;
+  readonly element: React.ReactNode;
 }
 
 /**
@@ -99,10 +99,10 @@ export interface AvailableLayoutRoute<M = unknown, K extends string = string> {
  * routes organized in a tree-like structure.
  */
 export type Route<M = unknown, K extends string = string> =
-  | LayoutRoute<M, K>
   | AvailableLayoutRoute<M, K>
-  | PageRoute<M, K>
-  | IndexRoute<M, K>;
+  | LayoutRoute<M, K>
+  | IndexRoute<M, K>
+  | PageRoute<M, K>;
 
 /**
  * The parameters that were parsed from the URL path.
