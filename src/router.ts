@@ -143,6 +143,11 @@ export function flatten<M, K extends string>(routes: Route<M, K>[], basename: st
         const isUnavailable = isLayout && !available;
 
         assert(
+          !('children' in item && (!children || children.length <= 0)),
+          `The children property of layout route path "${path}" cannot be an empty array.`
+        );
+
+        assert(
           !(isIndex && 'path' in item),
           `Index route must not have path. Please remove path property from route path "${path}".`
         );
