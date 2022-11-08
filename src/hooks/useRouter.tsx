@@ -2,7 +2,6 @@
  * @module useRouter
  */
 
-import { normalize } from '../path';
 import { useRoutes } from './useRoutes';
 import { createNavigator } from '../navigator';
 import { Navigator, RouterProps } from '../interface';
@@ -21,10 +20,6 @@ export function useRouter<M = unknown, K extends string = string, C = unknown>({
   children = '404',
   navigator: history
 }: RouterProps<M, K, C>): ReactElement {
-  basename = useMemo(() => {
-    return normalize(basename);
-  }, [basename]);
-
   const navigator = useMemo<Navigator>(() => {
     return history ?? createNavigator(self);
   }, [history]);

@@ -27,11 +27,7 @@ export function normalize(path: string): string {
       case '.':
         break;
       case '..':
-        const { length } = segments;
-
-        if (length && segments[length - 1] !== '..') {
-          segments.pop();
-        }
+        segments.pop();
         break;
       default:
         segments.push(segment);
