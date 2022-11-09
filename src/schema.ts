@@ -58,9 +58,9 @@ function assertGuard(route: IRoute, path: string, type: string): never | void {
 function assertChildren(route: IRoute, path: string, type: string): never | void {
   assertRequired(route, 'children', path, type);
 
-  const hasNonEmptyChildren = Array.isArray(route.children) && route.children.length > 0;
+  const cond = Array.isArray(route.children) && route.children.length > 0;
 
-  assert(hasNonEmptyChildren, `Property "children" in ${type} route "${path}" must be a non empty array.`);
+  assert(cond, `Property "children" in ${type} route "${path}" must be a non empty array.`);
 }
 
 /**
