@@ -75,13 +75,13 @@ export function resolve(from: string, to?: string): string {
 }
 
 /**
- * @function isAboveRoot
- * @description Is the path above root.
+ * @function isOutsideRoot
+ * @description Is the path outside root.
  * @param root The root path.
  * @param path The path to check.
  * @param sensitive Is case sensitive.
  */
-export function isAboveRoot(root: string, path: string, sensitive?: boolean): boolean {
+export function isOutsideRoot(root: string, path: string, sensitive?: boolean): boolean {
   if (isAbsolute(path)) {
     root = normalize(suffix(root, '/'));
     path = normalize(path);

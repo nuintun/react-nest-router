@@ -4,9 +4,10 @@
 
 import { Tree } from './Tree';
 import { compile } from './pattern';
-import { isAboveRoot, join, resolve } from './path';
-import { assert, endsWith, isFunction } from './utils';
+import { assert, endsWith, hasOwnKey } from './utils';
+import { isOutsideRoot, join, resolve } from './path';
 import { IRoute, Route, RouteBranch, RouteMatch, RouteSortBranch, SortBranchMeta } from './interface';
+import { assertAvailableLayoutRoute, assertIndexRoute, assertLayoutRoute, assertPageRoute } from './schema';
 
 /**
  * @function computeScore
@@ -134,68 +135,26 @@ export function flatten<M, K extends string>(routes: Route<M, K>[], basename: st
     // Traversal nested routes.
     for (const [index, item] of items) {
       const from = paths.reduce<string>((from, to) => resolve(from, to), '/');
-      const { path: to, index: isIndex, available, guard, children } = item;
+      const { available, children, guard, index: isIndex, path: to } = item;
       const isLayout = children && children.length > 0;
       const isAvailable = !isLayout || available;
 
       if (__DEV__) {
         const path = resolve(from, to);
-        const isUnavailable = isLayout && !available;
 
-        assert(
-          !(isIndex && 'path' in item),
-          `Index route must not have path. Please remove path property from route path "${path}".`
-        );
+        if (isIndex) {
+          assertIndexRoute(item, path);
+        } else if (available) {
+          assertAvailableLayoutRoute(item, path);
+        } else if (hasOwnKey(item, 'children')) {
+          assertLayoutRoute(item, path);
+        } else {
+          assertPageRoute(item, path);
+        }
 
-        assert(
-          !(isIndex && 'children' in item),
-          `Index route must not have child routes. Please remove all child routes from route path "${path}".`
-        );
-
-        assert(
-          !('children' in item && (!children || children.length <= 0)),
-          `The children property of layout route path "${path}" cannot be an empty array.`
-        );
-
-        assert(
-          !(isAvailable && !('element' in item)),
-          `Available route must have element. Please add element property to route path "${path}".`
-        );
-
-        assert(
-          !(!isIndex && 'index' in item),
-          `Layout or page route must not have index. Please remove index property from route path "${path}".`
-        );
-
-        assert(
-          !(isUnavailable && 'guard' in item),
-          `Unavailable layout route must not have guard. Please remove guard property from route path "${path}".`
-        );
-
-        assert(
-          !(!isLayout && 'available' in item),
-          `Page or index route must not have available. Please remove available property from route path "${path}".`
-        );
-
-        assert(
-          !(isUnavailable && 'sensitive' in item),
-          `Unavailable layout route must not have sensitive. Please remove sensitive property from route path "${path}".`
-        );
-
-        assert(
-          !(!isLayout && !isIndex && to == null),
-          `The route nested under path "${from}" is not valid. It may be index or page route, but missing index or path property.`
-        );
-
-        assert(
-          !('guard' in item && !isFunction(guard)),
-          `The guard of the route path "${path}" must be a function. If the route has guard, the guard property must be a function.`
-        );
-
-        assert(
-          !(to && isAboveRoot(from, to, item.sensitive)),
-          `Absolute route path "${to}" nested under path "${from}" is not valid. An absolute child route path must start with the combined path of all its parent routes.`
-        );
+        if (to) {
+          assert(!isOutsideRoot(from, to, item.sensitive), `Route "${path}" is outside parent route "${from}".`);
+        }
       }
 
       const metadata: SortBranchMeta<M, K> = {

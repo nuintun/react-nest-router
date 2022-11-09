@@ -2,9 +2,9 @@
  * @module useOutlet
  */
 
-import { assert } from '../utils';
 import { OutletContext } from '../context';
 import { OutletProps } from '../interface';
+import { assert, hasOwnKey } from '../utils';
 import { ReactElement, useMemo } from 'react';
 import { useRouteContext } from './useRouteContext';
 
@@ -22,7 +22,7 @@ export function useOutlet<C = unknown>(props: OutletProps<C> = {}): ReactElement
 
   const { context } = props;
   const { outlet } = routeContext!;
-  const hasContext = 'context' in props;
+  const hasContext = hasOwnKey(props, 'context');
 
   return useMemo(() => {
     if (hasContext && outlet) {

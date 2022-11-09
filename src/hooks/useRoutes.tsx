@@ -5,9 +5,9 @@
 import { Route } from '../interface';
 import { flatten, match } from '../router';
 import { ReactElement, useMemo } from 'react';
-import { assert, startsWith } from '../utils';
 import { isAbsolute, normalize } from '../path';
 import { OutletContext, RouteContext } from '../context';
+import { assert, hasOwnKey, startsWith } from '../utils';
 
 /**
  * @function useRoutes
@@ -51,7 +51,7 @@ export function useRoutes<M = unknown, K extends string = string, C = unknown>(
       return matched.matches.reduceRight<ReactElement | null>((outlet, match, index) => {
         return (
           <RouteContext.Provider value={{ index, outlet, match: matched }}>
-            {'element' in match ? match.element : outlet}
+            {hasOwnKey(match, 'element') ? match.element : outlet}
           </RouteContext.Provider>
         );
       }, null);

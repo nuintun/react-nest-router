@@ -2,6 +2,18 @@
  * @module utils
  */
 
+// Object prototype methods.
+const { hasOwnProperty, toString } = Object.prototype;
+
+/**
+ * @function isString
+ * @description Check that value is a string.
+ * @param value The value to check.
+ */
+export function isString(value: unknown): value is string {
+  return toString.call(value) === '[object String]';
+}
+
 /**
  * @function isFunction
  * @description Check the value is a function.
@@ -18,15 +30,6 @@ export function isFunction(value: unknown): value is Function {
  */
 export function isNumber(value: unknown): value is number {
   return Object.prototype.toString.call(value) === '[object Number]';
-}
-
-/**
- * @function isString
- * @description Check that value is a string.
- * @param value The value to check.
- */
-export function isString(value: unknown): value is string {
-  return Object.prototype.toString.call(value) === '[object String]';
 }
 
 /**
@@ -79,4 +82,14 @@ export function prefix(string: string, symbol: string): string {
  */
 export function suffix(string: string, symbol: string): string {
   return endsWith(string, symbol) ? string : string + symbol;
+}
+
+/**
+ * @function hasOwnKey
+ * @description Test whether the target has its own key.
+ * @param target The target.
+ * @param key Key name.
+ */
+export function hasOwnKey<T extends Record<any, any>>(target: T, key: keyof T): boolean {
+  return hasOwnProperty.call(target, key);
 }
