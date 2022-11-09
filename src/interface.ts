@@ -2,7 +2,7 @@
  * @module interface
  */
 
-import React from 'react';
+import { ReactNode } from 'react';
 import { Navigator, To } from './navigator';
 
 /**
@@ -37,9 +37,9 @@ export interface IRoute<M = unknown, K extends string = string> {
   readonly index?: true;
   readonly path?: string;
   readonly available?: boolean;
+  readonly element?: ReactNode;
   readonly guard?: Guard<M, K>;
   readonly sensitive?: boolean;
-  readonly element?: React.ReactNode;
   readonly children?: NonEmptyArray<IRoute<M, K>>;
 }
 
@@ -50,11 +50,11 @@ export interface PageRoute<M = unknown, K extends string = string> {
   readonly meta?: M;
   readonly path: string;
   readonly index?: undefined;
+  readonly element: ReactNode;
   readonly guard?: Guard<M, K>;
   readonly sensitive?: boolean;
   readonly children?: undefined;
   readonly available?: undefined;
-  readonly element: React.ReactNode;
 }
 
 /**
@@ -64,11 +64,11 @@ export interface IndexRoute<M = unknown, K extends string = string> {
   readonly meta?: M;
   readonly index: true;
   readonly path?: undefined;
+  readonly element: ReactNode;
   readonly guard?: Guard<M, K>;
   readonly sensitive?: boolean;
   readonly children?: undefined;
   readonly available?: undefined;
-  readonly element: React.ReactNode;
 }
 
 /**
@@ -79,9 +79,9 @@ export interface LayoutRoute<M = unknown, K extends string = string> {
   readonly path?: string;
   readonly guard?: undefined;
   readonly index?: undefined;
+  readonly element?: ReactNode;
   readonly available?: undefined;
   readonly sensitive?: undefined;
-  readonly element?: React.ReactNode;
   readonly children: NonEmptyArray<Route<M, K>>;
 }
 
@@ -93,9 +93,9 @@ export interface AvailableLayoutRoute<M = unknown, K extends string = string> {
   readonly path?: string;
   readonly available: true;
   readonly index?: undefined;
+  readonly element: ReactNode;
   readonly guard?: Guard<M, K>;
   readonly sensitive?: boolean;
-  readonly element: React.ReactNode;
   readonly children: NonEmptyArray<Route<M, K>>;
 }
 
@@ -203,7 +203,7 @@ export interface NavigateProps<S = unknown> extends NavigateOptions<S> {
 export interface RouterProps<M = unknown, K extends string = string, C = unknown> {
   readonly context?: C;
   readonly basename?: string;
+  readonly children?: ReactNode;
   readonly navigator?: Navigator;
   readonly routes: Route<M, K>[];
-  readonly children?: React.ReactNode;
 }
