@@ -6,7 +6,7 @@ import { ReactNode } from 'react';
 import { Navigator, To } from './navigator';
 
 /**
- * Reexport history types.
+ * Reexport navigator types.
  */
 export type { Action, Location, Navigator, NavigatorEvent, To } from './navigator';
 
