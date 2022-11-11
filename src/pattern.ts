@@ -58,13 +58,15 @@ export function compile<K extends string>(path: string, sensitive: boolean = fal
     const matched = path.match(pattern);
 
     if (matched) {
-      return keys.reduce((params, key, index) => {
+      const params = keys.reduce((params, key, index) => {
         const value: string | undefined = matched[index + 1];
 
         params[key] = value ? safelyDecodeURIComponent(value) : value;
 
-        return __DEV__ ? Object.freeze(params) : params;
+        return params;
       }, {} as Mutable<Params<K>>);
+
+      return __DEV__ ? Object.freeze(params) : params;
     }
 
     return matched;
