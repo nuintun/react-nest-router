@@ -149,22 +149,22 @@ export interface RouteBranch<M = unknown, K extends string = string> {
 }
 
 /**
- * Route sort branch meta.
+ * Rank route meta.
  */
-export interface SortBranchMeta<M = unknown, K extends string = string> {
+export interface RankRouteMeta<M = unknown, K extends string = string> {
   readonly index: number;
   readonly route: IRoute<M, K>;
 }
 
 /**
- * Route sort branch.
+ * Rank route branch.
  */
-export interface RouteSortBranch<M = unknown, K extends string = string> {
-  readonly score: number;
+export interface RankRouteBranch<M = unknown, K extends string = string> {
+  readonly weight: number;
   readonly basename: string;
   readonly guard: Guard<M, K>;
   readonly matcher: Matcher<K>;
-  readonly meta: Readonly<SortBranchMeta<M, K>[]>;
+  readonly meta: Readonly<RankRouteMeta<M, K>[]>;
 }
 
 /**

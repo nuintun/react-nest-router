@@ -4,59 +4,61 @@
 
 import { Tree } from './Tree';
 import { compile } from './pattern';
-import { assert, endsWith, hasOwnKey } from './utils';
-import { isOutsideRoot, join, resolve } from './path';
-import { IRoute, Route, RouteBranch, RouteMatch, RouteSortBranch, SortBranchMeta } from './interface';
+import { assert, hasOwnKey } from './utils';
+import { isOutsideRoot, isWildcard, join, resolve } from './path';
+import { IRoute, RankRouteBranch, RankRouteMeta, Route, RouteBranch, RouteMatch } from './interface';
 import { assertAvailableLayoutRoute, assertIndexRoute, assertLayoutRoute, assertPageRoute } from './schema';
 
 /**
- * @function computeScore
+ * @function computeWeight
  * @param path Route path.
  * @param index Is index route.
+ * @link https://github.com/remix-run/react-router
  */
-function computeScore(path: string, index?: boolean): number {
-  const indexRouteValue = 2;
-  const splatPenaltyValue = -2;
-  const staticSegmentValue = 10;
-  const dynamicSegmentValue = 3;
+function computeWeight(path: string, index?: boolean): number {
+  const indexRouteWeight = 2;
+  const emptySegmentWeight = 1;
+  const splatPenaltyWeight = -2;
+  const dynamicSegmentWeight = 3;
+  const staticSegmentWeight = 10;
 
-  const paramKeyRe = /:\w+/;
+  const paramRegExp = /^:\w+$/;
   const segments = path.split('/');
 
-  let initialScore = segments.length;
+  // Initial weight.
+  let weight = segments.length;
 
   if (index) {
-    initialScore += indexRouteValue;
+    weight += indexRouteWeight;
   }
 
-  if (endsWith(path, '*')) {
+  // If wildcard path.
+  if (isWildcard(path)) {
     segments.pop();
 
-    initialScore += splatPenaltyValue;
+    weight += splatPenaltyWeight;
   }
 
-  return segments.reduce((score, segment) => {
-    if (segment !== '') {
-      const segments = segment.split(paramKeyRe);
-
-      score += (segments.length - 1) * dynamicSegmentValue;
-
-      return segments.reduce((score, segment) => {
-        return segment === '' ? score : score + staticSegmentValue;
-      }, score);
+  return segments.reduce((weight, segment) => {
+    if (segment === '') {
+      return weight + emptySegmentWeight;
     }
 
-    return score;
-  }, initialScore);
+    if (paramRegExp.test(segment)) {
+      return weight + dynamicSegmentWeight;
+    }
+
+    return weight + staticSegmentWeight;
+  }, weight);
 }
 
 /**
- * @function isBranchSiblings
- * @description Is siblings branch.
+ * @function isSiblingBranch
+ * @description Is sibling branch.
  * @param prev Prev route branch.
  * @param next Next route branch.
  */
-function isBranchSiblings<M, K extends string>(prev: RouteSortBranch<M, K>, next: RouteSortBranch<M, K>): boolean {
+function isSiblingBranch<M, K extends string>(prev: RankRouteBranch<M, K>, next: RankRouteBranch<M, K>): boolean {
   const { meta: prevMeta } = prev;
   const { meta: nextMeta } = next;
   const { length: prevLength } = prevMeta;
@@ -76,12 +78,12 @@ function isBranchSiblings<M, K extends string>(prev: RouteSortBranch<M, K>, next
  * @param prev Prev route branch.
  * @param next Next route branch.
  */
-function compareBranchMeta<M, K extends string>(prev: RouteSortBranch<M, K>, next: RouteSortBranch<M, K>): number {
+function compareBranchMeta<M, K extends string>(prev: RankRouteBranch<M, K>, next: RankRouteBranch<M, K>): number {
   // If two routes are siblings, we should try to match the earlier sibling
   // first. This allows people to have fine-grained control over the matching
   // behavior by simply putting routes with identical paths in the order they
   // want them tried.
-  if (isBranchSiblings(prev, next)) {
+  if (isSiblingBranch(prev, next)) {
     const { meta: prevMeta } = prev;
     const { meta: nextMeta } = next;
     const { length: prevLength } = prevMeta;
@@ -100,11 +102,11 @@ function compareBranchMeta<M, K extends string>(prev: RouteSortBranch<M, K>, nex
  * @description Sort route branches.
  * @param branches Route branches.
  */
-function sortRouteBranches<M, K extends string>(branches: RouteSortBranch<M, K>[]): RouteBranch<M, K>[] {
+function sortRouteBranches<M, K extends string>(branches: RankRouteBranch<M, K>[]): RouteBranch<M, K>[] {
   // Higher score first
   return branches
     .sort((prev, next) => {
-      return prev.score !== next.score ? next.score - prev.score : compareBranchMeta(prev, next);
+      return prev.weight !== next.weight ? next.weight - prev.weight : compareBranchMeta(prev, next);
     })
     .map(({ basename, meta: metadata, matcher, guard }) => {
       const meta = metadata.map(({ route }) => route);
@@ -121,12 +123,14 @@ function sortRouteBranches<M, K extends string>(branches: RouteSortBranch<M, K>[
  */
 export function flatten<M, K extends string>(routes: Route<M, K>[], basename: string): RouteBranch<M, K>[] {
   const defaultGuard = () => true;
-  const branches: RouteSortBranch<M, K>[] = [];
+  const branches: RankRouteBranch<M, K>[] = [];
 
   // Traversal routes.
   for (const route of routes) {
-    const meta: SortBranchMeta<M, K>[] = [];
+    const meta: RankRouteMeta<M, K>[] = [];
     const paths: (string | undefined)[] = [];
+
+    // Traversal route use dfs.
     const items = new Tree<IRoute<M, K>>(route, ({ children }) => children).dfs(() => {
       meta.pop();
       paths.pop();
@@ -159,7 +163,7 @@ export function flatten<M, K extends string>(routes: Route<M, K>[], basename: st
         }
       }
 
-      const metadata: SortBranchMeta<M, K> = {
+      const metadata: RankRouteMeta<M, K> = {
         index,
         route: item
       };
@@ -174,7 +178,7 @@ export function flatten<M, K extends string>(routes: Route<M, K>[], basename: st
           basename,
           meta: [...meta, metadata],
           guard: guard || defaultGuard,
-          score: computeScore(path, isIndex),
+          weight: computeWeight(path, isIndex),
           matcher: compile(path, item.sensitive)
         });
       }

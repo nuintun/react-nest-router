@@ -2,7 +2,8 @@
  * @module pattern
  */
 
-import { assert, endsWith } from './utils';
+import { assert } from './utils';
+import { isWildcard } from './path';
 import { safelyDecodeURIComponent } from './url';
 import { Matcher, Mutable, Params } from './interface';
 
@@ -14,12 +15,6 @@ import { Matcher, Mutable, Params } from './interface';
  * @see https://github.com/remix-run/react-router
  */
 export function compile<K extends string>(path: string, sensitive: boolean = false): Matcher<K> {
-  if (__DEV__) {
-    assert(!/(?:^|[^/])(?=\*$)/.test(path), `Trailing "*" in path "${path}" must follow "/".`);
-
-    assert(!/(?::\w+){2,}/.test(path), `Cannot have directly adjacent param in path "${path}".`);
-  }
-
   // Source string.
   let source = '^';
 
@@ -33,18 +28,18 @@ export function compile<K extends string>(path: string, sensitive: boolean = fal
     // Escape special regex chars.
     .replace(/[\\.*+^$?{}|()[\]]/g, '\\$&')
     // Collect params and create match group.
-    .replace(/:(\w+)/g, (_matched, param: K) => {
+    .replace(/(^|\/):(\w+)(?=\/|$)/g, (_matched, prefix: string, param: K) => {
       if (__DEV__) {
         assert(!keys.includes(param), `Duplicate param key "${param}" found in path "${path}".`);
       }
 
       keys.push(param);
 
-      return '([^\\/]+)';
+      return `${prefix}([^\\/]+)`;
     });
 
-  // If ends with *.
-  if (endsWith(path, '*')) {
+  // If wildcard path.
+  if (isWildcard(path)) {
     keys.push('*' as K);
 
     source += '\\/(.*)$';
