@@ -21,30 +21,35 @@ export function compile<K extends string>(path: string, sensitive: boolean = fal
   // Path parameter keys.
   const keys: K[] = [];
 
-  // Add path source string.
-  source += path
-    // Ignore trailing / and /*, we'll handle it below.
-    .replace(/\/\*?$/, '')
-    // Escape special regex chars.
-    .replace(/[\\.*+^$?{}|()[\]]/g, '\\$&')
-    // Collect params and create match group.
-    .replace(/(^|\/):(\w+)(?=\/|$)/g, (_matched, prefix: string, param: K) => {
-      if (__DEV__) {
-        assert(!keys.includes(param), `Duplicate param key "${param}" found in path "${path}".`);
-      }
+  // If not empty or equal *.
+  if (path !== '' && path !== '*') {
+    // Add path source string.
+    source += path
+      // Ignore trailing / and /*, we'll handle it below.
+      .replace(/\/\*?$/, '')
+      // Escape special regex chars.
+      .replace(/[\\.*+^$?{}|()[\]]/g, '\\$&')
+      // Collect params and create match group.
+      .replace(/(^|\/):(\w+)(?=\/|$)/g, (_matched, prefix: string, param: K) => {
+        if (__DEV__) {
+          assert(!keys.includes(param), `Duplicate param key "${param}" found in path "${path}".`);
+        }
 
-      keys.push(param);
+        keys.push(param);
 
-      return `${prefix}([^/]+)`;
-    });
+        return `${prefix}([^/]+)`;
+      });
 
-  // If wildcard path.
-  if (isWildcard(path)) {
-    keys.push('*' as K);
+    // If wildcard path.
+    if (isWildcard(path)) {
+      keys.push('*' as K);
 
-    source += '/(.*)$';
+      source += '/(.*)$';
+    } else {
+      source += '/*$';
+    }
   } else {
-    source += '/*$';
+    source += '(.*)$';
   }
 
   const pattern = new RegExp(source, sensitive ? '' : 'i');
