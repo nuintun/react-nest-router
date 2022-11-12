@@ -9,9 +9,9 @@ import { startsWith, suffix } from './utils';
  * @description Check if the path is wildcard.
  * @param path The path to check.
  */
-export function isWildcard(path: string): boolean {
+export function isWildcard(path: string): path is `${string}/*` {
   // Ends with /*.
-  return /[\\/]+\*$/.test(path);
+  return /\/\*$/.test(path);
 }
 
 /**
@@ -19,7 +19,7 @@ export function isWildcard(path: string): boolean {
  * @description Check if the path is absolute.
  * @param path The path to check.
  */
-export function isAbsolute(path: string): path is `/${string}` {
+export function isAbsolute(path: string): path is `${'\\' | '/'}${string}` {
   return /^[\\/]/.test(path);
 }
 

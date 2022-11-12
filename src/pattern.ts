@@ -24,7 +24,7 @@ export function compile<K extends string>(path: string, sensitive: boolean = fal
   // Add path source string.
   source += path
     // Ignore trailing / and /*, we'll handle it below.
-    .replace(/\/+\*?$/, '')
+    .replace(/\/\*?$/, '')
     // Escape special regex chars.
     .replace(/[\\.*+^$?{}|()[\]]/g, '\\$&')
     // Collect params and create match group.
@@ -35,16 +35,16 @@ export function compile<K extends string>(path: string, sensitive: boolean = fal
 
       keys.push(param);
 
-      return `${prefix}([^\\/]+)`;
+      return `${prefix}([^/]+)`;
     });
 
   // If wildcard path.
   if (isWildcard(path)) {
     keys.push('*' as K);
 
-    source += '\\/(.*)$';
+    source += '/(.*)$';
   } else {
-    source += '\\/*$';
+    source += '/*$';
   }
 
   const pattern = new RegExp(source, sensitive ? '' : 'i');
