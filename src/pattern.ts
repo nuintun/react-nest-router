@@ -52,8 +52,10 @@ export function compile<K extends string>(path: string, sensitive: boolean = fal
     source += '(.*)$';
   }
 
+  // Match pattern.
   const pattern = new RegExp(source, sensitive ? '' : 'i');
 
+  // Match function.
   const match = (path: string): Params<K> | null => {
     const matched = path.match(pattern);
 
