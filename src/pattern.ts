@@ -27,6 +27,8 @@ export function compile<K extends string>(path: string, sensitive: boolean = fal
       source += '/*$';
       break;
     case '*':
+      keys.push('*' as K);
+
       source += '(.*)$';
       break;
     default:
