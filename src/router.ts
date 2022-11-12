@@ -64,12 +64,21 @@ function isSiblingBranch<M, K extends string>(prev: RankRouteBranch<M, K>, next:
   const { length: prevLength } = prevMeta;
   const { length: nextLength } = nextMeta;
 
-  return (
-    prevLength === nextLength &&
-    prevMeta.slice(0, -1).every((meta, index) => {
-      return meta.index === nextMeta[index].index;
-    })
-  );
+  if (prevLength === nextLength) {
+    // Ignore last meta.
+    for (let index = prevLength - 2; index >= 0; index--) {
+      if (prevMeta[index].index !== nextMeta[index].index) {
+        // Not sibling.
+        return false;
+      }
+    }
+
+    // Is sibling.
+    return true;
+  }
+
+  // Not sibling.
+  return false;
 }
 
 /**
