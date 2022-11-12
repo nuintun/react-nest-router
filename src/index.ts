@@ -7,7 +7,6 @@ export type {
   Action,
   IRoute,
   Location,
-  Matcher,
   NavigateOptions,
   NavigateProps,
   Navigator,
@@ -39,5 +38,4 @@ export * from './components/Router';
 export * from './components/Navigate';
 
 // Utils
-export { compile } from './pattern';
 export { join, normalize, resolve } from './path';

@@ -72,14 +72,6 @@ export function compile<K extends string>(path: string, sensitive: boolean = fal
     return matched;
   };
 
-  // Matcher.
-  const matcher: Matcher<K> = {
-    path,
-    match,
-    pattern,
-    sensitive,
-    keys: __DEV__ ? Object.freeze(keys) : keys
-  };
-
-  return __DEV__ ? Object.freeze(matcher) : matcher;
+  // Return matcher.
+  return { path, pattern, sensitive, keys, match };
 }
