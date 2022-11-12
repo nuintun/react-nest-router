@@ -5,25 +5,6 @@
 import { startsWith, suffix } from './utils';
 
 /**
- * @function isWildcard
- * @description Check if the path is wildcard.
- * @param path The path to check.
- */
-export function isWildcard(path: string): path is '*' | `${string}/*` {
-  // Equal * or ends with /*.
-  return /(?:^|\/)\*$/.test(path);
-}
-
-/**
- * @function isAbsolute
- * @description Check if the path is absolute.
- * @param path The path to check.
- */
-export function isAbsolute(path: string): path is `${'\\' | '/'}${string}` {
-  return /^[\\/]/.test(path);
-}
-
-/**
  * @function normalize
  * @description Normalize the path.
  * @param path The path to normalize.
@@ -82,6 +63,25 @@ export function resolve(from: string, to?: string): string {
   }
 
   return normalize(from + '/' + to);
+}
+
+/**
+ * @function isWildcard
+ * @description Check if the path is wildcard.
+ * @param path The path to check.
+ */
+export function isWildcard(path: string): path is '*' | `${string}/*` {
+  // Equal * or ends with /*.
+  return /(?:^|\/)\*$/.test(path);
+}
+
+/**
+ * @function isAbsolute
+ * @description Check if the path is absolute.
+ * @param path The path to check.
+ */
+export function isAbsolute(path: string): path is `${'\\' | '/'}${string}` {
+  return /^[\\/]/.test(path);
 }
 
 /**
