@@ -70,9 +70,9 @@ export function resolve(from: string, to?: string): string {
  * @description Check if the path is wildcard.
  * @param path The path to check.
  */
-export function isWildcard(path: string): path is '*' | `${string}/*` {
-  // Equal * or ends with /*.
-  return /(?:^|\/)\*$/.test(path);
+export function isWildcard(path: string): path is `${string}/*` {
+  // Ends with /*.
+  return /\/\*$/.test(path);
 }
 
 /**
