@@ -32,7 +32,7 @@ export function useRoutes<M = unknown, K extends string = string, C = unknown>(
 
   pathname = useMemo(() => {
     if (__DEV__) {
-      assert(isAbsolute(pathname), 'Router pathname must be an absolute path starting with basename.');
+      assert(isAbsolute(pathname), 'Router pathname must be an absolute path.');
     }
 
     return normalize(pathname);
