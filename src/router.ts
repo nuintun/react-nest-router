@@ -180,10 +180,6 @@ export function flatten<M, K extends string>(routes: Route<M, K>[], basename: st
       if (isAvailable) {
         const path = join(basename, resolve(from, to));
 
-        if (__DEV__) {
-          assert(!/[^/]:|:(?:\/|$)|:\w*[^\w/]/g.test(path), `Unexpected param pattern in path "${path}".`);
-        }
-
         // Routes with children is layout routes,
         // otherwise is page routes or index routes,
         // only page, index and available layout routes will add to branches.
