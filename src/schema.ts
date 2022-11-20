@@ -33,7 +33,7 @@ function assertPath(route: IRoute, path: string, type: string): never | void {
   if (hasOwnKey(route, 'path')) {
     const cond = route.path && isString(route.path);
 
-    assert(cond, `Property "path" in ${type} route "${path}" must be a non empty string.`);
+    assert(cond, `Property "path" in ${type} route "${path}" must be a non empty string`);
   }
 }
 
@@ -45,7 +45,7 @@ function assertPath(route: IRoute, path: string, type: string): never | void {
  */
 function assertGuard(route: IRoute, path: string, type: string): never | void {
   if (hasOwnKey(route, 'guard')) {
-    assert(isFunction(route.guard), `Property "guard" in ${type} route "${path}" must be a function.`);
+    assert(isFunction(route.guard), `Property "guard" in ${type} route "${path}" must be a function`);
   }
 }
 
@@ -60,7 +60,7 @@ function assertChildren(route: IRoute, path: string, type: string): never | void
 
   const cond = Array.isArray(route.children) && route.children.length > 0;
 
-  assert(cond, `Property "children" in ${type} route "${path}" must be a non empty array.`);
+  assert(cond, `Property "children" in ${type} route "${path}" must be a non empty array`);
 }
 
 /**
@@ -71,7 +71,7 @@ function assertChildren(route: IRoute, path: string, type: string): never | void
  * @param type Route type.
  */
 function assertRequired(route: IRoute, key: keyof IRoute, path: string, type: string): never | void {
-  assert(hasOwnKey(route, key), `Property "${key}" in ${type} route "${path}" is required.`);
+  assert(hasOwnKey(route, key), `Property "${key}" in ${type} route "${path}" is required`);
 }
 
 /**

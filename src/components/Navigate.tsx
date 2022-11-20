@@ -18,7 +18,7 @@ export const Navigate = memo(function Navigate({ to, state, replace }) {
   const navigationContext = useNavigationContext();
 
   if (__DEV__) {
-    assert(navigationContext && locateContext, 'The component <Navigate> can only be used inside a route element.');
+    assert(navigationContext && locateContext, 'The component <Navigate> can only be used inside a route element');
   }
 
   const navigate = useNavigate();

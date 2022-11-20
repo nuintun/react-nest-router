@@ -24,7 +24,7 @@ export function useRoutes<M = unknown, K extends string = string, C = unknown>(
 ): ReactElement | null {
   basename = useMemo(() => {
     if (__DEV__) {
-      assert(startsWith(basename, '/'), 'Router basename must start with /.');
+      assert(startsWith(basename, '/'), 'Router basename must start with /');
     }
 
     return normalize(basename);
@@ -32,7 +32,7 @@ export function useRoutes<M = unknown, K extends string = string, C = unknown>(
 
   pathname = useMemo(() => {
     if (__DEV__) {
-      assert(isAbsolute(pathname), 'Router pathname must be an absolute path.');
+      assert(isAbsolute(pathname), 'Router pathname must be an absolute path');
     }
 
     return normalize(pathname);

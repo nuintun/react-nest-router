@@ -15,7 +15,7 @@ export function useOutletContext<C = unknown>(): C {
   const routeContext = useRouteContext();
 
   if (__DEV__) {
-    assert(routeContext, 'The hook useOutletContext can only be used inside a route element.');
+    assert(routeContext, 'The hook useOutletContext can only be used inside a route element');
   }
 
   return useContext(OutletContext) as C;

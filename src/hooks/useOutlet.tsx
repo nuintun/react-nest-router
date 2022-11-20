@@ -17,7 +17,7 @@ export function useOutlet<C = unknown>(props: OutletProps<C> = {}): ReactElement
   const routeContext = useRouteContext();
 
   if (__DEV__) {
-    assert(routeContext, 'The hook useOutlet can only be used inside a route element.');
+    assert(routeContext, 'The hook useOutlet can only be used inside a route element');
   }
 
   const { context } = props;

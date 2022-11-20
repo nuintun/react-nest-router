@@ -19,7 +19,7 @@ export function useNavigate(): Navigate {
   const navigationContext = useNavigationContext();
 
   if (__DEV__) {
-    assert(locateContext && navigationContext, 'The hook useNavigate can only be used inside a route element.');
+    assert(locateContext && navigationContext, 'The hook useNavigate can only be used inside a route element');
   }
 
   const resolve = useResolve();

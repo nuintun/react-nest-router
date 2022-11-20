@@ -168,7 +168,7 @@ export function flatten<M, K extends string>(routes: Route<M, K>[], basename: st
         if (to) {
           const cond = !isOutsideRoot(from, to, item.sensitive);
 
-          assert(cond, `Route "${path}" is outside parent route "${from}".`);
+          assert(cond, `Route "${path}" is outside parent route "${from}"`);
         }
       }
 
