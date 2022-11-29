@@ -57,15 +57,15 @@
   },
   "devDependencies": {
     "@rollup/plugin-replace": "^5.0.1",
-    "@rollup/plugin-typescript": "^9.0.2",
+    "@rollup/plugin-typescript": "^10.0.1",
     "@types/react": "^18.0.25",
     "@types/react-dom": "^18.0.9",
     "magic-string": "^0.26.7",
-    "prettier": "^2.7.1",
+    "prettier": "^2.8.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "rimraf": "^3.0.2",
-    "rollup": "^3.4.0",
+    "rollup": "^3.5.0",
     "typescript": "^4.9.3"
   }
 }
