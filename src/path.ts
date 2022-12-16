@@ -10,23 +10,50 @@ import { startsWith, suffix } from './utils';
  * @param path The path to normalize.
  */
 export function normalize(path: string): string {
-  const segments: string[] = [];
-  const parts = path.split(/[\\/]+/);
+  if (path === '') {
+    return '.';
+  }
 
-  for (const segment of parts) {
+  const parts = path.split(/[\\/]+/);
+  const { length } = parts;
+
+  if (length <= 1) {
+    return path;
+  }
+
+  const segments: string[] = [parts[0]];
+  const allowAboveRoot = !isAbsolute(path);
+
+  for (let index = 1; index < length; index++) {
+    const { length } = segments;
+    const segment = parts[index];
+    const parent = segments[length - 1];
+
     switch (segment) {
       case '.':
         break;
       case '..':
-        segments.pop();
+        if (length > 0 && parent !== '..') {
+          segments.pop();
+
+          if (parent === '.') {
+            segments.push(segment);
+          }
+        } else if (allowAboveRoot) {
+          segments.push(segment);
+        }
         break;
       default:
+        if (segment !== '' && parent === '.') {
+          segments.pop();
+        }
+
         segments.push(segment);
         break;
     }
   }
 
-  return segments.join('/') || '/';
+  return segments.join('/');
 }
 
 /**
