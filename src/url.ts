@@ -34,15 +34,15 @@ export function resolve(from: string, to: To, basename: string = '/'): string {
   const { pathname: path, origin, search, hash } = location;
 
   if (origin) {
-    pathname = path ? normalize(path) : path;
+    pathname = path ? normalize(`/${path}`) : path;
   } else if (path) {
     if (isAbsolute(path)) {
-      pathname = normalize(basename + '/' + path);
+      pathname = normalize(`/${basename}/${path}`);
     } else {
-      pathname = normalize(from + '/' + path);
+      pathname = normalize(`/${from}/${path}`);
     }
   } else {
-    pathname = normalize(from);
+    pathname = normalize(`/${from}`);
   }
 
   return stringify({ origin, pathname, search, hash });

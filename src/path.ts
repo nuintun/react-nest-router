@@ -71,7 +71,7 @@ export function join(base: string, path: string): string {
     return normalize(base);
   }
 
-  return normalize(base + '/' + path);
+  return normalize(`${base}/${path}`);
 }
 
 /**
@@ -89,7 +89,7 @@ export function resolve(from: string, to?: string): string {
     return normalize(to);
   }
 
-  return normalize(from + '/' + to);
+  return normalize(`${from}/${to}`);
 }
 
 /**
