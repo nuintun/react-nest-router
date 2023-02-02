@@ -21,7 +21,6 @@ const banner = `/**
 
 /**
  * @function env
- * @param development
  */
 function env() {
   return replace({
@@ -35,7 +34,6 @@ function env() {
 /**
  * @function rollup
  * @param esnext
- * @param development
  * @return {import('rollup').RollupOptions}
  */
 export default function rollup(esnext) {
