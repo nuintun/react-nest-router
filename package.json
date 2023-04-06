@@ -53,8 +53,8 @@
   },
   "devDependencies": {
     "@rollup/plugin-replace": "^5.0.2",
-    "@rollup/plugin-typescript": "^11.0.0",
-    "@types/react": "^18.0.28",
+    "@rollup/plugin-typescript": "^11.1.0",
+    "@types/react": "^18.0.33",
     "@types/react-dom": "^18.0.11",
     "magic-string": "^0.30.0",
     "prettier": "^2.8.7",
@@ -62,7 +62,7 @@
     "react-dom": "^18.2.0",
     "rimraf": "^4.4.1",
     "rollup": "^3.20.2",
-    "typescript": "^5.0.2"
+    "typescript": "^5.0.3"
   },
   "peerDependencies": {
     "react": ">=17.0.0",
