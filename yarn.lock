@@ -32,10 +32,10 @@
     "@rollup/pluginutils" "^5.0.1"
     magic-string "^0.27.0"
 
-"@rollup/plugin-typescript@^11.1.0":
-  version "11.1.0"
-  resolved "https://registry.npmjs.org/@rollup/plugin-typescript/-/plugin-typescript-11.1.0.tgz#4dd2a98475a791200d3e4dd1b8234073ad96c535"
-  integrity sha512-86flrfE+bSHB69znnTV6kVjkncs2LBMhcTCyxWgRxLyfXfQrxg4UwlAqENnjrrxnSNS/XKCDJCl8EkdFJVHOxw==
+"@rollup/plugin-typescript@^11.1.1":
+  version "11.1.1"
+  resolved "https://registry.npmjs.org/@rollup/plugin-typescript/-/plugin-typescript-11.1.1.tgz#258663a7aa6b51390dd39ae6e5502f2c4b2807cb"
+  integrity sha512-Ioir+x5Bejv72Lx2Zbz3/qGg7tvGbxQZALCLoJaGrkNXak/19+vKgKYJYM3i/fJxvsb23I9FuFQ8CUBEfsmBRg==
   dependencies:
     "@rollup/pluginutils" "^5.0.1"
     resolve "^1.22.1"
@@ -179,14 +179,14 @@ function-bind@^1.1.1:
   integrity sha512-yIovAzMX49sF8Yl58fSCWJ5svSLuaibPxXQJFLmBObTuCr0Mf1KiPopGM9NiFjiYBCbfaa2Fh6breQ6ANVTI0A==
 
 glob@^10.0.0:
-  version "10.2.3"
-  resolved "https://registry.npmjs.org/glob/-/glob-10.2.3.tgz#aa6765963fe6c5936d5c2e00943e7af06302a1a7"
-  integrity sha512-Kb4rfmBVE3eQTAimgmeqc2LwSnN0wIOkkUL6HmxEFxNJ4fHghYHVbFba/HcGcRjE6s9KoMNK3rSOwkL4PioZjg==
+  version "10.2.4"
+  resolved "https://registry.npmjs.org/glob/-/glob-10.2.4.tgz#f5bf7ddb080e3e9039b148a9e2aef3d5ebfc0a25"
+  integrity sha512-fDboBse/sl1oXSLhIp0FcCJgzW9KmhC/q8ULTKC82zc+DL3TL7FNb8qlt5qqXN53MsKEUSIcb+7DLmEygOE5Yw==
   dependencies:
     foreground-child "^3.1.0"
     jackspeak "^2.0.3"
     minimatch "^9.0.0"
-    minipass "^5.0.0"
+    minipass "^5.0.0 || ^6.0.0"
     path-scurry "^1.7.0"
 
 has@^1.0.3:
@@ -234,7 +234,7 @@ loose-envify@^1.1.0:
   dependencies:
     js-tokens "^3.0.0 || ^4.0.0"
 
-lru-cache@^9.0.0:
+lru-cache@^9.1.1:
   version "9.1.1"
   resolved "https://registry.npmjs.org/lru-cache/-/lru-cache-9.1.1.tgz#c58a93de58630b688de39ad04ef02ef26f1902f1"
   integrity sha512-65/Jky17UwSb0BuB9V+MyDpsOtXKmYwzhyl+cOa9XUiI4uV2Ouy/2voFP3+al0BjZbJgMBD8FojMpAf+Z+qn4A==
@@ -260,10 +260,10 @@ minimatch@^9.0.0:
   dependencies:
     brace-expansion "^2.0.1"
 
-minipass@^5.0.0:
-  version "5.0.0"
-  resolved "https://registry.npmjs.org/minipass/-/minipass-5.0.0.tgz#3e9788ffb90b694a5d0ec94479a45b5d8738133d"
-  integrity sha512-3FnjYuehv9k6ovOEbyOswadCDPX1piCfhV8ncmYtHOjuPwylVWsghTLo7rabjC3Rx5xD4HDx8Wm1xnMF7S5qFQ==
+"minipass@^5.0.0 || ^6.0.0":
+  version "6.0.1"
+  resolved "https://registry.npmjs.org/minipass/-/minipass-6.0.1.tgz#315417c259cb32a1b2fc530c0e7f55c901a60a6d"
+  integrity sha512-Tenl5QPpgozlOGBiveNYHg2f6y+VpxsXRoIHFUVJuSmTonXRAE6q9b8Mp/O46762/2AlW4ye4Nkyvx0fgWDKbw==
 
 path-key@^3.1.0:
   version "3.1.1"
@@ -276,12 +276,12 @@ path-parse@^1.0.7:
   integrity sha512-LDJzPVEEEPR+y48z93A0Ed0yXb8pAByGWo/k5YYdYgpY2/2EsOsksJrq7lOHxryrVOn1ejG6oAp8ahvOIQD8sw==
 
 path-scurry@^1.7.0:
-  version "1.7.0"
-  resolved "https://registry.npmjs.org/path-scurry/-/path-scurry-1.7.0.tgz#99c741a2cfbce782294a39994d63748b5a24f6db"
-  integrity sha512-UkZUeDjczjYRE495+9thsgcVgsaCPkaw80slmfVFgllxY+IO8ubTsOpFVjDPROBqJdHfVPUFRHPBV/WciOVfWg==
+  version "1.9.1"
+  resolved "https://registry.npmjs.org/path-scurry/-/path-scurry-1.9.1.tgz#838566bb22e38feaf80ecd49ae06cd12acd782ee"
+  integrity sha512-UgmoiySyjFxP6tscZDgWGEAgsW5ok8W3F5CJDnnH2pozwSTGE6eH7vwTotMwATWA2r5xqdkKdxYPkwlJjAI/3g==
   dependencies:
-    lru-cache "^9.0.0"
-    minipass "^5.0.0"
+    lru-cache "^9.1.1"
+    minipass "^5.0.0 || ^6.0.0"
 
 picomatch@^2.3.1:
   version "2.3.1"
@@ -324,10 +324,10 @@ rimraf@^5.0.0:
   dependencies:
     glob "^10.0.0"
 
-rollup@^3.21.6:
-  version "3.21.6"
-  resolved "https://registry.npmjs.org/rollup/-/rollup-3.21.6.tgz#f5649ccdf8fcc7729254faa457cbea9547eb86db"
-  integrity sha512-SXIICxvxQxR3D4dp/3LDHZIJPC8a4anKMHd4E3Jiz2/JnY+2bEjqrOokAauc5ShGVNFHlEFjBXAXlaxkJqIqSg==
+rollup@^3.21.8:
+  version "3.21.8"
+  resolved "https://registry.npmjs.org/rollup/-/rollup-3.21.8.tgz#fc768008fe2c953f18210370fd70fe1ffff59e2c"
+  integrity sha512-SSFV2T2fWtQ/vvBip85u2Nr0GNKireabH9d7nXswBg+XSH+jbVDSYptRAEbCEsquhs503rpPA9POYAp0/Jhasw==
   optionalDependencies:
     fsevents "~2.3.2"
 
@@ -351,9 +351,9 @@ shebang-regex@^3.0.0:
   integrity sha512-7++dFhtcx3353uBaq8DDR4NuxBetBzC7ZQOhmTQInHEd6bSrXdiEyzCvG07Z44UYdLShWUyXt5M/yhz8ekcb1A==
 
 signal-exit@^4.0.1:
-  version "4.0.1"
-  resolved "https://registry.npmjs.org/signal-exit/-/signal-exit-4.0.1.tgz#96a61033896120ec9335d96851d902cc98f0ba2a"
-  integrity sha512-uUWsN4aOxJAS8KOuf3QMyFtgm1pkb6I+KRZbRF/ghdf5T7sM+B1lLLzPDxswUjkmHyxQAVzEgG35E3NzDM9GVw==
+  version "4.0.2"
+  resolved "https://registry.npmjs.org/signal-exit/-/signal-exit-4.0.2.tgz#ff55bb1d9ff2114c13b400688fa544ac63c36967"
+  integrity sha512-MY2/qGx4enyjprQnFaZsHib3Yadh3IXyV2C321GY0pjGfVBu4un0uDJkwgdxqO+Rdx8JMT8IfJIRwbYVz3Ob3Q==
 
 "string-width-cjs@npm:string-width@^4.2.0", string-width@^4.1.0:
   version "4.2.3"
