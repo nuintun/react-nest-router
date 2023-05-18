@@ -21,7 +21,7 @@ const banner = `/**
 
 /**
  * @function env
- * @return {Record<string, string>}
+ * @return {import('rollup').Plugin}
  */
 function env() {
   return replace({
