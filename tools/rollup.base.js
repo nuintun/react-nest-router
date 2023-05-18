@@ -21,6 +21,7 @@ const banner = `/**
 
 /**
  * @function env
+ * @return {Record<string, string>}
  */
 function env() {
   return replace({
