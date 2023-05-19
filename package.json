@@ -50,7 +50,7 @@
     "build:types": "tsc --declaration --emitDeclarationOnly --declarationDir types"
   },
   "dependencies": {
-    "tslib": "^2.5.0"
+    "tslib": "^2.5.2"
   },
   "devDependencies": {
     "@rollup/plugin-replace": "^5.0.2",
@@ -61,8 +61,8 @@
     "prettier": "^2.8.8",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "rimraf": "^5.0.0",
-    "rollup": "^3.21.8",
+    "rimraf": "^5.0.1",
+    "rollup": "^3.22.0",
     "typescript": "^5.0.4"
   },
   "peerDependencies": {
