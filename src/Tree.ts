@@ -21,7 +21,10 @@ export class Tree<T> {
    * @param tree tree nodes.
    * @param resolve Tree node resolve function.
    */
-  constructor(tree: T, private resolve: Resolve<T>) {
+  constructor(
+    tree: T,
+    private resolve: Resolve<T>
+  ) {
     this.roots = [tree];
   }
 
