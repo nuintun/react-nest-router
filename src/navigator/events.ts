@@ -2,7 +2,7 @@
  * @module events
  */
 
-import { assert, isFunction } from '../utils';
+import { assert, isFunction } from '/utils';
 
 export interface Callback<E = unknown> {
   (event: E): void;

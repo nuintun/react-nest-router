@@ -2,9 +2,9 @@
  * @module useOutlet
  */
 
-import { OutletContext } from '../context';
-import { OutletProps } from '../interface';
-import { assert, hasOwnKey } from '../utils';
+import { OutletContext } from '/context';
+import { OutletProps } from '/interface';
+import { assert, hasOwnKey } from '/utils';
 import { ReactElement, useMemo } from 'react';
 import { useRouteContext } from './useRouteContext';
 

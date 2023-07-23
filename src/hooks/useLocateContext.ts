@@ -3,7 +3,7 @@
  */
 
 import { useContext } from 'react';
-import { LocateContext } from '../context';
+import { LocateContext } from '/context';
 
 /**
  * @function useLocateContext

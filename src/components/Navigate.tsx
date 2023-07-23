@@ -2,12 +2,12 @@
  * @module Navigate
  */
 
-import { assert } from '../utils';
+import { assert } from '/utils';
 import { memo, useEffect } from 'react';
-import { NavigateProps } from '../interface';
-import { useNavigate } from '../hooks/useNavigate';
-import { useLocateContext } from '../hooks/useLocateContext';
-import { useNavigationContext } from '../hooks/useNavigationContext';
+import { NavigateProps } from '/interface';
+import { useNavigate } from '/hooks/useNavigate';
+import { useLocateContext } from '/hooks/useLocateContext';
+import { useNavigationContext } from '/hooks/useNavigationContext';
 
 /**
  * @function Navigate

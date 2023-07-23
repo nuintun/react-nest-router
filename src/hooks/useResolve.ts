@@ -2,9 +2,9 @@
  * @module useResolve
  */
 
-import { resolve } from '../url';
-import { To } from '../interface';
-import { assert } from '../utils';
+import { resolve } from '/url';
+import { To } from '/interface';
+import { assert } from '/utils';
 import { useCallback } from 'react';
 import { useLatestRef } from './useLatestRef';
 import { useLocateContext } from './useLocateContext';

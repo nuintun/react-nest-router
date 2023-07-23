@@ -2,11 +2,11 @@
  * @module Outlet
  */
 
-import { assert } from '../utils';
-import { OutletProps } from '../interface';
+import { assert } from '/utils';
+import { OutletProps } from '/interface';
 import { memo, ReactElement } from 'react';
-import { useOutlet } from '../hooks/useOutlet';
-import { useRouteContext } from '../hooks/useRouteContext';
+import { useOutlet } from '/hooks/useOutlet';
+import { useRouteContext } from '/hooks/useRouteContext';
 
 /**
  * @function Outlet

@@ -2,8 +2,8 @@
  * @module useLocation
  */
 
-import { assert } from '../utils';
-import { Location } from '../interface';
+import { assert } from '/utils';
+import { Location } from '/interface';
 import { useLocateContext } from './useLocateContext';
 
 /**

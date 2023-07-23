@@ -3,7 +3,7 @@
  */
 
 import { useContext } from 'react';
-import { RouteContext } from '../context';
+import { RouteContext } from '/context';
 
 /**
  * @function useRouteContext

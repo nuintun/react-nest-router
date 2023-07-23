@@ -2,9 +2,9 @@
  * @module useOutletContext
  */
 
-import { assert } from '../utils';
+import { assert } from '/utils';
 import { useContext } from 'react';
-import { OutletContext } from '../context';
+import { OutletContext } from '/context';
 import { useRouteContext } from './useRouteContext';
 
 /**

@@ -3,7 +3,7 @@
  */
 
 import { URL } from './interface';
-import { endsWith, prefix, startsWith } from '../utils';
+import { endsWith, prefix, startsWith } from '/utils';
 
 /**
  * @function normalizeQuery

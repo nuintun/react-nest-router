@@ -3,9 +3,9 @@
  */
 
 import { useRoutes } from './useRoutes';
-import { createNavigator } from '../navigator';
-import { Navigator, RouterProps } from '../interface';
-import { LocateContext, NavigationContext } from '../context';
+import { createNavigator } from '/navigator';
+import { Navigator, RouterProps } from '/interface';
+import { LocateContext, NavigationContext } from '/context';
 import { ReactElement, useEffect, useMemo, useState } from 'react';
 
 /**

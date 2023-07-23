@@ -2,7 +2,7 @@
  * @module navigator
  */
 
-import { isString } from '../utils';
+import { isString } from '/utils';
 import { Action, Event } from './enum';
 import { createEvents } from './events';
 import { parse, stringify } from './url';

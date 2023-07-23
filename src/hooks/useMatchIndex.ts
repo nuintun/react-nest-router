@@ -2,7 +2,7 @@
  * @module useMatchIndex
  */
 
-import { assert } from '../utils';
+import { assert } from '/utils';
 import { useRouteContext } from './useRouteContext';
 
 /**

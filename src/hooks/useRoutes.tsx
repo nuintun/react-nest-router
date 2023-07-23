@@ -2,12 +2,12 @@
  * @module useRoutes
  */
 
-import { Route } from '../interface';
-import { flatten, match } from '../router';
+import { Route } from '/interface';
+import { flatten, match } from '/router';
 import { ReactElement, useMemo } from 'react';
-import { isAbsolute, normalize } from '../path';
-import { OutletContext, RouteContext } from '../context';
-import { assert, hasOwnKey, startsWith } from '../utils';
+import { isAbsolute, normalize } from '/path';
+import { OutletContext, RouteContext } from '/context';
+import { assert, hasOwnKey, startsWith } from '/utils';
 
 /**
  * @function useRoutes

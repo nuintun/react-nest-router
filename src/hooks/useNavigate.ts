@@ -3,11 +3,11 @@
  */
 
 import { useCallback } from 'react';
+import { assert, isNumber } from '/utils';
 import { useResolve } from './useResolve';
-import { assert, isNumber } from '../utils';
 import { useLatestRef } from './useLatestRef';
 import { useLocateContext } from './useLocateContext';
-import { Navigate, NavigateOptions, To } from '../interface';
+import { Navigate, NavigateOptions, To } from '/interface';
 import { useNavigationContext } from './useNavigationContext';
 
 /**

@@ -2,8 +2,8 @@
  * @module useParams
  */
 
-import { assert } from '../utils';
-import { Params } from '../interface';
+import { assert } from '/utils';
+import { Params } from '/interface';
 import { useRouteContext } from './useRouteContext';
 
 /**

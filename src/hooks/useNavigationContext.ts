@@ -3,7 +3,7 @@
  */
 
 import { useContext } from 'react';
-import { NavigationContext } from '../context';
+import { NavigationContext } from '/context';
 
 /**
  * @function useNavigationContext
