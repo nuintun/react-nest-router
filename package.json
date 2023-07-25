@@ -1,6 +1,6 @@
 {
   "name": "react-nest-router",
-  "version": "0.19.8",
+  "version": "0.19.9",
   "description": "Declarative routing for React.",
   "type": "module",
   "sideEffects": false,
@@ -50,12 +50,12 @@
     "build:types": "tsc --declaration --emitDeclarationOnly --declarationDir types"
   },
   "dependencies": {
-    "tslib": "^2.6.0"
+    "tslib": "^2.6.1"
   },
   "devDependencies": {
     "@rollup/plugin-replace": "^5.0.2",
     "@rollup/plugin-typescript": "^11.1.2",
-    "@types/react": "^18.2.15",
+    "@types/react": "^18.2.16",
     "@types/react-dom": "^18.2.7",
     "magic-string": "^0.30.1",
     "prettier": "^3.0.0",
