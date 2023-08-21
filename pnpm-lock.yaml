@@ -6,8 +6,8 @@ settings:
 
 dependencies:
   tslib:
-    specifier: ^2.6.1
-    version: 2.6.1
+    specifier: ^2.6.2
+    version: 2.6.2
 
 devDependencies:
   '@rollup/plugin-replace':
@@ -15,10 +15,10 @@ devDependencies:
     version: 5.0.2(rollup@3.28.0)
   '@rollup/plugin-typescript':
     specifier: ^11.1.2
-    version: 11.1.2(rollup@3.28.0)(tslib@2.6.1)(typescript@5.1.6)
+    version: 11.1.2(rollup@3.28.0)(tslib@2.6.2)(typescript@5.1.6)
   '@types/react':
-    specifier: ^18.2.19
-    version: 18.2.19
+    specifier: ^18.2.20
+    version: 18.2.20
   '@types/react-dom':
     specifier: ^18.2.7
     version: 18.2.7
@@ -26,8 +26,8 @@ devDependencies:
     specifier: ^0.30.2
     version: 0.30.2
   prettier:
-    specifier: ^3.0.1
-    version: 3.0.1
+    specifier: ^3.0.2
+    version: 3.0.2
   react:
     specifier: ^18.2.0
     version: 18.2.0
@@ -102,12 +102,12 @@ packages:
       rollup:
         optional: true
     dependencies:
-      '@rollup/pluginutils': 5.0.2(rollup@3.28.0)
+      '@rollup/pluginutils': 5.0.3(rollup@3.28.0)
       magic-string: 0.27.0
       rollup: 3.28.0
     dev: true
 
-  /@rollup/plugin-typescript@11.1.2(rollup@3.28.0)(tslib@2.6.1)(typescript@5.1.6):
+  /@rollup/plugin-typescript@11.1.2(rollup@3.28.0)(tslib@2.6.2)(typescript@5.1.6):
     resolution: {integrity: sha512-0ghSOCMcA7fl1JM+0gYRf+Q/HWyg+zg7/gDSc+fRLmlJWcW5K1I+CLRzaRhXf4Y3DRyPnnDo4M2ktw+a6JcDEg==}
     engines: {node: '>=14.0.0'}
     peerDependencies:
@@ -120,15 +120,15 @@ packages:
       tslib:
         optional: true
     dependencies:
-      '@rollup/pluginutils': 5.0.2(rollup@3.28.0)
+      '@rollup/pluginutils': 5.0.3(rollup@3.28.0)
       resolve: 1.22.4
       rollup: 3.28.0
-      tslib: 2.6.1
+      tslib: 2.6.2
       typescript: 5.1.6
     dev: true
 
-  /@rollup/pluginutils@5.0.2(rollup@3.28.0):
-    resolution: {integrity: sha512-pTd9rIsP92h+B6wWwFbW8RkZv4hiR/xKsqre4SIuAOaOEQRxi0lqLke9k2/7WegC85GgUs9pjmOjCUi3In4vwA==}
+  /@rollup/pluginutils@5.0.3(rollup@3.28.0):
+    resolution: {integrity: sha512-hfllNN4a80rwNQ9QCxhxuHCGHMAvabXqxNdaChUSSadMre7t4iEUI6fFAhBOn/eIYTgYVhBv7vCLsAJ4u3lf3g==}
     engines: {node: '>=14.0.0'}
     peerDependencies:
       rollup: ^1.20.0||^2.0.0||^3.0.0
@@ -153,11 +153,11 @@ packages:
   /@types/react-dom@18.2.7:
     resolution: {integrity: sha512-GRaAEriuT4zp9N4p1i8BDBYmEyfo+xQ3yHjJU4eiK5NDa1RmUZG+unZABUTK4/Ox/M+GaHwb6Ow8rUITrtjszA==}
     dependencies:
-      '@types/react': 18.2.19
+      '@types/react': 18.2.20
     dev: true
 
-  /@types/react@18.2.19:
-    resolution: {integrity: sha512-e2S8wmY1ePfM517PqCG80CcE48Xs5k0pwJzuDZsfE8IZRRBfOMCF+XqnFxu6mWtyivum1MQm4aco+WIt6Coimw==}
+  /@types/react@18.2.20:
+    resolution: {integrity: sha512-WKNtmsLWJM/3D5mG4U84cysVY31ivmyw85dE84fOCk5Hx78wezB/XEjVPWl2JTZ5FkEeaTJf+VgUAUn3PE7Isw==}
     dependencies:
       '@types/prop-types': 15.7.5
       '@types/scheduler': 0.16.3
@@ -349,9 +349,9 @@ packages:
     hasBin: true
     dependencies:
       foreground-child: 3.1.1
-      jackspeak: 2.2.2
+      jackspeak: 2.3.0
       minimatch: 9.0.3
-      minipass: 7.0.2
+      minipass: 7.0.3
       path-scurry: 1.10.1
     dev: true
 
@@ -418,8 +418,8 @@ packages:
     resolution: {integrity: sha512-RHxMLp9lnKHGHRng9QFhRCMbYAcVpn69smSGcq3f36xjgVVWThj4qqLbTLlq7Ssj8B+fIQ1EuCEGI2lKsyQeIw==}
     dev: true
 
-  /jackspeak@2.2.2:
-    resolution: {integrity: sha512-mgNtVv4vUuaKA97yxUHoA3+FkuhtxkjdXEWOyB/N76fjy0FjezEt34oy3epBtvCvS+7DyKwqCFWx/oJLV5+kCg==}
+  /jackspeak@2.3.0:
+    resolution: {integrity: sha512-uKmsITSsF4rUWQHzqaRUuyAir3fZfW3f202Ee34lz/gZCi970CPZwyQXLGNgWJvvZbvFyzeyGq0+4fcG/mBKZg==}
     engines: {node: '>=14'}
     dependencies:
       '@isaacs/cliui': 8.0.2
@@ -438,8 +438,8 @@ packages:
       js-tokens: 4.0.0
     dev: true
 
-  /lru-cache@10.0.0:
-    resolution: {integrity: sha512-svTf/fzsKHffP42sujkO/Rjs37BCIsQVRCeNYIm9WN8rgT7ffoUnRtZCqU+6BqcSBdv8gwJeTz8knJpgACeQMw==}
+  /lru-cache@10.0.1:
+    resolution: {integrity: sha512-IJ4uwUTi2qCccrioU6g9g/5rvvVl13bsdczUUcqbciD9iLr095yj8DQKdObriEvuNSx325N1rV1O0sJFszx75g==}
     engines: {node: 14 || >=16.14}
     dev: true
 
@@ -477,8 +477,8 @@ packages:
       brace-expansion: 2.0.1
     dev: true
 
-  /minipass@7.0.2:
-    resolution: {integrity: sha512-eL79dXrE1q9dBbDCLg7xfn/vl7MS4F1gvJAgjJrQli/jbQWdUttuVawphqpffoIYfRdq78LHx6GP4bU/EQ2ATA==}
+  /minipass@7.0.3:
+    resolution: {integrity: sha512-LhbbwCfz3vsb12j/WkWQPZfKTsgqIe1Nf/ti1pKjYESGLHIVjWU96G9/ljLH4F9mWNVhlQOm0VySdAWzf05dpg==}
     engines: {node: '>=16 || 14 >=14.17'}
     dev: true
 
@@ -505,8 +505,8 @@ packages:
     resolution: {integrity: sha512-MkhCqzzBEpPvxxQ71Md0b1Kk51W01lrYvlMzSUaIzNsODdd7mqhiimSZlr+VegAz5Z6Vzt9Xg2ttE//XBhH3EQ==}
     engines: {node: '>=16 || 14 >=14.17'}
     dependencies:
-      lru-cache: 10.0.0
-      minipass: 7.0.2
+      lru-cache: 10.0.1
+      minipass: 7.0.3
     dev: true
 
   /path-type@4.0.0:
@@ -525,8 +525,8 @@ packages:
       queue-lit: 1.5.0
     dev: true
 
-  /prettier@3.0.1:
-    resolution: {integrity: sha512-fcOWSnnpCrovBsmFZIGIy9UqK2FaI7Hqax+DIO0A9UxeVoY4iweyaFjS5TavZN97Hfehph0nhsZnjlVKzEQSrQ==}
+  /prettier@3.0.2:
+    resolution: {integrity: sha512-o2YR9qtniXvwEZlOKbveKfDQVyqxbEIWn48Z8m3ZJjBjcCmUy3xZGIv+7AkaeuaTr6yPXJjwv07ZWlsWbEy1rQ==}
     engines: {node: '>=14'}
     hasBin: true
     dev: true
@@ -683,8 +683,8 @@ packages:
       plimit-lit: 1.5.0
     dev: true
 
-  /tslib@2.6.1:
-    resolution: {integrity: sha512-t0hLfiEKfMUoqhG+U1oid7Pva4bbDPHYfJNiB7BiIjRkj1pyC++4N3huJfqY6aRH6VTB0rvtzQwjM4K6qpfOig==}
+  /tslib@2.6.2:
+    resolution: {integrity: sha512-AEYxH93jGFPn/a2iVAwW87VuUIkR1FVUKB77NwMF7nBTDkDrrT/Hpt/IrCJ0QXhW27jTBDcf5ZY7w6RiqTMw2Q==}
 
   /typescript@5.1.6:
     resolution: {integrity: sha512-zaWCozRZ6DLEWAWFrVDz1H6FVXzUSfTy5FUMWsQlU8Ym5JP9eO4xkTIROFCQvhQf61z6O/G6ugw3SgAnvvm+HA==}
