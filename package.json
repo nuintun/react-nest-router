@@ -55,8 +55,8 @@
   "devDependencies": {
     "@rollup/plugin-replace": "^5.0.5",
     "@rollup/plugin-typescript": "^11.1.6",
-    "@types/react": "^18.2.63",
-    "@types/react-dom": "^18.2.20",
+    "@types/react": "^18.2.64",
+    "@types/react-dom": "^18.2.21",
     "magic-string": "^0.30.8",
     "prettier": "^3.2.5",
     "react": "^18.2.0",
@@ -64,7 +64,7 @@
     "rimraf": "^5.0.5",
     "rollup": "^4.12.1",
     "tsc-alias": "^1.8.8",
-    "typescript": "^5.3.3"
+    "typescript": "^5.4.2"
   },
   "peerDependencies": {
     "react": ">=17.0.0",
