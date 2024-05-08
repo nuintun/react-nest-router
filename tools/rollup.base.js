@@ -2,12 +2,19 @@
  * @module rollup.base
  */
 
-import { createRequire } from 'module';
 import replace from '@rollup/plugin-replace';
 import treeShake from './plugins/tree-shake.js';
+import { createRequire, isBuiltin } from 'module';
 import typescript from '@rollup/plugin-typescript';
 
 const pkg = createRequire(import.meta.url)('../package.json');
+
+const externals = [
+  // Dependencies
+  ...Object.keys(pkg.dependencies || {}),
+  // Peer dependencies
+  ...Object.keys(pkg.peerDependencies || {})
+];
 
 const banner = `/**
  * @package ${pkg.name}
@@ -57,6 +64,18 @@ export default function rollup(esnext) {
         warn(error);
       }
     },
-    external: ['tslib', 'react', 'react/jsx-runtime', 'react/jsx-dev-runtime']
+    external(source) {
+      if (isBuiltin(source)) {
+        return true;
+      }
+
+      for (const external of externals) {
+        if (source === external || source.startsWith(`${external}/`)) {
+          return true;
+        }
+      }
+
+      return false;
+    }
   };
 }
