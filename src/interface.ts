@@ -49,12 +49,12 @@ export interface IRoute<M = unknown, K extends string = string> {
 export interface PageRoute<M = unknown, K extends string = string> {
   readonly meta?: M;
   readonly path: string;
-  readonly index?: undefined;
+  readonly index?: never;
+  readonly children?: never;
+  readonly available?: never;
   readonly element: ReactNode;
   readonly guard?: Guard<M, K>;
   readonly sensitive?: boolean;
-  readonly children?: undefined;
-  readonly available?: undefined;
 }
 
 /**
@@ -63,12 +63,12 @@ export interface PageRoute<M = unknown, K extends string = string> {
 export interface IndexRoute<M = unknown, K extends string = string> {
   readonly meta?: M;
   readonly index: true;
-  readonly path?: undefined;
+  readonly path?: never;
+  readonly children?: never;
+  readonly available?: never;
   readonly element: ReactNode;
   readonly guard?: Guard<M, K>;
   readonly sensitive?: boolean;
-  readonly children?: undefined;
-  readonly available?: undefined;
 }
 
 /**
@@ -76,12 +76,12 @@ export interface IndexRoute<M = unknown, K extends string = string> {
  */
 export interface LayoutRoute<M = unknown, K extends string = string> {
   readonly meta?: M;
+  readonly guard?: never;
+  readonly index?: never;
   readonly path?: string;
-  readonly guard?: undefined;
-  readonly index?: undefined;
+  readonly available?: never;
+  readonly sensitive?: never;
   readonly element?: ReactNode;
-  readonly available?: undefined;
-  readonly sensitive?: undefined;
   readonly children: NonEmptyArray<Route<M, K>>;
 }
 
@@ -90,9 +90,9 @@ export interface LayoutRoute<M = unknown, K extends string = string> {
  */
 export interface AvailableLayoutRoute<M = unknown, K extends string = string> {
   readonly meta?: M;
+  readonly index?: never;
   readonly path?: string;
   readonly available: true;
-  readonly index?: undefined;
   readonly element: ReactNode;
   readonly guard?: Guard<M, K>;
   readonly sensitive?: boolean;
