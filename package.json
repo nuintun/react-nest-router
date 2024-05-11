@@ -1,6 +1,6 @@
 {
   "name": "react-nest-router",
-  "version": "0.19.12",
+  "version": "0.19.13",
   "description": "Declarative routing for React.",
   "type": "module",
   "sideEffects": false,
@@ -55,7 +55,7 @@
   "devDependencies": {
     "@rollup/plugin-replace": "^5.0.5",
     "@rollup/plugin-typescript": "^11.1.6",
-    "@types/react": "^18.3.1",
+    "@types/react": "^18.3.2",
     "@types/react-dom": "^18.3.0",
     "magic-string": "^0.30.10",
     "prettier": "^3.2.5",
