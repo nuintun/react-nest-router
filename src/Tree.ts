@@ -14,6 +14,7 @@ export type Waiting<T> = Iterator<[index: number, value: T], undefined>;
  */
 export class Tree<T> {
   private roots: T[];
+  private resolve: Resolve<T>;
 
   /**
    * @constructor
@@ -21,11 +22,9 @@ export class Tree<T> {
    * @param tree tree nodes.
    * @param resolve Tree node resolve function.
    */
-  constructor(
-    tree: T,
-    private resolve: Resolve<T>
-  ) {
+  constructor(tree: T, resolve: Resolve<T>) {
     this.roots = [tree];
+    this.resolve = resolve;
   }
 
   /**
@@ -33,7 +32,7 @@ export class Tree<T> {
    * @description The dfs traversal iterator.
    * @param backtrace Backtracking callback function.
    */
-  *dfs(backtrace?: () => void): Iterable<IteratorValue<T>> {
+  public *dfs(backtrace?: () => void): Iterable<IteratorValue<T>> {
     const { roots, resolve } = this;
     const waiting: Waiting<T>[] = [];
 
