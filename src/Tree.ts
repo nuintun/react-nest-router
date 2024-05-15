@@ -6,7 +6,7 @@ export type IteratorValue<T> = [index: number, node: T];
 
 export type Resolve<T> = (node: T, index: number) => T[] | void;
 
-export type Waiting<T> = Iterator<[index: number, value: T], undefined>;
+export type Waiting<T> = Iterator<[index: number, value: T], void>;
 
 /**
  * @class Tree
