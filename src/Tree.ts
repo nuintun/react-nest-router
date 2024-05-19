@@ -30,9 +30,9 @@ export class Tree<T> {
   /**
    * @method dfs
    * @description The dfs traversal iterator.
-   * @param backtrace Backtracking callback function.
+   * @param onInternalDone Internal node traversal done event.
    */
-  public *dfs(backtrace?: () => void): Iterable<IteratorValue<T>> {
+  public *dfs(onInternalDone?: () => void): Iterable<IteratorValue<T>> {
     const { roots, resolve } = this;
     const waiting: Waiting<T>[] = [];
 
@@ -44,7 +44,7 @@ export class Tree<T> {
       if (item.done) {
         current = waiting.pop();
 
-        backtrace && backtrace();
+        onInternalDone && onInternalDone();
       } else {
         const [index, node] = item.value;
         const children = resolve(node, index);
