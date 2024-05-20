@@ -53,7 +53,20 @@ export function normalize(path: string): string {
     }
   }
 
-  return segments.join('/');
+  switch (segments.length) {
+    case 0:
+      return allowAboveRoot ? '.' : '/';
+    case 1:
+      const [segment] = segments;
+
+      if (segment === '') {
+        return allowAboveRoot ? './' : '/';
+      }
+
+      return allowAboveRoot ? segment : `/${segment}`;
+    default:
+      return segments.join('/');
+  }
 }
 
 /**
