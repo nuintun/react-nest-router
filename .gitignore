@@ -132,4 +132,3 @@ dist
 # Build dist
 /cjs/
 /esm/
-/types/
