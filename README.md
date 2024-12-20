@@ -19,4 +19,4 @@
 [side-effect-image]: https://img.shields.io/badge/side--effect-free-brightgreen?style=flat-square
 [bundle-phobia-url]: https://bundlephobia.com/result?p=react-nest-router
 [license-image]: https://img.shields.io/github/license/nuintun/react-nest-router?style=flat-square
-[license-url]: https://github.com/nuintun/react-nest-router/blob/master/LICENSE
+[license-url]: https://github.com/nuintun/react-nest-router/blob/main/LICENSE
