@@ -25,8 +25,8 @@ importers:
         specifier: ^18.3.5
         version: 18.3.5(@types/react@18.3.17)
       dts-paths:
-        specifier: ^1.1.0
-        version: 1.1.0(typescript@5.7.2)
+        specifier: ^1.1.1
+        version: 1.1.1(typescript@5.7.2)
       magic-string:
         specifier: ^0.30.17
         version: 0.30.17
@@ -260,8 +260,8 @@ packages:
   csstype@3.1.3:
     resolution: {integrity: sha512-M1uQkMl8rQK/szD0LNhtqxIPLpimGm8sOBwU7lLnCpSbTyY3yeU1Vc7l4KT5zT4s/yOxHH5O7tIuuLOCnLADRw==}
 
-  dts-paths@1.1.0:
-    resolution: {integrity: sha512-lVLZuVe1cle8EM7DGOF1xArERZb/RTrJqejEsyrqOCvvYYHGnN/4X7Rf1/o9tOwY/6kL9pv5qzskxKf550zuFQ==}
+  dts-paths@1.1.1:
+    resolution: {integrity: sha512-lqLrAsr0Ds9A0+fkfourkByv486CsU6Y9fyNC+UNz4vX+EtIYK5UHRuGNZMc4LzCbAMc8dfLeOyei7JcO8M6hA==}
     peerDependencies:
       typescript: ^5.0.0
 
@@ -659,7 +659,7 @@ snapshots:
 
   csstype@3.1.3: {}
 
-  dts-paths@1.1.0(typescript@5.7.2):
+  dts-paths@1.1.1(typescript@5.7.2):
     dependencies:
       ts-morph: 25.0.0
       tslib: 2.8.1
