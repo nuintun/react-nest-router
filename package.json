@@ -54,7 +54,7 @@
   "devDependencies": {
     "@rollup/plugin-replace": "^6.0.2",
     "@rollup/plugin-typescript": "^12.1.2",
-    "@types/react": "^18.3.17",
+    "@types/react": "^18.3.18",
     "@types/react-dom": "^18.3.5",
     "dts-paths": "^1.1.1",
     "magic-string": "^0.30.17",
