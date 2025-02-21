@@ -36,9 +36,9 @@ export interface IRoute<M = unknown, K extends string = string> {
   readonly meta?: M;
   readonly index?: true;
   readonly path?: string;
-  readonly available?: boolean;
   readonly element?: ReactNode;
   readonly guard?: Guard<M, K>;
+  readonly reachable?: boolean;
   readonly sensitive?: boolean;
   readonly children?: NonEmptyArray<IRoute<M, K>>;
 }
@@ -51,7 +51,7 @@ export interface PageRoute<M = unknown, K extends string = string> {
   readonly path: string;
   readonly index?: never;
   readonly children?: never;
-  readonly available?: never;
+  readonly reachable?: never;
   readonly element: ReactNode;
   readonly guard?: Guard<M, K>;
   readonly sensitive?: boolean;
@@ -65,7 +65,7 @@ export interface IndexRoute<M = unknown, K extends string = string> {
   readonly index: true;
   readonly path?: never;
   readonly children?: never;
-  readonly available?: never;
+  readonly reachable?: never;
   readonly element: ReactNode;
   readonly guard?: Guard<M, K>;
   readonly sensitive?: boolean;
@@ -79,20 +79,20 @@ export interface LayoutRoute<M = unknown, K extends string = string> {
   readonly guard?: never;
   readonly index?: never;
   readonly path?: string;
-  readonly available?: never;
+  readonly reachable?: never;
   readonly sensitive?: never;
   readonly element?: ReactNode;
   readonly children: NonEmptyArray<Route<M, K>>;
 }
 
 /**
- * Available layout route.
+ * Reachable layout route.
  */
-export interface AvailableLayoutRoute<M = unknown, K extends string = string> {
+export interface ReachableLayoutRoute<M = unknown, K extends string = string> {
   readonly meta?: M;
   readonly index?: never;
   readonly path?: string;
-  readonly available: true;
+  readonly reachable: true;
   readonly element: ReactNode;
   readonly guard?: Guard<M, K>;
   readonly sensitive?: boolean;
@@ -104,7 +104,7 @@ export interface AvailableLayoutRoute<M = unknown, K extends string = string> {
  * routes organized in a tree-like structure.
  */
 export type Route<M = unknown, K extends string = string> =
-  | AvailableLayoutRoute<M, K>
+  | ReachableLayoutRoute<M, K>
   | LayoutRoute<M, K>
   | IndexRoute<M, K>
   | PageRoute<M, K>;

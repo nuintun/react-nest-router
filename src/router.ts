@@ -7,7 +7,7 @@ import { compile } from './pattern';
 import { assert, hasOwnKey } from './utils';
 import { isOutsideRoot, isWildcard, join, resolve } from './path';
 import { IRoute, RankRouteBranch, RankRouteMeta, Route, RouteBranch, RouteMatch } from './interface';
-import { assertAvailableLayoutRoute, assertIndexRoute, assertLayoutRoute, assertPageRoute } from './schema';
+import { assertIndexRoute, assertLayoutRoute, assertPageRoute, assertReachableLayoutRoute } from './schema';
 
 /**
  * @function computeWeight
@@ -148,19 +148,18 @@ export function flatten<M, K extends string>(routes: Route<M, K>[], basename: st
     // Traversal nested routes.
     for (const [index, item] of items) {
       const from = paths.reduce<string>((from, to) => resolve(from, to), '/');
-      const { available, children, guard, index: isIndex, path: to } = item;
+      const { guard, children, path: to, reachable, index: isIndex } = item;
       const isLayout = children && children.length > 0;
-      const isAvailable = !isLayout || available;
 
       if (__DEV__) {
         const path = resolve(from, to);
 
-        if (isIndex) {
-          assertIndexRoute(item, path);
-        } else if (available) {
-          assertAvailableLayoutRoute(item, path);
+        if (reachable) {
+          assertReachableLayoutRoute(item, path);
         } else if (hasOwnKey(item, 'children')) {
           assertLayoutRoute(item, path);
+        } else if (isIndex) {
+          assertIndexRoute(item, path);
         } else {
           assertPageRoute(item, path);
         }
@@ -177,12 +176,12 @@ export function flatten<M, K extends string>(routes: Route<M, K>[], basename: st
         route: item
       };
 
-      if (isAvailable) {
+      if (!isLayout || reachable) {
         const path = join(basename, resolve(from, to));
 
         // Routes with children is layout routes,
         // otherwise is page routes or index routes,
-        // only page, index and available layout routes will add to branches.
+        // only page, index and reachable layout routes will add to branches.
         branches.push({
           basename,
           meta: [...meta, metadata],

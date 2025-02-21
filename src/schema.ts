@@ -99,7 +99,7 @@ export function assertIndexRoute(route: IRoute, path: string): never | void {
 
   assertRequired(route, 'element', path, type);
 
-  assertUnknow(route, path, type, ['element', 'guard', 'index', 'meta', 'sensitive']);
+  assertUnknow(route, path, type, ['meta', 'guard', 'index', 'element', 'sensitive']);
 }
 
 /**
@@ -118,7 +118,7 @@ export function assertPageRoute(route: IRoute, path: string): never | void {
 
   assertRequired(route, 'element', path, type);
 
-  assertUnknow(route, path, type, ['element', 'guard', 'meta', 'path', 'sensitive']);
+  assertUnknow(route, path, type, ['meta', 'path', 'guard', 'element', 'sensitive']);
 }
 
 /**
@@ -133,16 +133,16 @@ export function assertLayoutRoute(route: IRoute, path: string): never | void {
 
   assertChildren(route, path, type);
 
-  assertUnknow(route, path, type, ['children', 'element', 'meta', 'path']);
+  assertUnknow(route, path, type, ['meta', 'path', 'element', 'children']);
 }
 
 /**
- * @function assertAvailableLayoutRoute
+ * @function assertReachableLayoutRoute
  * @param route Route target.
  * @param path Route path.
  */
-export function assertAvailableLayoutRoute(route: IRoute, path: string): never | void {
-  const type = 'available layout';
+export function assertReachableLayoutRoute(route: IRoute, path: string): never | void {
+  const type = 'reachable layout';
 
   assertPath(route, path, type);
 
@@ -152,5 +152,5 @@ export function assertAvailableLayoutRoute(route: IRoute, path: string): never |
 
   assertRequired(route, 'element', path, type);
 
-  assertUnknow(route, path, type, ['available', 'children', 'element', 'guard', 'meta', 'path', 'sensitive']);
+  assertUnknow(route, path, type, ['meta', 'path', 'guard', 'element', 'children', 'reachable', 'sensitive']);
 }
