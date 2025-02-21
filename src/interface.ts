@@ -117,7 +117,7 @@ export type Params<K extends string = string> = {
 };
 
 /**
- * Patch matcher.
+ * Route matcher.
  */
 export interface Matcher<K extends string = string> {
   readonly path: string;
