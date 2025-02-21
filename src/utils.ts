@@ -6,6 +6,16 @@
 const { hasOwnProperty, toString } = Object.prototype;
 
 /**
+ * @function hasOwnKey
+ * @description Test whether the target has its own key.
+ * @param target The target.
+ * @param key Key name.
+ */
+export function hasOwnKey<T>(target: T, key: keyof T): boolean {
+  return hasOwnProperty.call(target, key);
+}
+
+/**
  * @function isString
  * @description Check that value is a string.
  * @param value The value to check.
@@ -82,14 +92,4 @@ export function prefix(string: string, symbol: string): string {
  */
 export function suffix(string: string, symbol: string): string {
   return endsWith(string, symbol) ? string : string + symbol;
-}
-
-/**
- * @function hasOwnKey
- * @description Test whether the target has its own key.
- * @param target The target.
- * @param key Key name.
- */
-export function hasOwnKey<T extends Record<any, any>>(target: T, key: keyof T): boolean {
-  return hasOwnProperty.call(target, key);
 }

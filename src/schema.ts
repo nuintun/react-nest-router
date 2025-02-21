@@ -11,7 +11,7 @@ import { assert, hasOwnKey, isFunction, isString } from './utils';
  * @param whitelist Keys whitelist.
  * @param message Unknow key message.
  */
-function properties<T extends Record<any, any>>(
+function properties<T extends Record<PropertyKey, any>>(
   target: T,
   whitelist: (keyof T)[],
   message: (key: keyof T) => string
