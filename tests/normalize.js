@@ -30,17 +30,18 @@ export function runTests() {
     const codeResult = normalize(input);
     const nodeResult = path.normalize(input);
 
-    console.log(`Input  : '${input}'`);
-    console.log(`Code   : '${codeResult}'`);
-    console.log(`Node.js: '${nodeResult}'`);
+    console.log(`Path: '${input}'`);
+    console.log(`Code: '${codeResult}'`);
+    console.log(`Node: '${nodeResult}'`);
 
     // 已知差异处理
-
     try {
       assert.strictEqual(codeResult, nodeResult);
+
       console.log(`✅ Matched\n`);
-    } catch (err) {
-      console.error(`❎ Mismatch: ${err.message}\n`);
+    } catch (error) {
+      console.error(error.stack);
+      console.log(`\n`);
     }
   });
 }
