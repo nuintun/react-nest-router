@@ -2,6 +2,7 @@
  * @module index
  */
 
+import { runTests } from './normalize.js';
 import { flatten, match } from '../esm/router.js';
 
 const routes = [
@@ -58,4 +59,6 @@ console.time('match');
 const matched = match(branches, '/zh/courses/1');
 console.timeEnd('match');
 
-console.log('matched:', matched);
+console.log('matched:', `${matched}\n`);
+
+runTests();
