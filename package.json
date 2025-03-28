@@ -1,6 +1,6 @@
 {
   "name": "react-nest-router",
-  "version": "0.20.2",
+  "version": "0.20.3",
   "description": "Declarative routing for React.",
   "type": "module",
   "sideEffects": false,
@@ -9,7 +9,8 @@
   "exports": {
     ".": {
       "import": "./esm/index.js",
-      "require": "./cjs/index.cjs"
+      "require": "./cjs/index.cjs",
+      "default": "./esm/index.js"
     }
   },
   "files": [
@@ -55,7 +56,7 @@
     "@rollup/plugin-replace": "^6.0.2",
     "@rollup/plugin-typescript": "^12.1.2",
     "@types/react": "^19.0.12",
-    "dts-paths": "^1.1.4",
+    "dts-paths": "^1.1.5",
     "magic-string": "^0.30.17",
     "prettier": "^3.5.3",
     "react": "^19.0.0",
