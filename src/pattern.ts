@@ -4,7 +4,7 @@
 
 import { assert } from './utils';
 import { isWildcard } from './path';
-import { safelyDecodeURIComponent } from './url';
+import { safeDecodeURIComponent } from './url';
 import { Matcher, Mutable, Params } from './interface';
 
 /**
@@ -59,7 +59,7 @@ export function compile<K extends string>(path: string, sensitive: boolean = fal
         (params, key, index) => {
           const value: string | undefined = matched[index + 1];
 
-          params[key] = value ? safelyDecodeURIComponent(value) : value;
+          params[key] = value ? safeDecodeURIComponent(value) : value;
 
           return params;
         },

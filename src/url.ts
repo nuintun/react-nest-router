@@ -8,11 +8,11 @@ import { isAbsolute, normalize } from './path';
 import { parse, stringify } from './navigator/url';
 
 /**
- * @function safelyDecodeURIComponent
+ * @function safeDecodeURIComponent
  * @description Safely decode URI component.
  * @param value The value to decode.
  */
-export function safelyDecodeURIComponent(value: string): string {
+export function safeDecodeURIComponent(value: string): string {
   try {
     return decodeURIComponent(value);
   } catch {
