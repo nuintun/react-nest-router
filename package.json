@@ -1,6 +1,6 @@
 {
   "name": "react-nest-router",
-  "version": "0.20.9",
+  "version": "0.21.0",
   "description": "Declarative routing for React.",
   "type": "module",
   "sideEffects": false,
