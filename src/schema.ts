@@ -9,7 +9,7 @@ import { assert, hasOwnKey, isFunction, isString } from './utils';
  * @function properties
  * @param target Object target.
  * @param whitelist Keys whitelist.
- * @param message Unknow key message.
+ * @param message Unknown key message.
  */
 function properties<T extends Record<PropertyKey, any>>(
   target: T,
@@ -75,15 +75,15 @@ function assertRequired(route: IRoute, key: keyof IRoute, path: string, type: st
 }
 
 /**
- * @function assertUnknow
+ * @function assertUnknown
  * @param route Route target.
  * @param path Route path.
  * @param type Route type.
  * @param whitelist Keys whitelist.
  */
-function assertUnknow(route: IRoute, path: string, type: string, whitelist: (keyof IRoute)[]): never | void {
+function assertUnknown(route: IRoute, path: string, type: string, whitelist: (keyof IRoute)[]): never | void {
   properties(route, whitelist, key => {
-    return `Unknow property "${key}" in ${type} route "${path}".`;
+    return `Unknown property "${key}" in ${type} route "${path}".`;
   });
 }
 
@@ -99,7 +99,7 @@ export function assertIndexRoute(route: IRoute, path: string): never | void {
 
   assertRequired(route, 'element', path, type);
 
-  assertUnknow(route, path, type, ['meta', 'guard', 'index', 'element', 'sensitive']);
+  assertUnknown(route, path, type, ['meta', 'guard', 'index', 'element', 'sensitive']);
 }
 
 /**
@@ -118,7 +118,7 @@ export function assertPageRoute(route: IRoute, path: string): never | void {
 
   assertRequired(route, 'element', path, type);
 
-  assertUnknow(route, path, type, ['meta', 'path', 'guard', 'element', 'sensitive']);
+  assertUnknown(route, path, type, ['meta', 'path', 'guard', 'element', 'sensitive']);
 }
 
 /**
@@ -133,7 +133,7 @@ export function assertLayoutRoute(route: IRoute, path: string): never | void {
 
   assertChildren(route, path, type);
 
-  assertUnknow(route, path, type, ['meta', 'path', 'element', 'children']);
+  assertUnknown(route, path, type, ['meta', 'path', 'element', 'children']);
 }
 
 /**
@@ -152,5 +152,5 @@ export function assertReachableLayoutRoute(route: IRoute, path: string): never |
 
   assertRequired(route, 'element', path, type);
 
-  assertUnknow(route, path, type, ['meta', 'path', 'guard', 'element', 'children', 'reachable', 'sensitive']);
+  assertUnknown(route, path, type, ['meta', 'path', 'guard', 'element', 'children', 'reachable', 'sensitive']);
 }
