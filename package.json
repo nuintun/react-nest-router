@@ -54,13 +54,13 @@
   },
   "devDependencies": {
     "@rollup/plugin-replace": "^6.0.2",
-    "@rollup/plugin-typescript": "^12.1.4",
+    "@rollup/plugin-typescript": "^12.3.0",
     "@types/react": "^19.2.2",
     "dts-paths": "^1.1.13",
     "prettier": "^3.6.2",
     "react": "^19.2.0",
     "rimraf": "^6.0.1",
-    "rollup": "^4.52.4",
+    "rollup": "^4.52.5",
     "typescript": "^5.9.3"
   },
   "peerDependencies": {
