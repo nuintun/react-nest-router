@@ -11,7 +11,7 @@ import { assert, hasOwnKey, startsWith } from '/utils';
 
 /**
  * @function useRoutes
- * @description Get the element of the route that matched the current location.
+ * @description [hook] Get the element of the route that matched the current location.
  * @param routes User routes.
  * @param pathname The pathname to match.
  * @param basename The basename of the route.

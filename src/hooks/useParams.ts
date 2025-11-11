@@ -8,7 +8,7 @@ import { useRouteContext } from './useRouteContext';
 
 /**
  * @function useParams
- * @description Get route parameters.
+ * @description [hook] Get route parameters.
  */
 export function useParams<K extends string = string>(): Params<K> {
   const routeContext = useRouteContext();

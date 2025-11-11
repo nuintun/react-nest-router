@@ -12,7 +12,7 @@ import { useNavigationContext } from './useNavigationContext';
 
 /**
  * @function useNavigate
- * @description Get navigate method.
+ * @description [hook] Get navigate method.
  */
 export function useNavigate(): Navigate {
   const locateContext = useLocateContext();

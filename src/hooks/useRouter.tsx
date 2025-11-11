@@ -10,7 +10,7 @@ import { ReactElement, useEffect, useMemo, useState } from 'react';
 
 /**
  * @function useRouter
- * @description Get router element.
+ * @description [hook] Get router element.
  * @param props Router props.
  */
 export function useRouter<M = unknown, K extends string = string, C = unknown>({

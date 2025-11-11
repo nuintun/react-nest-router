@@ -8,7 +8,7 @@ import { useLocateContext } from './useLocateContext';
 
 /**
  * @function useLocation
- * @description Get current location.
+ * @description [hook] Get current location.
  */
 export function useLocation<S = unknown>(): Location<S> {
   const locateContext = useLocateContext();

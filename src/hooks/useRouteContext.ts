@@ -7,7 +7,7 @@ import { RouteContext } from '/context';
 
 /**
  * @function useRouteContext
- * @description Get route context.
+ * @description [hook] Get route context.
  */
 export function useRouteContext(): RouteContext | null {
   return useContext(RouteContext);

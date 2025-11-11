@@ -9,7 +9,7 @@ import { useRouteContext } from './useRouteContext';
 
 /**
  * @function useOutletContext
- * @description Get outlet context.
+ * @description [hook] Get outlet context.
  */
 export function useOutletContext<C = unknown>(): C {
   const routeContext = useRouteContext();

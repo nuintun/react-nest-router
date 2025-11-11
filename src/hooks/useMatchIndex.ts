@@ -7,7 +7,7 @@ import { useRouteContext } from './useRouteContext';
 
 /**
  * @function useMatchIndex
- * @description Get current match route index.
+ * @description [hook] Get current match route index.
  */
 export function useMatchIndex(): number {
   const routeContext = useRouteContext();

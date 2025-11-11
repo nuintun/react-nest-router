@@ -10,7 +10,7 @@ import { useRouteContext } from './useRouteContext';
 
 /**
  * @function useOutlet
- * @description Get outlet element.
+ * @description [hook] Get outlet element.
  * @param props Outlet props.
  */
 export function useOutlet<C = unknown>(props: OutletProps<C> = {}): ReactElement | null {

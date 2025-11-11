@@ -9,7 +9,7 @@ import { useNavigationContext } from './useNavigationContext';
 
 /**
  * @function useNavigateAction
- * @description Get current navigate action.
+ * @description [hook] Get current navigate action.
  */
 export function useNavigateAction(): Action {
   const locateContext = useLocateContext();

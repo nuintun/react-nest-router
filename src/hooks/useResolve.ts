@@ -12,7 +12,7 @@ import { useNavigationContext } from './useNavigationContext';
 
 /**
  * @function useResolve
- * @description Get resolve method.
+ * @description [hook] Get resolve method.
  */
 export function useResolve(): (to: To) => string {
   const locateContext = useLocateContext();
