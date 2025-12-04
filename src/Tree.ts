@@ -49,7 +49,7 @@ export class Tree<T> {
         const [index, node] = item.value;
         const children = resolve(node, index);
 
-        if (children && children.length > 0) {
+        if (children != null) {
           waiting.push(current);
 
           current = children.entries();
