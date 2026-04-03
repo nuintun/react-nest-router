@@ -2,20 +2,23 @@
  * @module rollup.base
  */
 
+import { isBuiltin } from 'node:module';
+import type { RollupOptions } from 'rollup';
 import replace from '@rollup/plugin-replace';
 import typescript from '@rollup/plugin-typescript';
-import { createRequire, isBuiltin } from 'node:module';
-
-const pkg = createRequire(import.meta.url)('../package.json');
+import pkg from '../package.json' with { type: 'json' };
 
 const externals = [
-  // Dependencies.
-  ...Object.keys(pkg.dependencies || {}),
-  // Peer dependencies.
-  ...Object.keys(pkg.peerDependencies || {})
+  // @ts-ignore
+  // dependencies
+  ...Object.keys(pkg.dependencies ?? {}),
+  // @ts-ignore
+  // peer dependencies
+  ...Object.keys(pkg.peerDependencies ?? {})
 ];
 
 const banner = `/**
+ * @module dts-paths
  * @package ${pkg.name}
  * @license ${pkg.license}
  * @version ${pkg.version}
@@ -27,7 +30,7 @@ const banner = `/**
 
 /**
  * @function env
- * @return {import('rollup').Plugin}
+ * @description replace environment variables
  */
 function env() {
   return replace({
@@ -40,27 +43,31 @@ function env() {
 
 /**
  * @function rollup
- * @param {boolean} [esnext] Is esnext.
- * @return {import('rollup').RollupOptions}
+ * @description rollup configuration
+ * @param {boolean} [esnext] is esnext
  */
-export default function rollup(esnext) {
+export default function rollup(esnext = false): RollupOptions {
   return {
     input: 'src/index.ts',
     output: {
       banner,
+      esModule: false,
       interop: 'auto',
+      exports: 'named',
       preserveModules: true,
       dir: esnext ? 'esm' : 'cjs',
       format: esnext ? 'esm' : 'cjs',
       generatedCode: { constBindings: true },
-      chunkFileNames: `[name].${esnext ? 'js' : 'cjs'}`,
-      entryFileNames: `[name].${esnext ? 'js' : 'cjs'}`
+      entryFileNames: `[name].${esnext ? 'js' : 'cjs'}`,
+      chunkFileNames: `[name].${esnext ? 'js' : 'cjs'}`
     },
     plugins: [
       env(),
       typescript({
+        rootDir: 'src',
         declaration: true,
-        declarationDir: esnext ? 'esm' : 'cjs'
+        declarationDir: esnext ? 'esm' : 'cjs',
+        include: ['../src/**/*', '../global.d.ts']
       })
     ],
     onwarn(error, warn) {

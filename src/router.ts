@@ -6,8 +6,20 @@ import { Tree } from './Tree';
 import { compile } from './pattern';
 import { assert, hasOwnKey } from './utils';
 import { isOutsideRoot, isWildcard, join, resolve } from './path';
-import { IRoute, RankRouteBranch, RankRouteMeta, Route, RouteBranch, RouteMatch } from './interface';
-import { assertIndexRoute, assertLayoutRoute, assertPageRoute, assertReachableLayoutRoute } from './schema';
+import {
+  IRoute,
+  RankRouteBranch,
+  RankRouteMeta,
+  Route,
+  RouteBranch,
+  RouteMatch
+} from './interface';
+import {
+  assertIndexRoute,
+  assertLayoutRoute,
+  assertPageRoute,
+  assertReachableLayoutRoute
+} from './schema';
 
 /**
  * @function computeWeight
@@ -58,7 +70,10 @@ function computeWeight(path: string, index?: boolean): number {
  * @param prev Prev route branch.
  * @param next Next route branch.
  */
-function isSiblingBranch<M, K extends string>(prev: RankRouteBranch<M, K>, next: RankRouteBranch<M, K>): boolean {
+function isSiblingBranch<M, K extends string>(
+  prev: RankRouteBranch<M, K>,
+  next: RankRouteBranch<M, K>
+): boolean {
   const { meta: prevMeta } = prev;
   const { meta: nextMeta } = next;
   const { length: prevLength } = prevMeta;
@@ -87,7 +102,10 @@ function isSiblingBranch<M, K extends string>(prev: RankRouteBranch<M, K>, next:
  * @param prev Prev route branch.
  * @param next Next route branch.
  */
-function compareBranchMeta<M, K extends string>(prev: RankRouteBranch<M, K>, next: RankRouteBranch<M, K>): number {
+function compareBranchMeta<M, K extends string>(
+  prev: RankRouteBranch<M, K>,
+  next: RankRouteBranch<M, K>
+): number {
   // If two routes are siblings, we should try to match the earlier sibling
   // first. This allows people to have fine-grained control over the matching
   // behavior by simply putting routes with identical paths in the order they
@@ -111,11 +129,15 @@ function compareBranchMeta<M, K extends string>(prev: RankRouteBranch<M, K>, nex
  * @description Sort route branches.
  * @param branches Route branches.
  */
-function sortRouteBranches<M, K extends string>(branches: RankRouteBranch<M, K>[]): RouteBranch<M, K>[] {
+function sortRouteBranches<M, K extends string>(
+  branches: RankRouteBranch<M, K>[]
+): RouteBranch<M, K>[] {
   // Higher score first
   return branches
     .sort((prev, next) => {
-      return prev.weight !== next.weight ? next.weight - prev.weight : compareBranchMeta(prev, next);
+      return prev.weight !== next.weight
+        ? next.weight - prev.weight
+        : compareBranchMeta(prev, next);
     })
     .map(({ basename, meta: metadata, matcher, guard }) => {
       const meta = metadata.map(({ route }) => route);
@@ -130,7 +152,10 @@ function sortRouteBranches<M, K extends string>(branches: RankRouteBranch<M, K>[
  * @param routes User routes.
  * @param basename The basename.
  */
-export function flatten<M, K extends string>(routes: Route<M, K>[], basename: string): RouteBranch<M, K>[] {
+export function flatten<M, K extends string>(
+  routes: Route<M, K>[],
+  basename: string
+): RouteBranch<M, K>[] {
   const defaultGuard = () => true;
   const branches: RankRouteBranch<M, K>[] = [];
 
@@ -211,7 +236,10 @@ export function flatten<M, K extends string>(routes: Route<M, K>[], basename: st
  * @param routes The flatten routes.
  * @param pathname The pathname to match.
  */
-export function match<M, K extends string>(routes: RouteBranch<M, K>[], pathname: string): RouteMatch<M, K> | null {
+export function match<M, K extends string>(
+  routes: RouteBranch<M, K>[],
+  pathname: string
+): RouteMatch<M, K> | null {
   // Match route branches.
   for (const { basename, meta: matches, matcher, guard } of routes) {
     const params = matcher.match(pathname);

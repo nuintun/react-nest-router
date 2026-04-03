@@ -2,10 +2,11 @@
  * @module index
  */
 
-import { runTests } from './normalize.js';
+import { runTests } from './normalize.ts';
+import type { Route } from '../esm/interface.js';
 import { flatten, match } from '../esm/router.js';
 
-const routes = [
+const routes: Route[] = [
   {
     path: '/login',
     meta: { id: 1 },

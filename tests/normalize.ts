@@ -40,7 +40,7 @@ export function runTests() {
 
       console.log(`✅ Matched\n`);
     } catch (error) {
-      console.error(error.stack);
+      console.error((error as Error).stack);
       console.log(`\n`);
     }
   });

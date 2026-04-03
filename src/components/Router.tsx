@@ -12,4 +12,6 @@ import { useRouter } from '/hooks/useRouter';
  */
 export const Router = memo(function Router(props) {
   return useRouter(props);
-}) as <M = unknown, K extends string = string, C = unknown>(props: RouterProps<M, K, C>) => ReactElement;
+}) as <M = unknown, K extends string = string, C = unknown>(
+  props: RouterProps<M, K, C>
+) => ReactElement;
