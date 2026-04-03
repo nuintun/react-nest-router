@@ -2,11 +2,11 @@
  * @module index
  */
 
-import assert from 'node:assert/strict';
+import './normalize.ts';
 import test from 'node:test';
+import assert from 'node:assert/strict';
 import type { Route } from '../esm/interface.js';
 import { flatten, match } from '../esm/router.js';
-import './normalize.ts';
 
 const routes: Route<{ id: number }>[] = [
   {

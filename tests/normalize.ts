@@ -2,9 +2,9 @@
  * @module normalize
  */
 
-import assert from 'node:assert/strict';
 import test from 'node:test';
 import path from 'node:path/posix';
+import assert from 'node:assert/strict';
 import { normalize } from '../esm/path.js';
 
 test('normalize should align with node:path/posix.normalize for common paths', () => {
