@@ -2,49 +2,41 @@
  * @module normalize
  */
 
-import assert from 'node:assert';
+import assert from 'node:assert/strict';
+import test from 'node:test';
 import path from 'node:path/posix';
 import { normalize } from '../esm/path.js';
 
-// 测试用例列表
-const testCases = [
-  '',
-  'foo/.',
-  '../../a',
-  'foo/bar',
-  '/../../a',
-  '/var/lib',
-  'foo//bar',
-  'foo/bar/',
-  'foo/./bar',
-  'a/b//../c/./d/',
-  'foo/bar/../baz',
-  '/var/lib/../file'
-];
+test('normalize should align with node:path/posix.normalize for common paths', () => {
+  const cases = [
+    '',
+    'foo/.',
+    '../../a',
+    'foo/bar',
+    '/../../a',
+    '/var/lib',
+    'foo//bar',
+    'foo/bar/',
+    'foo/./bar',
+    'a/b//../c/./d/',
+    'foo/bar/../baz',
+    '/var/lib/../file',
+    './foo',
+    '../foo/..',
+    '/foo/./bar/../baz'
+  ];
 
-/**
- * @function runTests
- */
-export function runTests() {
-  testCases.forEach(input => {
-    const codeResult = normalize(input);
-    const nodeResult = path.normalize(input);
+  for (const input of cases) {
+    assert.equal(normalize(input), path.normalize(input), `input: ${input}`);
+  }
+});
 
-    console.log(`Path: '${input}'`);
-    console.log(`Code: '${codeResult}'`);
-    console.log(`Node: '${nodeResult}'`);
+test('normalize should keep leading double-dot segments on relative paths', () => {
+  assert.equal(normalize('../../a/b'), '../../a/b');
+  assert.equal(normalize('../..'), '../..');
+});
 
-    // 已知差异处理
-    try {
-      assert.strictEqual(codeResult, nodeResult);
-
-      console.log(`✅ Matched\n`);
-    } catch (error) {
-      console.error((error as Error).stack);
-      console.log(`\n`);
-    }
-  });
-}
-
-// 执行测试
-runTests();
+test('normalize should clamp absolute path traversal to root', () => {
+  assert.equal(normalize('/../../a'), '/a');
+  assert.equal(normalize('/../../../'), '/');
+});

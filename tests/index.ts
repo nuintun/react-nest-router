@@ -2,11 +2,13 @@
  * @module index
  */
 
-import { runTests } from './normalize.ts';
+import assert from 'node:assert/strict';
+import test from 'node:test';
 import type { Route } from '../esm/interface.js';
 import { flatten, match } from '../esm/router.js';
+import './normalize.ts';
 
-const routes: Route[] = [
+const routes: Route<{ id: number }>[] = [
   {
     path: '/login',
     meta: { id: 1 },
@@ -44,22 +46,37 @@ const routes: Route[] = [
   { path: '*', meta: { id: 7 }, element: '<NoMatch />' }
 ];
 
-console.time('benchmark');
-for (let i = 0; i < 100; i++) {
-  flatten(routes, '/zh');
-}
-console.timeEnd('benchmark');
+test('flatten should generate route branches with basename', () => {
+  const branches = flatten(routes, '/zh');
 
-console.time('flatten');
-const branches = flatten(routes, '/zh');
-console.timeEnd('flatten');
+  assert.ok(branches.length > 0);
+  assert.ok(branches.every(branch => branch.basename === '/zh'));
+});
 
-console.log('branches:', branches);
+test('match should match nested dynamic route and collect params', () => {
+  const branches = flatten(routes, '/zh');
+  const result = match(branches, '/zh/courses/1');
 
-console.time('match');
-const matched = match(branches, '/zh/courses/1');
-console.timeEnd('match');
+  assert.ok(result);
+  assert.equal(result.path, '/zh/courses/:id');
+  assert.deepEqual(result.params, { id: '1' });
+  assert.equal(result.matches.at(-1)?.meta?.id, 5);
+});
 
-console.log('matched:', `${matched}\n`);
+test('match should match index route under layout', () => {
+  const branches = flatten(routes, '/zh');
+  const result = match(branches, '/zh');
 
-runTests();
+  assert.ok(result);
+  assert.equal(result.path, '/zh/');
+  assert.equal(result.matches.at(-1)?.meta?.id, 6);
+});
+
+test('match should fallback to wildcard route when no route matches', () => {
+  const branches = flatten(routes, '/zh');
+  const result = match(branches, '/zh/unknown/path');
+
+  assert.ok(result);
+  assert.equal(result.path, '/zh/*');
+  assert.equal(result.matches.at(-1)?.meta?.id, 7);
+});
