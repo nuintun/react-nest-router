@@ -45,10 +45,7 @@ function assertPath(route: IRoute, path: string, type: string): never | void {
  */
 function assertGuard(route: IRoute, path: string, type: string): never | void {
   if (hasOwnKey(route, 'guard')) {
-    assert(
-      isFunction(route.guard),
-      `Property "guard" in ${type} route "${path}" must be a function`
-    );
+    assert(isFunction(route.guard), `Property "guard" in ${type} route "${path}" must be a function`);
   }
 }
 
@@ -73,12 +70,7 @@ function assertChildren(route: IRoute, path: string, type: string): never | void
  * @param path Route path.
  * @param type Route type.
  */
-function assertRequired(
-  route: IRoute,
-  key: keyof IRoute,
-  path: string,
-  type: string
-): never | void {
+function assertRequired(route: IRoute, key: keyof IRoute, path: string, type: string): never | void {
   assert(hasOwnKey(route, key), `Property "${key}" in ${type} route "${path}" is required`);
 }
 
@@ -89,12 +81,7 @@ function assertRequired(
  * @param type Route type.
  * @param whitelist Keys whitelist.
  */
-function assertUnknown(
-  route: IRoute,
-  path: string,
-  type: string,
-  whitelist: (keyof IRoute)[]
-): never | void {
+function assertUnknown(route: IRoute, path: string, type: string, whitelist: (keyof IRoute)[]): never | void {
   properties(route, whitelist, key => {
     return `Unknown property "${key}" in ${type} route "${path}".`;
   });
@@ -165,13 +152,5 @@ export function assertReachableLayoutRoute(route: IRoute, path: string): never |
 
   assertRequired(route, 'element', path, type);
 
-  assertUnknown(route, path, type, [
-    'meta',
-    'path',
-    'guard',
-    'element',
-    'children',
-    'reachable',
-    'sensitive'
-  ]);
+  assertUnknown(route, path, type, ['meta', 'path', 'guard', 'element', 'children', 'reachable', 'sensitive']);
 }

@@ -37,12 +37,7 @@ export function parse(url: string): URL {
  * @description Stringify URL scheme.
  * @param scheme URL scheme.
  */
-export function stringify({
-  origin = '',
-  pathname = '',
-  search = '',
-  hash = ''
-}: Partial<URL>): string {
+export function stringify({ origin = '', pathname = '', search = '', hash = '' }: Partial<URL>): string {
   const hasSlash = endsWith(origin, '/') || startsWith(pathname, '/');
   const query = normalizeQuery(search, '?') + normalizeQuery(hash, '#');
 
