@@ -18,7 +18,7 @@ const externals = [
 ];
 
 const banner = `/**
- * @module dts-paths
+ * @module react-nest-router
  * @package ${pkg.name}
  * @license ${pkg.license}
  * @version ${pkg.version}
