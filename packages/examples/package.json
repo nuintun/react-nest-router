@@ -1,0 +1,55 @@
+{
+  "name": "react-nest-router-examples",
+  "description": "React nest router examples.",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "author": {
+    "name": "nuintun",
+    "email": "nuintun@qq.com"
+  },
+  "license": "MIT",
+  "homepage": "https://github.com/nuintun/react-nest-router-examples",
+  "scripts": {
+    "lint": "tsc --noEmit",
+    "prod": "node tools/rspack.config.prod.ts",
+    "dev": "nodemon --exec node tools/rspack.config.dev.ts",
+    "format": "prettier --write . --ignore-path .prettierignore"
+  },
+  "dependencies": {
+    "@swc/helpers": "^0.5.21",
+    "antd": "^6.3.5",
+    "react": "^19.2.5",
+    "react-dom": "^19.2.5",
+    "react-error-boundary": "^6.1.1",
+    "react-nest-router": "workspace:*"
+  },
+  "devDependencies": {
+    "@nuintun/svgo-loader": "^0.6.0",
+    "@rspack/core": "^1.7.11",
+    "@rspack/plugin-react-refresh": "^2.0.0",
+    "@types/koa": "^3.0.2",
+    "@types/node": "^25.6.0",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "@types/throttle-debounce": "^5.0.2",
+    "bufferutil": "^4.1.0",
+    "css-loader": "^7.1.4",
+    "css-modules-types-loader": "^0.7.0",
+    "find-free-ports": "^3.1.1",
+    "koa": "^3.2.0",
+    "koa-compress": "^5.2.1",
+    "memfs": "^4.57.1",
+    "nodemon": "^3.1.14",
+    "prettier": "^3.8.3",
+    "rspack-dev-middleware": "^0.3.0",
+    "sass-embedded": "^1.99.0",
+    "sass-loader": "^16.0.7",
+    "svgc-loader": "^0.6.0",
+    "svgo": "^4.0.1",
+    "typescript": "^6.0.2",
+    "utf-8-validate": "^6.0.6"
+  }
+}

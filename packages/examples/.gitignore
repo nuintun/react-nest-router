@@ -129,7 +129,5 @@ dist
 .pnp.*
 
 # Build dist
-cjs/
-esm/
-wwwroot/
+/wwwroot/
 *.module.scss.d.ts

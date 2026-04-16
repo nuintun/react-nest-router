@@ -1,0 +1,55 @@
+name: Deploy GitHub Pages
+on:
+  push:
+    branches:
+      - main
+  # 手动触发
+  workflow_dispatch:
+permissions:
+  pages: write
+  contents: read
+  id-token: write
+concurrency:
+  group: github-pages
+  cancel-in-progress: false
+jobs:
+  # 构建任务
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      # 检出代码
+      - name: Checkout code
+        uses: actions/checkout@v6
+      # 设置 pnpm
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v5
+        with:
+          version: latest
+      # 设置 node
+      - name: Setup node
+        uses: actions/setup-node@v6
+        with:
+          node-version: latest
+          registry-url: https://registry.npmjs.org
+      # 安装依赖
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+      # 构建项目
+      - name: Build GitHub Pages
+        run: pnpm build && pnpm prod
+      # 上传构建产物
+      - name: Upload GitHub Pages
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: ./packages/examples/wwwroot
+  # 部署任务
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      # 部署到 GitHub Pages
+      - name: Deploy GitHub Pages
+        uses: actions/deploy-pages@v5

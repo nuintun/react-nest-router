@@ -1,0 +1,41 @@
+{
+  "compilerOptions": {
+    "pretty": true,
+    "strict": true,
+    "newLine": "lf",
+    "jsx": "preserve",
+    "module": "esnext",
+    "target": "esnext",
+    "skipLibCheck": true,
+    "importHelpers": true,
+    "noUnusedLocals": true,
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "noImplicitOverride": true,
+    "noUnusedParameters": true,
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "rewriteRelativeImportExtensions": true,
+    "types": [
+      "node"
+    ],
+    "paths": {
+      "/js/*": [
+        "./app/js/*"
+      ],
+      "/css/*": [
+        "./app/css/*"
+      ],
+      "/images/*": [
+        "./app/images/*"
+      ]
+    }
+  },
+  "include": [
+    "app/**/*",
+    "global.d.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}
