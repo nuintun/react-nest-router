@@ -68,8 +68,6 @@ test('match should match nested dynamic route and collect params', () => {
 test('match should match index route under layout', () => {
   const result = match(branches, basename, '/zh');
 
-  console.log(branches);
-
   assert.ok(result);
   assert.equal(result.path, '/');
   assert.equal(result.basename, basename);
@@ -147,4 +145,34 @@ test('match should preserve full pathname in result', () => {
   assert.ok(result);
   assert.equal(result.pathname, '/zh/courses/123');
   assert.equal(result.params.id, '123');
+});
+
+test('match should support basename without trailing slash', () => {
+  const result = match(branches, '/zh', '/zh/courses/1');
+
+  assert.ok(result);
+  assert.equal(result.path, '/courses/:id');
+  assert.equal(result.params.id, '1');
+});
+
+test('match should match insensitive routes with case-insensitive basename', () => {
+  const result = match(branches, '/ZH', '/zh/login');
+
+  assert.ok(result);
+  assert.equal(result.path, '/login');
+});
+
+test('match should not match sensitive routes when basename case differs', () => {
+  const sensitiveBranches = flatten([
+    {
+      path: '/About',
+      meta: { id: 12 },
+      element: '<About />',
+      sensitive: true
+    }
+  ]);
+
+  const result = match(sensitiveBranches, '/ZH', '/zh/About');
+
+  assert.equal(result, null);
 });
