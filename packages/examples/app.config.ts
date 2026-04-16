@@ -43,5 +43,5 @@ export default defineConfig({
   name: 'React Nest Router',
   outputPath: resolve('wwwroot/public'),
   entry: resolve('app/js/pages/index.tsx'),
-  publicPath: '/react-nest-router-examples/public/'
+  publicPath: '/react-nest-router/public/'
 });
