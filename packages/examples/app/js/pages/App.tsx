@@ -107,11 +107,7 @@ export default memo(function App(): React.ReactElement {
       <Space className={styles.app} orientation="vertical">
         <img className={styles.react} src={react} alt="react" />
         <Suspense fallback="loading...">
-          <Router
-            routes={routes}
-            context={{ message: 'Outlet Context' }}
-            basename={__DEV__ ? '/' : '/react-nest-router-examples'}
-          >
+          <Router routes={routes} context={{ message: 'Outlet Context' }} basename={__DEV__ ? '/' : '/react-nest-router'}>
             <NoMatch />
           </Router>
         </Suspense>
