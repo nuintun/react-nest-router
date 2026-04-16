@@ -142,7 +142,6 @@ export interface RouteMatch<M = unknown, K extends string = string> {
  * Route branch.
  */
 export interface RouteBranch<M = unknown, K extends string = string> {
-  readonly basename: string;
   readonly guard: Guard<M, K>;
   readonly matcher: Matcher<K>;
   readonly meta: Readonly<IRoute<M, K>[]>;
@@ -161,7 +160,6 @@ export interface RankRouteMeta<M = unknown, K extends string = string> {
  */
 export interface RankRouteBranch<M = unknown, K extends string = string> {
   readonly weight: number;
-  readonly basename: string;
   readonly guard: Guard<M, K>;
   readonly matcher: Matcher<K>;
   readonly meta: Readonly<RankRouteMeta<M, K>[]>;

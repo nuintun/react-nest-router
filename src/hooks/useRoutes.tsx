@@ -39,12 +39,12 @@ export function useRoutes<M = unknown, K extends string = string, C = unknown>(
   }, [pathname]);
 
   const branches = useMemo(() => {
-    return flatten(routes, basename);
-  }, [basename, routes]);
+    return flatten(routes);
+  }, [routes]);
 
   const matched = useMemo(() => {
-    return match(branches, pathname);
-  }, [pathname, branches]);
+    return match(branches, basename, pathname);
+  }, [basename, pathname, branches]);
 
   const element = useMemo(() => {
     if (matched) {

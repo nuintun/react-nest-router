@@ -93,3 +93,41 @@ export function prefix(string: string, symbol: string): string {
 export function suffix(string: string, symbol: string): string {
   return endsWith(string, symbol) ? string : string + symbol;
 }
+
+/**
+ * @function stripBasename
+ * @description Strip basename from pathname.
+ * @param pathname The full pathname.
+ * @param basename The base pathname.
+ */
+export function stripBasename(pathname: string, basename: string): string {
+  if (basename === '/') {
+    return pathname;
+  }
+
+  const { length } = basename;
+
+  if (length >= pathname.length) {
+    return '/';
+  }
+
+  return pathname.slice(length - 1);
+}
+
+/**
+ * @typedef StartsWithBasename
+ * @description Starts with basename result.
+ */
+export type StartsWithBasename = [sensitive: boolean, insensitive: boolean];
+
+/**
+ * @function startsWithBasename
+ * @description Check if pathname starts with basename.
+ * @param pathname The full pathname.
+ * @param basename The base pathname.
+ */
+export function startsWithBasename(pathname: string, basename: string): StartsWithBasename {
+  pathname = suffix(pathname, '/');
+
+  return [startsWith(pathname, basename), startsWith(pathname.toLowerCase(), basename.toLowerCase())];
+}

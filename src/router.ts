@@ -4,8 +4,8 @@
 
 import { Tree } from './Tree';
 import { compile } from './pattern';
-import { assert, hasOwnKey } from './utils';
-import { isOutsideRoot, isWildcard, join, resolve } from './path';
+import { isOutsideRoot, isWildcard, resolve } from './path';
+import { assert, hasOwnKey, startsWithBasename, stripBasename, suffix } from './utils';
 import { IRoute, RankRouteBranch, RankRouteMeta, Route, RouteBranch, RouteMatch } from './interface';
 import { assertIndexRoute, assertLayoutRoute, assertPageRoute, assertReachableLayoutRoute } from './schema';
 
@@ -117,10 +117,10 @@ function sortRouteBranches<M, K extends string>(branches: RankRouteBranch<M, K>[
     .sort((prev, next) => {
       return prev.weight !== next.weight ? next.weight - prev.weight : compareBranchMeta(prev, next);
     })
-    .map(({ basename, meta: metadata, matcher, guard }) => {
+    .map(({ meta: metadata, matcher, guard }) => {
       const meta = metadata.map(({ route }) => route);
 
-      return { basename, meta: __DEV__ ? Object.freeze(meta) : meta, matcher, guard };
+      return { meta: __DEV__ ? Object.freeze(meta) : meta, matcher, guard };
     });
 }
 
@@ -128,9 +128,8 @@ function sortRouteBranches<M, K extends string>(branches: RankRouteBranch<M, K>[
  * @function flatten
  * @description Flatten user routes.
  * @param routes User routes.
- * @param basename The basename.
  */
-export function flatten<M, K extends string>(routes: Route<M, K>[], basename: string): RouteBranch<M, K>[] {
+export function flatten<M, K extends string>(routes: Route<M, K>[]): RouteBranch<M, K>[] {
   const defaultGuard = () => true;
   const branches: RankRouteBranch<M, K>[] = [];
 
@@ -177,13 +176,12 @@ export function flatten<M, K extends string>(routes: Route<M, K>[], basename: st
       };
 
       if (!isLayout || reachable) {
-        const path = join(basename, resolve(from, to));
+        const path = resolve(from, to);
 
         // Routes with children is layout routes,
         // otherwise is page routes or index routes,
         // only page, index and reachable layout routes will add to branches.
         branches.push({
-          basename,
           meta: [...meta, metadata],
           guard: guard || defaultGuard,
           weight: computeWeight(path, isIndex),
@@ -209,18 +207,29 @@ export function flatten<M, K extends string>(routes: Route<M, K>[], basename: st
  * @function match
  * @description Match route branch.
  * @param routes The flatten routes.
+ * @param basename The pathname basename.
  * @param pathname The pathname to match.
  */
-export function match<M, K extends string>(routes: RouteBranch<M, K>[], pathname: string): RouteMatch<M, K> | null {
+export function match<M, K extends string>(
+  routes: RouteBranch<M, K>[],
+  basename: string,
+  pathname: string
+): RouteMatch<M, K> | null {
+  const base = suffix(basename, '/');
+  const path = stripBasename(pathname, base);
+  const [sensitive, insensitive] = startsWithBasename(pathname, base);
+
   // Match route branches.
-  for (const { basename, meta: matches, matcher, guard } of routes) {
-    const params = matcher.match(pathname);
+  for (const { meta: matches, matcher, guard } of routes) {
+    if (matcher.sensitive ? sensitive : insensitive) {
+      const params = matcher.match(path);
 
-    if (params) {
-      const match = { path: matcher.path, basename, pathname, params, matches };
+      if (params) {
+        const match = { path: matcher.path, basename, pathname, params, matches };
 
-      if (guard(__DEV__ ? Object.freeze(match) : match)) {
-        return match;
+        if (guard(__DEV__ ? Object.freeze(match) : match)) {
+          return match;
+        }
       }
     }
   }
