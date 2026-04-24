@@ -6,6 +6,7 @@
 import { resolve } from 'node:path';
 import { defineConfig } from './tools/index.ts';
 
+const app = resolve('app');
 const js = resolve('app/js');
 const css = resolve('app/css');
 const images = resolve('app/images');
@@ -20,6 +21,8 @@ const meta = {
 // 生成配置文件
 export default defineConfig({
   ports: 8000,
+  roots: [app],
+  context: app,
   lang: 'zh-CN',
   alias: {
     '/js': js,
@@ -38,7 +41,6 @@ export default defineConfig({
       filename: fallback
     }
   ],
-  context: resolve('app'),
   historyApiFallback: html,
   name: 'React Nest Router',
   outputPath: resolve('wwwroot/public'),
