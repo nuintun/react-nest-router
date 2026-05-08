@@ -41,7 +41,7 @@ const port = await resolvePort(ports);
 const devServerHost = `http://${ip}:${port}`;
 
 // @ts-expect-error
-configure.experiments.cache.version = 'dev';
+configure.cache.version = 'dev';
 configure.devtool = 'eval-cheap-module-source-map';
 configure.watchOptions = { aggregateTimeout: 256 };
 

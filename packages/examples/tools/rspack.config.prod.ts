@@ -17,7 +17,7 @@ const [, configure] = await resolveConfigs(mode);
 
 configure.devtool = false;
 // @ts-expect-error
-configure.experiments.cache.version = 'dev';
+configure.cache.version = 'dev';
 
 // @ts-expect-error
 // 使用自定义 minimizer 工具
