@@ -20,18 +20,18 @@
   },
   "dependencies": {
     "@swc/helpers": "^0.5.21",
-    "antd": "^6.3.6",
-    "react": "^19.2.5",
-    "react-dom": "^19.2.5",
+    "antd": "^6.3.7",
+    "react": "^19.2.6",
+    "react-dom": "^19.2.6",
     "react-error-boundary": "^6.1.1",
     "react-nest-router": "workspace:*"
   },
   "devDependencies": {
     "@nuintun/svgo-loader": "^0.6.1",
-    "@rspack/core": "^2.0.0",
+    "@rspack/core": "^2.0.2",
     "@rspack/plugin-react-refresh": "^2.0.0",
     "@types/koa": "^3.0.2",
-    "@types/node": "^25.6.0",
+    "@types/node": "^25.6.2",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "@types/throttle-debounce": "^5.0.2",

@@ -22,7 +22,7 @@ jobs:
         uses: actions/checkout@v6
       # 设置 pnpm
       - name: Setup pnpm
-        uses: pnpm/action-setup@v5
+        uses: pnpm/action-setup@v6
         with:
           version: latest
       # 设置 node
@@ -39,7 +39,7 @@ jobs:
         run: pnpm build && pnpm prod
       # 上传构建产物
       - name: Upload GitHub Pages
-        uses: actions/upload-pages-artifact@v4
+        uses: actions/upload-pages-artifact@v5
         with:
           path: ./packages/examples/wwwroot
   # 部署任务
