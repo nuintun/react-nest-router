@@ -73,8 +73,8 @@ importers:
         specifier: ^19.2.6
         version: 19.2.6(react@19.2.6)
       react-error-boundary:
-        specifier: ^6.1.1
-        version: 6.1.1(react@19.2.6)
+        specifier: ^6.1.2
+        version: 6.1.2(react@19.2.6)
       react-nest-router:
         specifier: workspace:*
         version: link:../core
@@ -131,8 +131,8 @@ importers:
         specifier: ^3.8.3
         version: 3.8.3
       rspack-dev-middleware:
-        specifier: ^0.4.0
-        version: 0.4.0(@rspack/core@2.0.4(@swc/helpers@0.5.21))(bufferutil@4.1.0)(koa@3.2.1)(utf-8-validate@6.0.6)
+        specifier: ^0.4.1
+        version: 0.4.1(@rspack/core@2.0.4(@swc/helpers@0.5.21))(bufferutil@4.1.0)(koa@3.2.1)(utf-8-validate@6.0.6)
       sass-embedded:
         specifier: ^1.100.0
         version: 1.100.0
@@ -1694,8 +1694,8 @@ packages:
     peerDependencies:
       react: ^19.2.6
 
-  react-error-boundary@6.1.1:
-    resolution: {integrity: sha512-BrYwPOdXi5mqkk5lw+Uvt0ThHx32rCt3BkukS4X23A2AIWDPSGX6iaWTc0y9TU/mHDA/6qOSGel+B2ERkOvD1w==}
+  react-error-boundary@6.1.2:
+    resolution: {integrity: sha512-3DpCr5HVdZ0caUjYE/kIHBEJN0mNP3ZCgf16c48uJ5TbWjorKVp+YG8W3XqlJ7vJAVNw6wNIImyPXmFydwmyng==}
     peerDependencies:
       react: ^18.0.0 || ^19.0.0
 
@@ -1737,8 +1737,8 @@ packages:
     engines: {node: '>=18.0.0', npm: '>=8.0.0'}
     hasBin: true
 
-  rspack-dev-middleware@0.4.0:
-    resolution: {integrity: sha512-d7fOaka+L/Glzh8PeT5SEUqYSEEUxCCj2rMeec8kvr3oCiIosoHZvPl3v5g4LOqcwfyPp/xYIkgE+X57pVou5Q==}
+  rspack-dev-middleware@0.4.1:
+    resolution: {integrity: sha512-qSnKUZqT+CEDwEf8OWoN7+P6hWRUaN99E+Ooh0SnNBzybAzexZG9o2q2OLK4BBTTbeJBMzuHcU43b1kGTUaATw==}
     engines: {node: '>=18.0.0'}
     peerDependencies:
       '@rspack/core': '>=1.0.7'
@@ -1901,8 +1901,8 @@ packages:
   scroll-into-view-if-needed@3.1.0:
     resolution: {integrity: sha512-49oNpRjWRvnU8NyGVmUaYG4jtTkNonFZI86MmGRDqBphEK2EXT9gdEUoQPZhuBM8yWHxCWbobltqYO5M4XrUvQ==}
 
-  semver@7.8.0:
-    resolution: {integrity: sha512-AcM7dV/5ul4EekoQ29Agm5vri8JNqRyj39o0qpX6vDF2GZrtutZl5RwgD1XnZjiTAfncsJhMI48QQH3sN87YNA==}
+  semver@7.8.1:
+    resolution: {integrity: sha512-rkVq3IXh+4FDGch+KwzX3aV9W3kO54GyEgpvBzSyctDA6Xtd7RJQV1xmXbeQp5v7+VzLOfVqiutSE6GICgPFvg==}
     engines: {node: '>=10'}
     hasBin: true
 
@@ -2050,8 +2050,8 @@ packages:
     resolution: {integrity: sha512-BNGbWLfd0eUPabhkXUVm0j8uuvREyTh5ovRa/dyow/BqAbZJyC+5fU+IzQOzmAKzYqYRAISoRhdQr3eIZ/PXqg==}
     engines: {node: '>= 0.8'}
 
-  ws@8.20.1:
-    resolution: {integrity: sha512-It4dO0K5v//JtTXuPkfEOaI3uUN87iYPnqo/ZzqCoG3g8uhA66QUMs/SrM0YK7/NAu+r4LMh/9dq2A7k+rHs+w==}
+  ws@8.21.0:
+    resolution: {integrity: sha512-Vsp28b7DRcimFQvrqu2Wek3z1iYxDCWqHYB8Qsnk/S4RfaCQzPGPyBNuVjJV3cd6UiKtUtp6sNM77gWvzcCH+g==}
     engines: {node: '>=10.0.0'}
     peerDependencies:
       bufferutil: ^4.0.1
@@ -3170,7 +3170,7 @@ snapshots:
       postcss-modules-scope: 3.2.1(postcss@8.5.15)
       postcss-modules-values: 4.0.0(postcss@8.5.15)
       postcss-value-parser: 4.2.0
-      semver: 7.8.0
+      semver: 7.8.1
     optionalDependencies:
       '@rspack/core': 2.0.4(@swc/helpers@0.5.21)
 
@@ -3471,7 +3471,7 @@ snapshots:
       ignore-by-default: 1.0.1
       minimatch: 10.2.5
       pstree.remy: 1.1.8
-      semver: 7.8.0
+      semver: 7.8.1
       simple-update-notifier: 2.0.0
       supports-color: 5.5.0
       touch: 3.1.1
@@ -3557,7 +3557,7 @@ snapshots:
       react: 19.2.6
       scheduler: 0.27.0
 
-  react-error-boundary@6.1.1(react@19.2.6):
+  react-error-boundary@6.1.2(react@19.2.6):
     dependencies:
       react: 19.2.6
 
@@ -3619,7 +3619,7 @@ snapshots:
       '@rollup/rollup-win32-x64-msvc': 4.60.4
       fsevents: 2.3.3
 
-  rspack-dev-middleware@0.4.0(@rspack/core@2.0.4(@swc/helpers@0.5.21))(bufferutil@4.1.0)(koa@3.2.1)(utf-8-validate@6.0.6):
+  rspack-dev-middleware@0.4.1(@rspack/core@2.0.4(@swc/helpers@0.5.21))(bufferutil@4.1.0)(koa@3.2.1)(utf-8-validate@6.0.6):
     dependencies:
       '@nuintun/ansi': 0.3.13
       '@rspack/core': 2.0.4(@swc/helpers@0.5.21)
@@ -3633,7 +3633,7 @@ snapshots:
       supports-color: 10.2.2
       tslib: 2.8.1
       uuid: 14.0.0
-      ws: 8.20.1(bufferutil@4.1.0)(utf-8-validate@6.0.6)
+      ws: 8.21.0(bufferutil@4.1.0)(utf-8-validate@6.0.6)
     transitivePeerDependencies:
       - bufferutil
       - utf-8-validate
@@ -3759,13 +3759,13 @@ snapshots:
     dependencies:
       compute-scroll-into-view: 3.1.1
 
-  semver@7.8.0: {}
+  semver@7.8.1: {}
 
   setprototypeof@1.2.0: {}
 
   simple-update-notifier@2.0.0:
     dependencies:
-      semver: 7.8.0
+      semver: 7.8.1
 
   source-map-js@1.2.1: {}
 
@@ -3860,7 +3860,7 @@ snapshots:
 
   vary@1.1.2: {}
 
-  ws@8.20.1(bufferutil@4.1.0)(utf-8-validate@6.0.6):
+  ws@8.21.0(bufferutil@4.1.0)(utf-8-validate@6.0.6):
     optionalDependencies:
       bufferutil: 4.1.0
       utf-8-validate: 6.0.6
